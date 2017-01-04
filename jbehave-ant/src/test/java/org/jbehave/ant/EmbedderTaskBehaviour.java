@@ -1,12 +1,5 @@
 package org.jbehave.ant;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.tools.ant.Project;
 import org.jbehave.core.InjectableEmbedder;
@@ -21,24 +14,28 @@ import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.ReportsCount;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+
 import static java.util.Arrays.asList;
 import static org.apache.tools.ant.Project.MSG_INFO;
 import static org.apache.tools.ant.Project.MSG_WARN;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 public class EmbedderTaskBehaviour {
 
-    private Embedder embedder = mock(Embedder.class);
     private static final ExecutorService EXECUTOR_SERVICE = mock(ExecutorService.class);
+    private Embedder embedder = mock(Embedder.class);
 
     @Test
     public void shouldCreateNewEmbedderWithDefaultControls() {
@@ -58,7 +55,7 @@ public class EmbedderTaskBehaviour {
         assertThat(embedderControls.skip(), is(false));
         assertThat(embedderControls.storyTimeouts(), equalTo("300"));
         assertThat(embedderControls.failOnStoryTimeout(), is(false));
-        assertThat(embedderControls.threads(), equalTo(1));  
+        assertThat(embedderControls.threads(), equalTo(1));
     }
 
     @Test
@@ -89,7 +86,7 @@ public class EmbedderTaskBehaviour {
         assertThat(embedderControls.skip(), is(true));
         assertThat(embedderControls.storyTimeouts(), equalTo("**/shorts/BddShortTest.story:5"));
         assertThat(embedderControls.failOnStoryTimeout(), is(true));
-        assertThat(embedderControls.threads(), equalTo(2));        
+        assertThat(embedderControls.threads(), equalTo(2));
     }
 
     @Test
@@ -165,7 +162,7 @@ public class EmbedderTaskBehaviour {
                 scenariosFailed, scenariosNotAllowed, scenariosPending, stepsFailed));
         verify(project).log(
                 task,
-                "Reports view generated with " + stories + " stories (of which "+storiesPending+" pending) containing " + scenarios
+                "Reports view generated with " + stories + " stories (of which " + storiesPending + " pending) containing " + scenarios
                         + " scenarios (of which " + scenariosPending + " pending)", MSG_INFO);
         verify(project).log(
                 task,
@@ -185,7 +182,7 @@ public class EmbedderTaskBehaviour {
         // When
         Properties systemProperties = new Properties();
         systemProperties.setProperty("one", "1");
-        systemProperties.setProperty("two", "2");        
+        systemProperties.setProperty("two", "2");
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         systemProperties.store(out, "");
         task.setSystemProperties(out.toString());
@@ -193,7 +190,7 @@ public class EmbedderTaskBehaviour {
         // Then
         assertThat(embedder.systemProperties(), equalTo(systemProperties));
     }
-    
+
     @Test
     public void shouldAllowTestScopedSearchDirectory() {
         // Given
@@ -231,10 +228,6 @@ public class EmbedderTaskBehaviour {
         assertThat(embedder.executorService(), sameInstance(EXECUTOR_SERVICE));
     }
 
-    public static class MyEmbedder extends Embedder {
-
-    }
-
     @Test
     public void shouldAllowSpecificationOfInjectableEmbedderClass() {
         // Given
@@ -245,17 +238,6 @@ public class EmbedderTaskBehaviour {
         Embedder embedder = task.newEmbedder();
         // Then
         assertThat(embedder.getClass().getName(), equalTo(MyEmbedder.class.getName()));
-    }
-
-    public static class MyInjectableEmbedder extends InjectableEmbedder {
-
-        public MyInjectableEmbedder() {
-            useEmbedder(new MyEmbedder());
-        }
-
-        public void run() throws Throwable {
-        }
-
     }
 
     @Test
@@ -270,10 +252,6 @@ public class EmbedderTaskBehaviour {
         assertThat(storyFinder.getClass().getName(), equalTo(MyStoryFinder.class.getName()));
     }
 
-    public static class MyStoryFinder extends StoryFinder {
-
-    }
-
     @Test
     public void shouldMapStoriesAsEmbeddables() {
         // Given
@@ -281,7 +259,7 @@ public class EmbedderTaskBehaviour {
         MapStoriesAsEmbeddables task = new MapStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
             @Override
@@ -303,7 +281,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).runAsEmbeddables(classNames);
+        verify(this.embedder).runAsEmbeddables(classNames);
     }
 
     @Test
@@ -313,7 +291,7 @@ public class EmbedderTaskBehaviour {
         MapStoriesAsPaths task = new MapStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
             @Override
@@ -334,7 +312,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).mapStoriesAsPaths(storyPaths);
+        verify(this.embedder).mapStoriesAsPaths(storyPaths);
     }
 
     @Test
@@ -343,7 +321,7 @@ public class EmbedderTaskBehaviour {
         GenerateStoriesView task = new GenerateStoriesView() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
         };
@@ -351,7 +329,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).generateReportsView();
+        verify(this.embedder).generateReportsView();
     }
 
     @Test
@@ -360,7 +338,7 @@ public class EmbedderTaskBehaviour {
         ReportStepdocs task = new ReportStepdocs() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
         };
@@ -368,7 +346,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).reportStepdocs();
+        verify(this.embedder).reportStepdocs();
     }
 
     @Test
@@ -378,7 +356,7 @@ public class EmbedderTaskBehaviour {
         RunStoriesAsEmbeddables task = new RunStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
             @Override
@@ -399,7 +377,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).runAsEmbeddables(classNames);
+        verify(this.embedder).runAsEmbeddables(classNames);
     }
 
     @Test
@@ -409,7 +387,7 @@ public class EmbedderTaskBehaviour {
         RunStoriesAsPaths task = new RunStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
             @Override
@@ -432,7 +410,7 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).runStoriesAsPaths(storyPaths);
+        verify(this.embedder).runStoriesAsPaths(storyPaths);
         assertThat(task.codeLocation().toString(), containsString(outputDirectory));
     }
 
@@ -443,7 +421,7 @@ public class EmbedderTaskBehaviour {
         RunStoriesWithAnnotatedEmbedderRunner task = new RunStoriesWithAnnotatedEmbedderRunner() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderTaskBehaviour.this.embedder;
             }
 
             @Override
@@ -464,7 +442,26 @@ public class EmbedderTaskBehaviour {
         task.execute();
 
         // Then
-        verify(embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
+        verify(this.embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
+    }
+
+    public static class MyEmbedder extends Embedder {
+
+    }
+
+    public static class MyInjectableEmbedder extends InjectableEmbedder {
+
+        public MyInjectableEmbedder() {
+            useEmbedder(new MyEmbedder());
+        }
+
+        public void run() throws Throwable {
+        }
+
+    }
+
+    public static class MyStoryFinder extends StoryFinder {
+
     }
 
     public static class MyExecutors implements ExecutorServiceFactory {
@@ -472,7 +469,7 @@ public class EmbedderTaskBehaviour {
         public ExecutorService create(EmbedderControls controls) {
             return EXECUTOR_SERVICE;
         }
-        
+
     }
 
 }

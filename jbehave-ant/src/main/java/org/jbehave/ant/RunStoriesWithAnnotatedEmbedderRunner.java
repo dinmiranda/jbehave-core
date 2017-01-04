@@ -1,11 +1,11 @@
 package org.jbehave.ant;
 
-import static org.apache.tools.ant.Project.MSG_INFO;
-
 import org.apache.tools.ant.BuildException;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.junit.AnnotatedEmbedderRunner;
 import org.junit.runner.RunWith;
+
+import static org.apache.tools.ant.Project.MSG_INFO;
 
 /**
  * Ant task that runs with {@link AnnotatedEmbedderRunner}, equivalent to

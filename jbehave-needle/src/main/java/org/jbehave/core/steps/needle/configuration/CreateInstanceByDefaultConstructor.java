@@ -2,6 +2,7 @@ package org.jbehave.core.steps.needle.configuration;
 
 /**
  * Instantiates new java object by default constructor
+ *
  * @author Jan Galinski, Holisticon AG (jan.galinski@holisticon.de)
  * @author Simon Zambrovski, Holisticon AG (simon.zambrovski@holisticon.de)
  */

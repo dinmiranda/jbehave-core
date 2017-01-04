@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to run stories as paths
- * 
+ *
  * @goal run-stories-as-paths
  */
 public class RunStoriesAsPaths extends AbstractEmbedderMojo {

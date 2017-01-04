@@ -1,12 +1,11 @@
 package org.jbehave.core.io.rest.confluence;
 
-import static java.text.MessageFormat.format;
+import com.thoughtworks.xstream.XStream;
+import org.jbehave.core.io.rest.RESTClient;
 
 import java.util.List;
 
-import org.jbehave.core.io.rest.RESTClient;
-
-import com.thoughtworks.xstream.XStream;
+import static java.text.MessageFormat.format;
 
 public class Confluence {
 

@@ -1,5 +1,5 @@
 class AnnotatedSteps {
-    
+
   @org.jbehave.core.annotations.Given("given")
   def given() {
   }

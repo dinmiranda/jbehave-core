@@ -1,20 +1,20 @@
 package org.jbehave.core.io.rest.redmine;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import org.apache.commons.io.IOUtils;
+import org.jbehave.core.io.rest.Resource;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
-import org.jbehave.core.io.rest.Resource;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class IndexFromRedmineBehaviour {
 
     @Test
     public void canIndexFromRedmine() {
-    	IndexFromRedmine indexer = new IndexFromRedmine();
+        IndexFromRedmine indexer = new IndexFromRedmine();
         String rootPath = "http://redmine.org/wiki";
         String entity = read("redmine-index.json");
         Map<String, Resource> index = indexer.createIndexFromEntity(rootPath, entity);

@@ -9,7 +9,7 @@ import org.junit.runners.model.InitializationError;
  * AnnotatedEmbedderRunner that uses {@link PicoAnnotationBuilder}.
  */
 public class PicoAnnotatedEmbedderRunner extends AnnotatedEmbedderRunner {
-    
+
     private PicoAnnotationBuilder annotationBuilder;
 
     public PicoAnnotatedEmbedderRunner(Class<?> testClass) throws InitializationError {

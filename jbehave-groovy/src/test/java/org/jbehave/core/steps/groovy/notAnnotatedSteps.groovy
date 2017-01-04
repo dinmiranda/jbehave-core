@@ -1,17 +1,15 @@
-import java.util.Date;
-
 class NotAnnotatedSteps {
 
-  def aDate(Date date) {
-    assertNotNull(date);
-  }
+    def aDate(Date date) {
+        assertNotNull(date);
+    }
 
-  def daysPass(int days) {
-    assertNotNull(days);
-  }
+    def daysPass(int days) {
+        assertNotNull(days);
+    }
 
-  def theDate(Date date) {
-      assertNotNull(date);
-  }
+    def theDate(Date date) {
+        assertNotNull(date);
+    }
 
 }

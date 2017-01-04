@@ -1,20 +1,19 @@
 package org.jbehave.core.io.rest.redmine;
 
-import static java.text.MessageFormat.format;
-
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import org.jbehave.core.io.rest.IndexWithBreadcrumbs;
 import org.jbehave.core.io.rest.RESTClient;
 import org.jbehave.core.io.rest.RESTClient.Type;
 import org.jbehave.core.io.rest.Resource;
 import org.jbehave.core.io.rest.ResourceNameResolver;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonParser;
-import com.google.gson.reflect.TypeToken;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import static java.text.MessageFormat.format;
 
 /**
  * Indexes resources from Redmine using the REST API
@@ -37,7 +36,7 @@ public class IndexFromRedmine extends IndexWithBreadcrumbs {
     }
 
     protected Map<String, Resource> createIndexFromEntity(String rootURI, String entity) {
-    	Collection<Page> pages = parse(entity);
+        Collection<Page> pages = parse(entity);
         Map<String, Resource> index = new HashMap<String, Resource>();
         for (Page page : pages) {
             String parentName = (page.parent != null ? resolveName(page.parent.title) : null);
@@ -48,13 +47,13 @@ public class IndexFromRedmine extends IndexWithBreadcrumbs {
         return index;
     }
 
-	protected String uri(String rootPath) {
-		return format(INDEX_URI, rootPath);
-	}
+    protected String uri(String rootPath) {
+        return format(INDEX_URI, rootPath);
+    }
 
     private Collection<Page> parse(String entity) {
         Gson gson = new Gson();
-        return gson.<Collection<Page>> fromJson(jsonMember(entity, "wiki_pages"),
+        return gson.<Collection<Page>>fromJson(jsonMember(entity, "wiki_pages"),
                 new TypeToken<Collection<Page>>() {
                 }.getType());
     }

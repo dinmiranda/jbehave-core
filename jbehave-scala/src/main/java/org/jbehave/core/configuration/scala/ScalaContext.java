@@ -13,7 +13,7 @@ public class ScalaContext {
     public ScalaContext(String... classNames) {
         this(ScalaContext.class.getClassLoader(), classNames);
     }
-    
+
     public ScalaContext(ClassLoader classLoader, String... classNames) {
         this.classLoader = classLoader;
         this.classNames = Arrays.asList(classNames);
@@ -36,7 +36,7 @@ public class ScalaContext {
 
     /**
      * Creates an object instance from the Scala class name
-     * 
+     *
      * @param className the Scala class name
      * @return An Object instance
      */

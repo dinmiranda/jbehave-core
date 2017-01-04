@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.jbehave</groupId>
@@ -9,7 +10,9 @@
   <packaging>pom</packaging>
   <version>4.2-SNAPSHOT</version>
   <name>JBehave</name>
-  <description>JBehave Core is a project providing core functionality supporting and facilitating Behaviour-Driven Development.</description>
+  <description>JBehave Core is a project providing core functionality supporting and facilitating Behaviour-Driven
+    Development.
+  </description>
 
   <properties>
     <jdk.version>1.6</jdk.version>
@@ -139,7 +142,7 @@
                 <goal>jar</goal>
               </goals>
               <configuration>
-                <failOnError>false</failOnError>              
+                <failOnError>false</failOnError>
                 <additionalparam>-Xdoclint:none</additionalparam>
                 <links>
                   <link>http://docs.oracle.com/javase/6/docs/api</link>

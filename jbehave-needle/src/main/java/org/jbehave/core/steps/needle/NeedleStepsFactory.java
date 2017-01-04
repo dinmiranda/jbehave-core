@@ -1,14 +1,5 @@
 package org.jbehave.core.steps.needle;
 
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import org.jbehave.core.annotations.AsParameterConverter;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -25,9 +16,19 @@ import org.needle4j.NeedleTestcase;
 import org.needle4j.injection.InjectionProvider;
 import org.needle4j.reflection.ReflectionUtil;
 
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * An {@link InjectableStepsFactory} that uses a Needle {@link InjectionProvider} for the composition and instantiation
  * of all components that contain JBehave annotated methods.
+ *
  * @author Simon Zambrovski (simon.zambrovski@holisticon.de)
  * @author Jan Galinski (jan.galinski@holisticon.de)
  */
@@ -40,10 +41,9 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
 
     /**
      * Creates factory with given configuration and step instances.
-     * @param configuration
-     *        JBehave configuration
-     * @param steps
-     *        step classes
+     *
+     * @param configuration JBehave configuration
+     * @param steps         step classes
      */
     public NeedleStepsFactory(final Configuration configuration, final Class<?>... steps) {
         this(configuration, null, steps);
@@ -51,12 +51,10 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
 
     /**
      * Creates factory with given configuration, injection providers and step instances.
-     * @param configuration
-     *        JBehave configuration
-     * @param steps
-     *        step classes
-     * @param providers
-     *        injection providers.
+     *
+     * @param configuration JBehave configuration
+     * @param steps         step classes
+     * @param providers     injection providers.
      */
     public NeedleStepsFactory(final Configuration configuration, final Set<InjectionProvider<?>> injectionProviders, final Class<?>... steps) {
         super(setUpInjectionProviders(JBehaveNeedleConfiguration.RESOURCE_JBEHAVE_NEEDLE));
@@ -69,6 +67,47 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
             this.configuration = configuration;
         }
         this.steps = steps;
+    }
+
+    /**
+     * Determines if the given type is a {@link Class} containing at least one method annotated with annotations from
+     * package "org.jbehave.core.annotations".
+     *
+     * @param type the Type of the steps instance
+     * @return A boolean, <code>true</code> if at least one annotated method is found.
+     * @see {@link AbstractStepsFactory}
+     */
+    static boolean hasAnnotatedMethods(final Type type) {
+        if (type instanceof Class<?>) {
+            for (final Method method : ((Class<?>) type).getMethods()) {
+                for (final Annotation annotation : method.getAnnotations()) {
+                    if (annotation.annotationType().getName().startsWith("org.jbehave.core.annotations")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Read injection providers configuration from a resource.
+     *
+     * @param resourceName resource name
+     * @return injection providers.
+     */
+    static InjectionProvider<?>[] setUpInjectionProviders(final String resourceName) {
+        return new JBehaveNeedleConfiguration(resourceName).getInjectionProviders();
+    }
+
+    /**
+     * Set to array.
+     *
+     * @param injectionProviders set of providers
+     * @return array of providers
+     */
+    static InjectionProvider<?>[] toArray(final Set<InjectionProvider<?>> injectionProviders) {
+        return injectionProviders.toArray(new InjectionProvider<?>[injectionProviders.size()]);
     }
 
     /**
@@ -108,6 +147,7 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
     /**
      * Uses private instantiation methods of NeedleTestCase via {@link ReflectionUtil#invokeMethod(Object, String, Object...)}. First tries to create new
      * instance with constructor injection, then falls back to default constructor. If creation fails, an IllegalStateException is thrown.
+     *
      * @param type type of instance to create
      * @return new instance of type. Never <code>null</code>
      * @throws IllegalStateException when creation fails.
@@ -130,6 +170,7 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
 
     /**
      * Create parameter converters from methods annotated with @AsParameterConverter
+     *
      * @see {@link AbstractStepsFactory}
      */
     private List<ParameterConverter> methodReturningConverters(final Class<?> type) {
@@ -144,54 +185,13 @@ public class NeedleStepsFactory extends NeedleTestcase implements InjectableStep
 
     /**
      * Add injection providers.
-     * @param providers
-     *        add injection providers after factory construction.
+     *
+     * @param providers add injection providers after factory construction.
      */
     public void addInjectionProviders(final Set<InjectionProvider<?>> providers) {
         if (providers != null) {
             addInjectionProvider(toArray(providers));
         }
-    }
-
-    /**
-     * Determines if the given type is a {@link Class} containing at least one method annotated with annotations from
-     * package "org.jbehave.core.annotations".
-     * @param type
-     *        the Type of the steps instance
-     * @return A boolean, <code>true</code> if at least one annotated method is found.
-     * @see {@link AbstractStepsFactory}
-     */
-    static boolean hasAnnotatedMethods(final Type type) {
-        if (type instanceof Class<?>) {
-            for (final Method method : ((Class<?>)type).getMethods()) {
-                for (final Annotation annotation : method.getAnnotations()) {
-                    if (annotation.annotationType().getName().startsWith("org.jbehave.core.annotations")) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Read injection providers configuration from a resource.
-     * @param resourceName
-     *        resource name
-     * @return injection providers.
-     */
-    static InjectionProvider<?>[] setUpInjectionProviders(final String resourceName) {
-        return new JBehaveNeedleConfiguration(resourceName).getInjectionProviders();
-    }
-
-    /**
-     * Set to array.
-     * @param injectionProviders
-     *        set of providers
-     * @return array of providers
-     */
-    static InjectionProvider<?>[] toArray(final Set<InjectionProvider<?>> injectionProviders) {
-        return injectionProviders.toArray(new InjectionProvider<?>[injectionProviders.size()]);
     }
 
 }

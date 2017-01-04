@@ -1,14 +1,14 @@
 package org.jbehave.core.io.rest.confluence;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 import org.jbehave.core.io.rest.RESTClient;
 import org.jbehave.core.io.rest.RESTClient.Type;
 import org.jbehave.core.io.rest.Resource;
 import org.jbehave.core.io.rest.ResourceIndexer;
 import org.jbehave.core.io.rest.confluence.Confluence.Page;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 public class IndexFromConfluence implements ResourceIndexer {
 

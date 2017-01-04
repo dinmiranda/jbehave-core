@@ -1,15 +1,15 @@
 package org.jbehave.core.io.rest.confluence;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.startsWith;
-import static org.hamcrest.Matchers.stringContainsInOrder;
+import org.apache.commons.io.IOUtils;
+import org.jbehave.core.io.rest.RESTClient;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.apache.commons.io.IOUtils;
-import org.jbehave.core.io.rest.RESTClient;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.stringContainsInOrder;
 
 public class LoadFromConfluenceBehaviour {
 

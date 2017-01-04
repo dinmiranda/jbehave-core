@@ -1,7 +1,11 @@
 package org.jbehave.core.steps.guice;
 
-import java.util.List;
-
+import com.google.inject.AbstractModule;
+import com.google.inject.CreationException;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Scopes;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.AbstractStepsFactory;
@@ -9,12 +13,7 @@ import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.Steps;
 import org.junit.Test;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.CreationException;
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Scopes;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -26,10 +25,10 @@ public class GuiceStepsFactoryBehaviour {
         // Given
         Injector parent = Guice.createInjector(new AbstractModule() {
             @Override
-            protected void configure() {              
+            protected void configure() {
                 bind(FooSteps.class).in(Scopes.SINGLETON);
             }
-          });
+        });
 
         AbstractStepsFactory factory = new GuiceStepsFactory(new MostUsefulConfiguration(), parent);
         // When
@@ -44,10 +43,10 @@ public class GuiceStepsFactoryBehaviour {
         Injector parent = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
-              bind(Integer.class).toInstance(42);
-              bind(FooStepsWithDependency.class).in(Scopes.SINGLETON);
+                bind(Integer.class).toInstance(42);
+                bind(FooStepsWithDependency.class).in(Scopes.SINGLETON);
             }
-          });
+        });
 
         // When
         AbstractStepsFactory factory = new GuiceStepsFactory(new MostUsefulConfiguration(), parent);
@@ -65,17 +64,17 @@ public class GuiceStepsFactoryBehaviour {
     }
 
     private Object stepsInstance(CandidateSteps candidateSteps) {
-        return ((Steps)candidateSteps).instance();
+        return ((Steps) candidateSteps).instance();
     }
 
-    @Test(expected=CreationException.class)
+    @Test(expected = CreationException.class)
     public void assertThatStepsWithMissingDependenciesCannotBeCreated() throws NoSuchFieldException, IllegalAccessException {
         Injector parent = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
-              bind(FooStepsWithDependency.class);
+                bind(FooStepsWithDependency.class);
             }
-          });
+        });
         AbstractStepsFactory factory = new GuiceStepsFactory(new MostUsefulConfiguration(), parent);
         // When
         factory.createCandidateSteps();

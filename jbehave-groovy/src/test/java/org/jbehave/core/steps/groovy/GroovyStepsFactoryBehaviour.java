@@ -1,19 +1,19 @@
 package org.jbehave.core.steps.groovy;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
-
-import java.util.List;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.configuration.groovy.GroovyContext;
-import org.jbehave.core.configuration.groovy.GroovyResourceFinder;
 import org.jbehave.core.configuration.groovy.GroovyContext.GroovyClassInstantiationFailed;
+import org.jbehave.core.configuration.groovy.GroovyResourceFinder;
 import org.junit.Test;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.jbehave.core.io.CodeLocations.codeLocationFromClass;
 
 public class GroovyStepsFactoryBehaviour {
 

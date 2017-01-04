@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to map stories as paths
- * 
+ *
  * @goal map-stories-as-paths
  */
 public class MapStoriesAsPaths extends AbstractEmbedderMojo {

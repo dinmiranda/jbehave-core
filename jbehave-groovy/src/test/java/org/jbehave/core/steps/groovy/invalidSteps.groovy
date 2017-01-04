@@ -1,6 +1,6 @@
 class InvalidSteps {
 
-    InvalidSteps(){
+    InvalidSteps() {
         throw new RuntimeException("bum!")
     }
 

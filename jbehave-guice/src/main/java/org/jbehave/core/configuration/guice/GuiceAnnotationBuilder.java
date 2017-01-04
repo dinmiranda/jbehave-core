@@ -1,8 +1,13 @@
 package org.jbehave.core.configuration.guice;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.inject.AbstractModule;
+import com.google.inject.Binding;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+import com.google.inject.Module;
+import com.google.inject.TypeLiteral;
+import com.google.inject.util.Modules;
 import org.jbehave.core.annotations.guice.UsingGuice;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.configuration.AnnotationFinder;
@@ -16,19 +21,13 @@ import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 import org.jbehave.core.steps.guice.GuiceStepsFactory;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Binding;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.Module;
-import com.google.inject.TypeLiteral;
-import com.google.inject.util.Modules;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Extends {@link AnnotationBuilder} to provide Guice-based dependency injection
  * if {@link UsingGuice} annotation is present.
- * 
+ *
  * @author Cristiano Gavião
  * @author Mauro Talevi
  */
@@ -89,9 +88,8 @@ public class GuiceAnnotationBuilder extends AnnotationBuilder {
     /**
      * Finds any {@link ParameterConverter} defined in the given injector and,
      * if none found, recurses to its parent.
-     * 
-     * @param injector
-     *            the Injector
+     *
+     * @param injector the Injector
      * @return A List of ParameterConverter instances
      */
     private List<ParameterConverter> findConverters(Injector injector) {
@@ -151,11 +149,9 @@ public class GuiceAnnotationBuilder extends AnnotationBuilder {
     /**
      * Finds binding for a type in the given injector and, if not found,
      * recurses to its parent
-     * 
-     * @param injector
-     *            the current Injector
-     * @param type
-     *            the Class representing the type
+     *
+     * @param injector the current Injector
+     * @param type     the Class representing the type
      * @return A boolean flag, <code>true</code> if binding found
      */
     private boolean findBinding(Injector injector, Class<?> type) {
@@ -174,13 +170,13 @@ public class GuiceAnnotationBuilder extends AnnotationBuilder {
     }
 
     protected Injector createInjector(List<Module> modules) {
-        if ( injector != null ){
+        if (injector != null) {
             return injector;
         }
-        Injector root = Guice.createInjector(new AbstractModule() {        
+        Injector root = Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
-        
+
             }
         });
         return root.createChildInjector(Modules.combine(modules));

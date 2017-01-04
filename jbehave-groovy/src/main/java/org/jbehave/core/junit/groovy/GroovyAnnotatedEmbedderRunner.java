@@ -11,7 +11,7 @@ import org.junit.runners.model.InitializationError;
 public class GroovyAnnotatedEmbedderRunner extends AnnotatedEmbedderRunner {
 
     private GroovyAnnotationBuilder annotationBuilder;
-    
+
     public GroovyAnnotatedEmbedderRunner(Class<?> testClass) throws InitializationError {
         super(testClass);
         annotationBuilder = new GroovyAnnotationBuilder(testClass());

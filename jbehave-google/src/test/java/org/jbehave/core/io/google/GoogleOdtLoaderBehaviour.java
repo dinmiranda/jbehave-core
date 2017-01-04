@@ -1,16 +1,5 @@
 package org.jbehave.core.io.google;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-
-import org.hamcrest.MatcherAssert;
-import org.hamcrest.Matchers;
-import org.jbehave.core.io.InvalidStoryResource;
-import org.jbehave.core.io.google.LoadOdtFromGoogle;
-import org.jbehave.core.io.google.LoadOdtFromGoogle.GoogleAccessFailed;
-import org.junit.Test;
-
 import com.google.gdata.client.DocumentQuery;
 import com.google.gdata.client.docs.DocsService;
 import com.google.gdata.data.MediaContent;
@@ -18,6 +7,15 @@ import com.google.gdata.data.docs.DocumentListEntry;
 import com.google.gdata.data.docs.DocumentListFeed;
 import com.google.gdata.data.media.MediaSource;
 import com.google.gdata.util.ServiceException;
+import org.hamcrest.MatcherAssert;
+import org.hamcrest.Matchers;
+import org.jbehave.core.io.InvalidStoryResource;
+import org.jbehave.core.io.google.LoadOdtFromGoogle.GoogleAccessFailed;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
@@ -41,7 +39,7 @@ public class GoogleOdtLoaderBehaviour {
         when(content.getUri()).thenReturn("http://docs.google.com");
         when(mediaSource.getInputStream()).thenReturn(inputStream);
 
-        LoadOdtFromGoogle storyLoader = new LoadOdtFromGoogle("user", "password", "https://docs.google.com/feeds/default/private/full/", service){
+        LoadOdtFromGoogle storyLoader = new LoadOdtFromGoogle("user", "password", "https://docs.google.com/feeds/default/private/full/", service) {
 
             @Override
             DocumentQuery documentQuery(String title) throws MalformedURLException {
@@ -52,7 +50,7 @@ public class GoogleOdtLoaderBehaviour {
             protected MediaContent mediaContent(String url) {
                 return content;
             }
-            
+
         };
         InputStream resourceStream = storyLoader.resourceAsStream("a_story");
         MatcherAssert.assertThat(resourceStream, Matchers.equalTo(inputStream));

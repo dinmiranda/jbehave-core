@@ -1,10 +1,10 @@
 package org.jbehave.core.configuration.groovy;
 
-import java.net.URL;
-import java.util.List;
-
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.StoryFinder;
+
+import java.net.URL;
+import java.util.List;
 
 public class GroovyResourceFinder {
 
@@ -12,7 +12,7 @@ public class GroovyResourceFinder {
     private String include;
     private String exclude;
 
-    public GroovyResourceFinder(){
+    public GroovyResourceFinder() {
         this(CodeLocations.codeLocationFromPath("src/main/groovy"), "**/*.groovy", "");
     }
 

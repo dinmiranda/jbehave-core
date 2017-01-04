@@ -1,11 +1,9 @@
 package org.jbehave.hudson;
 
-import org.kohsuke.stapler.DataBoundConstructor;
-
 import com.thalesgroup.dtkit.metrics.hudson.api.descriptor.TestTypeDescriptor;
 import com.thalesgroup.dtkit.metrics.hudson.api.type.TestType;
-
 import hudson.Extension;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 @SuppressWarnings("serial")
 public class JBehavePluginType extends TestType {

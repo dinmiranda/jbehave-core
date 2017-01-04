@@ -1,12 +1,12 @@
 package org.jbehave.core.io.rest;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-import static org.apache.commons.lang3.StringUtils.substringAfterLast;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.substringAfterLast;
 
 /**
  * Represents a resource retrieved from a REST API.
@@ -20,7 +20,7 @@ public class Resource {
     private String content;
     private String syntax;
 
-	public Resource(String uri) {
+    public Resource(String uri) {
         this(uri, substringAfterLast(uri, "/"));
     }
 
@@ -35,58 +35,58 @@ public class Resource {
     }
 
     public String getURI() {
-        return uri;
+        return this.uri;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public String getParentName() {
-        return parentName;
+        return this.parentName;
     }
 
     public boolean hasParent() {
-        return parentName != null;
+        return this.parentName != null;
     }
 
     public List<String> getBreadcrumbs() {
-        return breadcrumbs;
+        return this.breadcrumbs;
     }
 
-	public void setBreadcrumbs(List<String> breadcrumbs) {
+    public void setBreadcrumbs(List<String> breadcrumbs) {
         this.breadcrumbs = breadcrumbs;
     }
 
     public boolean hasBreadcrumbs() {
-        return breadcrumbs != null && !breadcrumbs.isEmpty();
+        return this.breadcrumbs != null && !this.breadcrumbs.isEmpty();
+    }
+
+    public String getContent() {
+        return this.content;
     }
 
     public void setContent(String content) {
         this.content = content;
     }
 
-    public String getContent() {
-        return content;
-    }
-
     public boolean hasContent() {
-        return isNotBlank(content);
+        return isNotBlank(this.content);
     }
 
     public String getSyntax() {
-		return syntax;
-	}
-
-	public void setSyntax(String syntax) {
-		this.syntax = syntax;
-	}
-
-    public boolean hasSyntax() {
-        return isNotBlank(syntax);
+        return this.syntax;
     }
 
-	public String toString() {
+    public void setSyntax(String syntax) {
+        this.syntax = syntax;
+    }
+
+    public boolean hasSyntax() {
+        return isNotBlank(this.syntax);
+    }
+
+    public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 

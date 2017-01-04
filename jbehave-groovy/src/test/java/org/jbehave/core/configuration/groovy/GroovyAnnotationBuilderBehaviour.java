@@ -1,11 +1,5 @@
 package org.jbehave.core.configuration.groovy;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-
-import java.util.List;
-
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.UsingEmbedder;
 import org.jbehave.core.annotations.groovy.UsingGroovy;
@@ -15,6 +9,12 @@ import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.Steps;
 import org.junit.Test;
+
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
 
 public class GroovyAnnotationBuilderBehaviour {
 
@@ -65,9 +65,9 @@ public class GroovyAnnotationBuilderBehaviour {
     private static class AnnotatedUsingGroovy {
 
     }
-    
+
     public static class TestGroovyResourceFinder extends GroovyResourceFinder {
-        public TestGroovyResourceFinder(){
+        public TestGroovyResourceFinder() {
             super(CodeLocations.codeLocationFromPath("src/test/java"), "**/configuration/groovy/*.groovy", "");
         }
     }

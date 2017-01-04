@@ -1,21 +1,21 @@
 package org.jbehave.core.io.rest.filesystem;
 
-import static org.jbehave.core.io.rest.filesystem.FilesystemUtils.asFile;
+import org.jbehave.core.io.ResourceLoader;
+import org.jbehave.core.io.rest.Resource;
+import org.jbehave.core.io.rest.ResourceImporter;
+import org.jbehave.core.io.rest.ResourceIndexer;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
-import org.jbehave.core.io.ResourceLoader;
-import org.jbehave.core.io.rest.Resource;
-import org.jbehave.core.io.rest.ResourceImporter;
-import org.jbehave.core.io.rest.ResourceIndexer;
+import static org.jbehave.core.io.rest.filesystem.FilesystemUtils.asFile;
 
 /**
  * Implementation that writes to filesystem the imported resources, using the
  * target file path and extension specified.
- * 
+ * <p>
  * The importer requires an instance of a {@link ResourceIndexer} and of a
  * {@link ResourceLoader}.
  */

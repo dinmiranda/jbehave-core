@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to run stories as Embeddables
- * 
+ *
  * @goal run-stories-as-embeddables
  */
 public class RunStoriesAsEmbeddables extends AbstractEmbedderMojo {

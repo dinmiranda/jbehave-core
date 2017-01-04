@@ -1,22 +1,21 @@
 package org.jbehave.core.steps.guice;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.inject.Binding;
+import com.google.inject.Injector;
+import com.google.inject.Key;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.steps.AbstractStepsFactory;
 import org.jbehave.core.steps.InjectableStepsFactory;
 
-import com.google.inject.Binding;
-import com.google.inject.Injector;
-import com.google.inject.Key;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An {@link InjectableStepsFactory} that uses a Guice {@link Injector} for the
  * composition and instantiation of all components that contain JBehave
  * annotated methods.
- * 
+ *
  * @author Cristiano Gavião
  * @author Paul Hammant
  * @author Mauro Talevi
@@ -39,16 +38,16 @@ public class GuiceStepsFactory extends AbstractStepsFactory {
 
     /**
      * Adds steps types from given injector and recursively its parent
-     * 
+     *
      * @param injector the current Inject
-     * @param types the List of steps types
+     * @param types    the List of steps types
      */
     private void addTypes(Injector injector, List<Class<?>> types) {
         for (Binding<?> binding : injector.getBindings().values()) {
             Key<?> key = binding.getKey();
             Type type = key.getTypeLiteral().getType();
             if (hasAnnotatedMethods(type)) {
-                types.add(((Class<?>)type));
+                types.add(((Class<?>) type));
             }
         }
         if (injector.getParent() != null) {
@@ -59,7 +58,7 @@ public class GuiceStepsFactory extends AbstractStepsFactory {
     public Object createInstanceOfType(Class<?> type) {
         List<Object> instances = new ArrayList<Object>();
         addInstances(injector, type, instances);
-        if ( !instances.isEmpty() ){
+        if (!instances.isEmpty()) {
             return instances.iterator().next();
         }
         return new StepsInstanceNotFound(type, this);

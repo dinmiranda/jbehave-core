@@ -1,17 +1,17 @@
 package org.jbehave.core.steps.scala;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.scala.ScalaContext;
 import org.jbehave.core.steps.AbstractStepsFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ScalaStepsFactory extends AbstractStepsFactory {
 
     private final ScalaContext context;
 
-    public ScalaStepsFactory(Configuration configuration, ScalaContext context){
+    public ScalaStepsFactory(Configuration configuration, ScalaContext context) {
         super(configuration);
         this.context = context;
     }
@@ -19,7 +19,7 @@ public class ScalaStepsFactory extends AbstractStepsFactory {
     @Override
     protected List<Class<?>> stepsTypes() {
         List<Class<?>> types = new ArrayList<Class<?>>();
-        for (Object object : context.getInstances() ){
+        for (Object object : context.getInstances()) {
             if (hasAnnotatedMethods(object.getClass())) {
                 types.add(object.getClass());
             }

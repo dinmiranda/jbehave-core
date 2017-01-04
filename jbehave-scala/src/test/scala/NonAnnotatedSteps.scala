@@ -1,5 +1,5 @@
 class NonAnnotatedSteps {
-    
+
   def given() {
   }
 

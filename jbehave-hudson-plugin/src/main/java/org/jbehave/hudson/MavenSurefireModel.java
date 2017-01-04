@@ -1,8 +1,8 @@
 package org.jbehave.hudson;
 
-import java.io.Serializable;
-
 import com.thalesgroup.dtkit.metrics.model.AbstractOutputMetric;
+
+import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class MavenSurefireModel extends AbstractOutputMetric implements Serializable {

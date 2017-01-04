@@ -1,14 +1,5 @@
 package org.jbehave.core.junit.needle;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import org.jbehave.core.InjectableEmbedder;
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.Given;
@@ -26,45 +17,53 @@ import org.junit.runner.RunWith;
 import org.junit.runners.model.InitializationError;
 import org.needle4j.injection.InjectionProvider;
 
+import javax.inject.Inject;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertTrue;
+
 public class NeedleAnnotatedEmbedderRunnerBehaviour {
 
-	@Test
-	public void shouldCreateWithGuiceAnnotatedBuilder() throws InitializationError {
-		AnnotatedEmbedderRunner runner = new NeedleAnnotatedEmbedderRunner(RunningWithAnnotatedEmbedderRunner.class);
-		assertThat(runner.annotationBuilder(), instanceOf(NeedleAnnotationBuilder.class));
-	}
+    @Test
+    public void shouldCreateWithGuiceAnnotatedBuilder() throws InitializationError {
+        AnnotatedEmbedderRunner runner = new NeedleAnnotatedEmbedderRunner(RunningWithAnnotatedEmbedderRunner.class);
+        assertThat(runner.annotationBuilder(), instanceOf(NeedleAnnotationBuilder.class));
+    }
 
-	@RunWith(NeedleAnnotatedEmbedderRunner.class)
-	@Configure()
-	@UsingSteps(instances = Steps.class)
-	@UsingEmbedder()
-	@UsingNeedle
-	public static class RunningWithAnnotatedEmbedderRunner extends InjectableEmbedder {
+    @RunWith(NeedleAnnotatedEmbedderRunner.class)
+    @Configure()
+    @UsingSteps(instances = Steps.class)
+    @UsingEmbedder()
+    @UsingNeedle
+    public static class RunningWithAnnotatedEmbedderRunner extends InjectableEmbedder {
 
-		@Test
-		public void run() {
-			assertTrue(true);
-		}
+        @Test
+        public void run() {
+            assertTrue(true);
+        }
 
-		@Test
-		public void testSteps() {
-			final List<CandidateSteps> candidateSteps = injectedEmbedder().stepsFactory().createCandidateSteps();
-			assertThat(candidateSteps.size(), is(1));
-		}
+        @Test
+        public void testSteps() {
+            final List<CandidateSteps> candidateSteps = injectedEmbedder().stepsFactory().createCandidateSteps();
+            assertThat(candidateSteps.size(), is(1));
+        }
 
-	}
+    }
 
-	public static class Steps {
-		@NeedleInjectionProvider
-		InjectionProvider<ValueGetter> provider = new ValueGetterProvider();
+    public static class Steps {
+        @NeedleInjectionProvider
+        InjectionProvider<ValueGetter> provider = new ValueGetterProvider();
 
-		@Inject
-		private ValueGetter getter;
+        @Inject
+        private ValueGetter getter;
 
-		@Given("Some")
-		public boolean complete() {
-			return ValueGetter.VALUE.equals(getter.getValue());
-		}
-	}
+        @Given("Some")
+        public boolean complete() {
+            return ValueGetter.VALUE.equals(getter.getValue());
+        }
+    }
 
 }

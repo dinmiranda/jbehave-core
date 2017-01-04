@@ -8,8 +8,8 @@ import org.jbehave.core.io.rest.RESTClient.Type;
  */
 public class UploadToREST implements ResourceUploader {
 
-    private RESTClient client; 
-    
+    private RESTClient client;
+
     public UploadToREST(Type type) {
         this(type, null, null);
     }
@@ -17,30 +17,30 @@ public class UploadToREST implements ResourceUploader {
     public UploadToREST(Type type, String username, String password) {
         this.client = new RESTClient(type, username, password);
     }
-    
+
     public UploadToREST(RESTClient client) {
         this.client = client;
     }
-    
+
     public void uploadResource(Resource resource) {
         try {
-            Type type = client.getType();
+            Type type = this.client.getType();
             put(uri(resource.getURI(), type), entity(resource, type));
         } catch (Exception cause) {
             throw new InvalidStoryResource(resource.toString(), cause);
         }
     }
 
-	protected String uri(String resourcePath, Type type) {
-		return resourcePath;
-	}
+    protected String uri(String resourcePath, Type type) {
+        return resourcePath;
+    }
 
-	protected String entity(Resource resource, Type type) {
-		return resource.getContent();
-	}
+    protected String entity(Resource resource, Type type) {
+        return resource.getContent();
+    }
 
-	private void put(String uri, String entity) {
-		client.put(uri, entity);
-	}
+    private void put(String uri, String entity) {
+        this.client.put(uri, entity);
+    }
 
 }

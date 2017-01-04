@@ -7,31 +7,31 @@ import org.jbehave.core.annotations.When;
 
 public class MySteps {
 
-	@Given("a test")
-	public void aTest() {
-	}
-	
-	@Given("a test with <param1>")
-	public void aTest(@Named("param1") final String value) {
-	}
+    @Given("a test")
+    public void aTest() {
+    }
 
-	@When("a test is executed")
-	public void aTestIsExecuted() {
-	}
+    @Given("a test with <param1>")
+    public void aTest(@Named("param1") final String value) {
+    }
 
-	@When("a test is executed with <param2>")
-	public void aTestIsExecuted(@Named("param2") final String value) {
-		if ("fail".equalsIgnoreCase(value)) {
-			throw new RuntimeException("When failed");
-		}
-	}
+    @When("a test is executed")
+    public void aTestIsExecuted() {
+    }
 
-	@When("a test fails")
-	public void aTestFails() {
-		throw new RuntimeException("Test failed");
-	}
+    @When("a test is executed with <param2>")
+    public void aTestIsExecuted(@Named("param2") final String value) {
+        if ("fail".equalsIgnoreCase(value)) {
+            throw new RuntimeException("When failed");
+        }
+    }
 
-	@Then("a tester is pleased")
-	public void aTesterIsPleased() {
-	}
+    @When("a test fails")
+    public void aTestFails() {
+        throw new RuntimeException("Test failed");
+    }
+
+    @Then("a tester is pleased")
+    public void aTesterIsPleased() {
+    }
 }

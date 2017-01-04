@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to report stepdocs given a fully configured {@link Embedder} instance.
- * 
+ *
  * @goal report-stepdocs
  */
 public class ReportStepdocs extends AbstractEmbedderMojo {

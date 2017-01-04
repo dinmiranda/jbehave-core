@@ -1,28 +1,5 @@
 package org.jbehave.core.configuration.pico;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.sameInstance;
-import static org.jbehave.core.reporters.Format.CONSOLE;
-import static org.jbehave.core.reporters.Format.HTML;
-import static org.jbehave.core.reporters.Format.STATS;
-import static org.jbehave.core.reporters.Format.TXT;
-import static org.jbehave.core.reporters.Format.XML;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.pico.UsingPico;
@@ -42,15 +19,38 @@ import org.jbehave.core.parsers.StepPatternParser;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.ParameterConverters;
-import org.jbehave.core.steps.Steps;
 import org.jbehave.core.steps.ParameterConverters.DateConverter;
 import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
+import org.jbehave.core.steps.Steps;
 import org.jbehave.core.steps.pico.PicoStepsFactoryBehaviour.FooSteps;
 import org.jbehave.core.steps.pico.PicoStepsFactoryBehaviour.FooStepsWithDependency;
 import org.junit.Assert;
 import org.junit.Test;
 import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.jbehave.core.reporters.Format.CONSOLE;
+import static org.jbehave.core.reporters.Format.HTML;
+import static org.jbehave.core.reporters.Format.STATS;
+import static org.jbehave.core.reporters.Format.TXT;
+import static org.jbehave.core.reporters.Format.XML;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class PicoAnnotationBuilderBehaviour {
 
@@ -166,25 +166,25 @@ public class PicoAnnotationBuilderBehaviour {
     }
 
     @Configure()
-    @UsingPico(modules = { ConfigurationModule.class, StepsModule.class })
+    @UsingPico(modules = {ConfigurationModule.class, StepsModule.class})
     private static class AnnotatedUsingPico {
 
     }
 
     @Configure()
-    @UsingPico(modules = { ConfigurationModule.class })
+    @UsingPico(modules = {ConfigurationModule.class})
     private static class ParentAnnotatedUsingPico {
 
     }
-    
-    @UsingSteps(instances = { FooSteps.class })
+
+    @UsingSteps(instances = {FooSteps.class})
     private static class InheritingAnnotatedUsingSteps extends ParentAnnotatedUsingPico {
 
     }
-    
+
     @Configure()
-    @UsingSteps(instances = { FooSteps.class })
-    @UsingPico(modules = { ConfigurationModule.class })
+    @UsingSteps(instances = {FooSteps.class})
+    @UsingPico(modules = {ConfigurationModule.class})
     private static class AnnotatedUsingStepsAndPico {
 
     }
@@ -196,7 +196,7 @@ public class PicoAnnotationBuilderBehaviour {
     }
 
     @Configure()
-    @UsingPico(modules = { PrivateModule.class })
+    @UsingPico(modules = {PrivateModule.class})
     private static class AnnotatedWithPrivateModule {
 
     }

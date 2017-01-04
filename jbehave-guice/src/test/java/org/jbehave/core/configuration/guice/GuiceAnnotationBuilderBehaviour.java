@@ -1,29 +1,11 @@
 package org.jbehave.core.configuration.guice;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.sameInstance;
-import static org.jbehave.core.reporters.Format.CONSOLE;
-import static org.jbehave.core.reporters.Format.HTML;
-import static org.jbehave.core.reporters.Format.STATS;
-import static org.jbehave.core.reporters.Format.TXT;
-import static org.jbehave.core.reporters.Format.XML;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.lang.reflect.Type;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Properties;
-
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Module;
+import com.google.inject.Scopes;
+import com.google.inject.multibindings.Multibinder;
 import org.jbehave.core.annotations.Configure;
 import org.jbehave.core.annotations.UsingSteps;
 import org.jbehave.core.annotations.guice.UsingGuice;
@@ -44,20 +26,37 @@ import org.jbehave.core.parsers.StepPatternParser;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.ParameterConverters;
-import org.jbehave.core.steps.Steps;
 import org.jbehave.core.steps.ParameterConverters.DateConverter;
 import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
+import org.jbehave.core.steps.Steps;
 import org.jbehave.core.steps.guice.GuiceStepsFactoryBehaviour.FooSteps;
 import org.jbehave.core.steps.guice.GuiceStepsFactoryBehaviour.FooStepsWithDependency;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Guice;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Scopes;
-import com.google.inject.multibindings.Multibinder;
+import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Properties;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.jbehave.core.reporters.Format.CONSOLE;
+import static org.jbehave.core.reporters.Format.HTML;
+import static org.jbehave.core.reporters.Format.STATS;
+import static org.jbehave.core.reporters.Format.TXT;
+import static org.jbehave.core.reporters.Format.XML;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class GuiceAnnotationBuilderBehaviour {
 
@@ -96,13 +95,13 @@ public class GuiceAnnotationBuilderBehaviour {
 
     @Test
     public void shouldBuildConfigurationFromAnnotationsUsingInjectorWithoutParent() {
-        AnnotationBuilder builderAnnotated = new GuiceAnnotationBuilder(AnnotatedUsingConfigureAndGuiceConverters.class){
+        AnnotationBuilder builderAnnotated = new GuiceAnnotationBuilder(AnnotatedUsingConfigureAndGuiceConverters.class) {
 
             @Override
             protected Injector createInjector(List<Module> modules) {
                 return Guice.createInjector(modules);
             }
-            
+
         };
         Configuration configuration = builderAnnotated.buildConfiguration();
         assertThatCustomObjectIsConverted(configuration.parameterConverters());
@@ -196,7 +195,7 @@ public class GuiceAnnotationBuilderBehaviour {
             assertThat(((Steps) candidateSteps.get(i)).instance(), instanceOf(stepsClasses[i]));
         }
     }
-    
+
     @Test
     public void shouldNotBuildContainerIfModuleNotInstantiable() {
         AnnotationMonitor annotationMonitor = mock(AnnotationMonitor.class);
@@ -215,32 +214,32 @@ public class GuiceAnnotationBuilderBehaviour {
     }
 
     @Configure()
-    @UsingGuice(modules = { ConfigurationModule.class, StepsModule.class })
+    @UsingGuice(modules = {ConfigurationModule.class, StepsModule.class})
     private static class AnnotatedUsingGuice {
 
     }
 
     @Configure()
-    @UsingGuice(modules = { ConfigurationModule.class })
+    @UsingGuice(modules = {ConfigurationModule.class})
     private static class ParentAnnotatedUsingGuice {
 
     }
-    
-    @UsingSteps(instances = { FooSteps.class })
+
+    @UsingSteps(instances = {FooSteps.class})
     private static class InheritingAnnotatedUsingSteps extends ParentAnnotatedUsingGuice {
 
     }
 
     @Configure()
-    @UsingSteps(instances = { FooSteps.class })
-    @UsingGuice(modules = { ConfigurationModule.class })
+    @UsingSteps(instances = {FooSteps.class})
+    @UsingGuice(modules = {ConfigurationModule.class})
     private static class AnnotatedUsingStepsAndGuice {
 
     }
 
-    @Configure(parameterConverters = { MyExampleTableConverter.class, MyDateConverter.class })
-    @UsingSteps(instances = { FooSteps.class })
-    @UsingGuice(modules = { ConfigurationModule.class })
+    @Configure(parameterConverters = {MyExampleTableConverter.class, MyDateConverter.class})
+    @UsingSteps(instances = {FooSteps.class})
+    @UsingGuice(modules = {ConfigurationModule.class})
     private static class AnnotatedUsingConfigureAndGuiceConverters {
 
     }
@@ -250,9 +249,9 @@ public class GuiceAnnotationBuilderBehaviour {
     private static class AnnotatedWithoutModules {
 
     }
-    
+
     @Configure()
-    @UsingGuice(modules = {PrivateModule.class} )
+    @UsingGuice(modules = {PrivateModule.class})
     private static class AnnotatedWithPrivateModule {
 
     }
@@ -339,7 +338,7 @@ public class GuiceAnnotationBuilderBehaviour {
         @Override
         protected void configure() {
         }
-        
+
     }
 
 }

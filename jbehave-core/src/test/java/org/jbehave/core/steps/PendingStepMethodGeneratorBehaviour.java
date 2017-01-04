@@ -27,7 +27,7 @@ public class PendingStepMethodGeneratorBehaviour {
                         "public void whenIAmPending() {\n" +
                         "  // PENDING\n" +
                         "}\n";
-        assertThat(generator.generateMethod(pendingStep), equalTo(method));
+        assertThat(this.generator.generateMethod(pendingStep), equalTo(method));
     }
 
     @Test
@@ -43,7 +43,7 @@ public class PendingStepMethodGeneratorBehaviour {
                         "public void givenIAmPending() {\n" +
                         "  // PENDING\n" +
                         "}\n";
-        assertThat(generator.generateMethod(pendingStep), equalTo(method));
+        assertThat(this.generator.generateMethod(pendingStep), equalTo(method));
     }
 
     @Test
@@ -59,7 +59,7 @@ public class PendingStepMethodGeneratorBehaviour {
                         "public void whenImSearchingForAndForOthersCharsSuchAsAndILookForthis() {\n" +
                         "  // PENDING\n" +
                         "}\n";
-        assertThat(generator.generateMethod(pendingStep), equalTo(method));
+        assertThat(this.generator.generateMethod(pendingStep), equalTo(method));
 
         // test basically all characters (issue JBEHAVE-710)
         // When
@@ -76,7 +76,7 @@ public class PendingStepMethodGeneratorBehaviour {
                         "public void whenImSearchingFor0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz() {\n" +
                         "  // PENDING\n" +
                         "}\n";
-        assertThat(generator.generateMethod(pendingStep), equalTo(method));
+        assertThat(this.generator.generateMethod(pendingStep), equalTo(method));
 
         // When
         pattern = "I'm searching for ";
@@ -92,7 +92,7 @@ public class PendingStepMethodGeneratorBehaviour {
                         "public void whenImSearchingFor¢£¤¥ª­µºÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûüýþÿ() {\n" +
                         "  // PENDING\n" +
                         "}\n";
-        assertThat(generator.generateMethod(pendingStep), equalTo(method));
+        assertThat(this.generator.generateMethod(pendingStep), equalTo(method));
     }
 
 }

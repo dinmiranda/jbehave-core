@@ -1,13 +1,5 @@
 package org.jbehave.core.io.odf;
 
-import static org.apache.commons.lang3.StringUtils.join;
-import static org.odftoolkit.simple.common.TextExtractor.newOdfTextExtractor;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import org.odftoolkit.odfdom.dom.element.table.TableTableElement;
 import org.odftoolkit.odfdom.dom.element.text.TextParagraphElementBase;
 import org.odftoolkit.simple.Document;
@@ -17,6 +9,14 @@ import org.odftoolkit.simple.table.Row;
 import org.odftoolkit.simple.table.Table;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.join;
+import static org.odftoolkit.simple.common.TextExtractor.newOdfTextExtractor;
 
 public class OdfUtils {
 
@@ -79,7 +79,6 @@ public class OdfUtils {
         return item instanceof TextParagraphElementBase;
     }
 
-    @SuppressWarnings("serial")
     public static class OdfDocumentLoadingFailed extends RuntimeException {
 
         public OdfDocumentLoadingFailed(InputStream stream, Throwable cause) {
@@ -88,7 +87,6 @@ public class OdfUtils {
 
     }
 
-    @SuppressWarnings("serial")
     public static class OdfDocumentParsingFailed extends RuntimeException {
 
         public OdfDocumentParsingFailed(Document document, Throwable cause) {

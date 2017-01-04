@@ -1,7 +1,6 @@
 package org.jbehave.core.configuration.groovy;
 
 import groovy.lang.GroovyClassLoader;
-
 import org.jbehave.core.annotations.groovy.UsingGroovy;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.configuration.AnnotationMonitor;
@@ -14,7 +13,7 @@ import org.jbehave.core.steps.groovy.GroovyStepsFactory;
 /**
  * Extends {@link AnnotationBuilder} using Groovy-based resources if
  * {@link UsingGroovy} annotation is present.
- * 
+ *
  * @author Mauro Talevi
  */
 public class GroovyAnnotationBuilder extends AnnotationBuilder {
@@ -58,7 +57,7 @@ public class GroovyAnnotationBuilder extends AnnotationBuilder {
         }
         return factoryUsingSteps;
     }
-    
+
     @Override
     protected <T, V extends T> T instanceOf(Class<T> type, Class<V> ofClass) {
         if (context != null) {

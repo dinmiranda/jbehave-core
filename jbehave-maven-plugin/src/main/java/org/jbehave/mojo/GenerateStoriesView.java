@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to generate stories view
- * 
+ *
  * @goal generate-stories-view
  */
 public class GenerateStoriesView extends AbstractEmbedderMojo {

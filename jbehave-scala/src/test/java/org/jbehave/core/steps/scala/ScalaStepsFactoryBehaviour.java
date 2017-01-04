@@ -1,7 +1,5 @@
 package org.jbehave.core.steps.scala;
 
-import java.util.List;
-
 import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -9,8 +7,9 @@ import org.jbehave.core.configuration.scala.ScalaContext;
 import org.jbehave.core.configuration.scala.ScalaContext.ScalaInstanceNotFound;
 import org.junit.Test;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class ScalaStepsFactoryBehaviour {
@@ -38,6 +37,6 @@ public class ScalaStepsFactoryBehaviour {
     }
 
     public static class NonScalaType {
-        
+
     }
 }

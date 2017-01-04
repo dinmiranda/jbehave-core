@@ -1,12 +1,5 @@
 package org.jbehave.mojo;
 
-import java.io.File;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.concurrent.ExecutorService;
-
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -30,15 +23,19 @@ import org.jbehave.core.reporters.ReportsCount;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Properties;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+
 import static java.util.Arrays.asList;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.sameInstance;
-
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -47,9 +44,8 @@ import static org.mockito.Mockito.when;
 
 public class EmbedderMojoBehaviour {
 
-    private Embedder embedder = mock(Embedder.class);
     private static final ExecutorService EXECUTOR_SERVICE = mock(ExecutorService.class);
-
+    private Embedder embedder = mock(Embedder.class);
 
     @Test
     public void shouldCreateNewEmbedderWithDefaultControls() {
@@ -123,7 +119,7 @@ public class EmbedderMojoBehaviour {
             }
         };
         // When
-        mojo.metaFilters = new String[] { "filter1", "filter2" };
+        mojo.metaFilters = new String[]{"filter1", "filter2"};
         Embedder embedder = mojo.newEmbedder();
         // Then
         assertThat(embedder.metaFilters(), equalTo(asList("filter1", "filter2")));
@@ -137,7 +133,7 @@ public class EmbedderMojoBehaviour {
             }
         };
         // When
-        mojo.metaFilters = new String[] { "filter1", null };
+        mojo.metaFilters = new String[]{"filter1", null};
         Embedder embedder = mojo.newEmbedder();
         // Then
         assertThat(embedder.metaFilters(), equalTo(asList("filter1")));
@@ -286,10 +282,6 @@ public class EmbedderMojoBehaviour {
         assertThat(embedder.getClass().getName(), equalTo(MyEmbedder.class.getName()));
     }
 
-    public static class MyEmbedder extends Embedder {
-
-    }
-
     @Test
     public void shouldAllowSpecificationOfInjectableEmbedderClass() {
         // Given
@@ -302,17 +294,6 @@ public class EmbedderMojoBehaviour {
         Embedder embedder = mojo.newEmbedder();
         // Then
         assertThat(embedder.getClass().getName(), equalTo(MyEmbedder.class.getName()));
-    }
-
-    public static class MyInjectableEmbedder extends InjectableEmbedder {
-
-        public MyInjectableEmbedder() {
-            useEmbedder(new MyEmbedder());
-        }
-
-        public void run() throws Throwable {
-        }
-
     }
 
     @Test
@@ -329,10 +310,6 @@ public class EmbedderMojoBehaviour {
         assertThat(storyFinder.getClass().getName(), equalTo(MyStoryFinder.class.getName()));
     }
 
-    public static class MyStoryFinder extends StoryFinder {
-
-    }
-
     @Test
     public void shouldMapStoriesAsEmbeddables() throws MojoExecutionException, MojoFailureException {
         // Given
@@ -340,7 +317,7 @@ public class EmbedderMojoBehaviour {
         MapStoriesAsEmbeddables mojo = new MapStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -361,7 +338,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).runAsEmbeddables(classNames);
+        verify(this.embedder).runAsEmbeddables(classNames);
     }
 
     @Test(expected = MojoFailureException.class)
@@ -371,7 +348,7 @@ public class EmbedderMojoBehaviour {
         MapStoriesAsEmbeddables mojo = new MapStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -389,7 +366,7 @@ public class EmbedderMojoBehaviour {
         List<String> classNames = new StoryFinder().findClassNames(searchInDirectory, includes, excludes);
 
         // When
-        doThrow(new RuntimeException()).when(embedder).runAsEmbeddables(classNames);
+        doThrow(new RuntimeException()).when(this.embedder).runAsEmbeddables(classNames);
         mojo.execute();
 
         // Then fail as expected
@@ -402,7 +379,7 @@ public class EmbedderMojoBehaviour {
         MapStoriesAsPaths mojo = new MapStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -424,7 +401,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).mapStoriesAsPaths(storyPaths);
+        verify(this.embedder).mapStoriesAsPaths(storyPaths);
         assertThat(mojo.codeLocation().toString(), containsString(mojo.outputDirectory));
     }
 
@@ -435,7 +412,7 @@ public class EmbedderMojoBehaviour {
         MapStoriesAsPaths mojo = new MapStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -454,7 +431,7 @@ public class EmbedderMojoBehaviour {
         List<String> storyPaths = new StoryFinder().findPaths(searchInDirectory, includes, excludes);
 
         // When
-        doThrow(new RuntimeException()).when(embedder).mapStoriesAsPaths(storyPaths);
+        doThrow(new RuntimeException()).when(this.embedder).mapStoriesAsPaths(storyPaths);
         mojo.execute();
 
         // Then fail as expected
@@ -466,7 +443,7 @@ public class EmbedderMojoBehaviour {
         GenerateStoriesView mojo = new GenerateStoriesView() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
         };
@@ -474,7 +451,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).generateReportsView();
+        verify(this.embedder).generateReportsView();
     }
 
     @Test
@@ -483,7 +460,7 @@ public class EmbedderMojoBehaviour {
         ReportStepdocs mojo = new ReportStepdocs() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
         };
@@ -491,7 +468,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).reportStepdocs();
+        verify(this.embedder).reportStepdocs();
     }
 
     @Test(expected = MojoFailureException.class)
@@ -500,13 +477,13 @@ public class EmbedderMojoBehaviour {
         ReportStepdocs mojo = new ReportStepdocs() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
         };
 
         // When
-        doThrow(new RuntimeException()).when(embedder).reportStepdocs();
+        doThrow(new RuntimeException()).when(this.embedder).reportStepdocs();
         mojo.execute();
 
         // Then fail as expected
@@ -519,7 +496,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesAsEmbeddables mojo = new RunStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -540,7 +517,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).runAsEmbeddables(classNames);
+        verify(this.embedder).runAsEmbeddables(classNames);
     }
 
     @Test(expected = MojoFailureException.class)
@@ -550,7 +527,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesAsEmbeddables mojo = new RunStoriesAsEmbeddables() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -568,7 +545,7 @@ public class EmbedderMojoBehaviour {
         List<String> classNames = new StoryFinder().findClassNames(searchInDirectory, includes, excludes);
 
         // When
-        doThrow(new RuntimeException()).when(embedder).runAsEmbeddables(classNames);
+        doThrow(new RuntimeException()).when(this.embedder).runAsEmbeddables(classNames);
         mojo.execute();
 
         // Then fail as expected
@@ -582,7 +559,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesAsPaths mojo = new RunStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -603,7 +580,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).runStoriesAsPaths(storyPaths);
+        verify(this.embedder).runStoriesAsPaths(storyPaths);
     }
 
     @Test(expected = MojoFailureException.class)
@@ -613,7 +590,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesAsPaths mojo = new RunStoriesAsPaths() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -631,7 +608,7 @@ public class EmbedderMojoBehaviour {
         List<String> storyPaths = new StoryFinder().findPaths(searchInDirectory, includes, excludes);
 
         // When
-        doThrow(new RuntimeException()).when(embedder).runStoriesAsPaths(storyPaths);
+        doThrow(new RuntimeException()).when(this.embedder).runStoriesAsPaths(storyPaths);
         mojo.execute();
 
         // Then fail as expected
@@ -645,7 +622,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesWithAnnotatedEmbedderRunner mojo = new RunStoriesWithAnnotatedEmbedderRunner() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -666,7 +643,7 @@ public class EmbedderMojoBehaviour {
         mojo.execute();
 
         // Then
-        verify(embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
+        verify(this.embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
     }
 
     @Test(expected = MojoFailureException.class)
@@ -677,7 +654,7 @@ public class EmbedderMojoBehaviour {
         RunStoriesWithAnnotatedEmbedderRunner mojo = new RunStoriesWithAnnotatedEmbedderRunner() {
             @Override
             protected Embedder newEmbedder() {
-                return embedder;
+                return EmbedderMojoBehaviour.this.embedder;
             }
 
             @Override
@@ -695,7 +672,7 @@ public class EmbedderMojoBehaviour {
         List<String> classNames = new StoryFinder().findClassNames(searchInDirectory, includes, excludes);
 
         // When
-        doThrow(new RuntimeException()).when(embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
+        doThrow(new RuntimeException()).when(this.embedder).runStoriesWithAnnotatedEmbedderRunner(classNames);
         mojo.execute();
 
         // Then fail as expected
@@ -750,7 +727,7 @@ public class EmbedderMojoBehaviour {
         when(archiveManager.getUnArchiver(siteFile)).thenReturn(siteArchiver);
 
         unpackTo(mojo, null); // default view directory
-        unpackTo(mojo, new File(System.getProperty("java.io.tmpdir")+"/jbehave/view"));
+        unpackTo(mojo, new File(System.getProperty("java.io.tmpdir") + "/jbehave/view"));
 
         // Then
         verify(coreArchiver, times(2)).extract();
@@ -855,11 +832,30 @@ public class EmbedderMojoBehaviour {
         // and fail as expected ...
     }
 
+    public static class MyEmbedder extends Embedder {
+
+    }
+
+    public static class MyInjectableEmbedder extends InjectableEmbedder {
+
+        public MyInjectableEmbedder() {
+            useEmbedder(new MyEmbedder());
+        }
+
+        public void run() throws Throwable {
+        }
+
+    }
+
+    public static class MyStoryFinder extends StoryFinder {
+
+    }
+
     public static class MyExecutors implements ExecutorServiceFactory {
 
         public ExecutorService create(EmbedderControls controls) {
             return EXECUTOR_SERVICE;
         }
-        
+
     }
 }

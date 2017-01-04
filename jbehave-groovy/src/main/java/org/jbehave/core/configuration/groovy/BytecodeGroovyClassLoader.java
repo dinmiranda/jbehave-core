@@ -19,7 +19,7 @@ import java.util.Map;
  * Groovy compiler does create the debug tables, and they are the same as the
  * ones made for a native Java class, so this derived GroovyClassLoader fills in
  * for the missing functionality from the base GroovyClassLoader.
- * 
+ * <p>
  * Groovy allows a mechanism via a system property to force the dump of bytecode
  * to a (temp) directory, but caching the bytecode avoids having to clean up
  * temp directories after the run.
@@ -52,7 +52,7 @@ public class BytecodeGroovyClassLoader extends GroovyClassLoader {
         private final Map<String, byte[]> classBytes;
 
         public BytecodeClassCollector(Map<String, byte[]> classBytes, InnerLoader loader, CompilationUnit unit,
-                SourceUnit su) {
+                                      SourceUnit su) {
             super(loader, unit, su);
             this.classBytes = classBytes;
         }

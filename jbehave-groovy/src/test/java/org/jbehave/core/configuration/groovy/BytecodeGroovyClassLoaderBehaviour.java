@@ -1,12 +1,12 @@
 package org.jbehave.core.configuration.groovy;
 
-import static junit.framework.Assert.assertNotNull;
 import groovy.lang.GroovyClassLoader;
+import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.junit.Test;
+import static junit.framework.Assert.assertNotNull;
 
 public class BytecodeGroovyClassLoaderBehaviour {
 

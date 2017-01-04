@@ -6,7 +6,7 @@ import org.jbehave.core.embedder.Embedder;
 
 /**
  * Mojo to map stories as embeddables
- * 
+ *
  * @goal map-stories-as-embeddables
  */
 public class MapStoriesAsEmbeddables extends AbstractEmbedderMojo {

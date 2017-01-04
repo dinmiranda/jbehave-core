@@ -1,7 +1,5 @@
 package org.jbehave.core.steps.pico;
 
-import java.util.List;
-
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.steps.CandidateSteps;
@@ -13,6 +11,8 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.behaviors.Caching;
 import org.picocontainer.injectors.AbstractInjector;
 import org.picocontainer.injectors.ConstructorInjection;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -57,10 +57,10 @@ public class PicoStepsFactoryBehaviour {
     }
 
     private Object stepsInstance(CandidateSteps candidateSteps) {
-        return ((Steps)candidateSteps).instance();
+        return ((Steps) candidateSteps).instance();
     }
 
-    @Test(expected=AbstractInjector.UnsatisfiableDependenciesException.class)
+    @Test(expected = AbstractInjector.UnsatisfiableDependenciesException.class)
     public void assertThatStepsWithMissingDependenciesCannotBeCreated() throws NoSuchFieldException, IllegalAccessException {
         MutablePicoContainer parent = createPicoContainer();
         parent.as(Characteristics.USE_NAMES).addComponent(FooStepsWithDependency.class);

@@ -1,14 +1,14 @@
 package org.jbehave.core.io.rest.confluence;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.IOException;
-import java.util.Map;
-
 import org.apache.commons.io.IOUtils;
 import org.jbehave.core.io.rest.RESTClient;
 import org.jbehave.core.io.rest.Resource;
 import org.junit.Test;
+
+import java.io.IOException;
+import java.util.Map;
+
+import static org.junit.Assert.assertEquals;
 
 public class IndexFromConfluenceBehaviour {
 

@@ -1,12 +1,13 @@
 package org.jbehave.core.configuration.groovy;
 
-import static java.text.MessageFormat.format;
 import groovy.lang.GroovyClassLoader;
 import groovy.lang.GroovyCodeSource;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.text.MessageFormat.format;
 
 public class GroovyContext {
 
@@ -52,7 +53,7 @@ public class GroovyContext {
 
     /**
      * Creates an object instance from the Groovy resource
-     * 
+     *
      * @param resource the Groovy resource to parse
      * @return An Object instance
      */
@@ -69,7 +70,7 @@ public class GroovyContext {
     /**
      * Creates an instance from the parsed Groovy class. This method can be
      * overriden to do some dependency injection on Groovy classes.
-     * 
+     *
      * @param parsedClass the parsed Class to instantiate
      * @return An Object instance of the parsed Class
      * @throws Exception if instantiation or injection fails

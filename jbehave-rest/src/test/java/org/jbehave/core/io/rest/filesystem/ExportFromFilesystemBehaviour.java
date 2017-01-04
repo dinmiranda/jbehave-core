@@ -1,8 +1,10 @@
 package org.jbehave.core.io.rest.filesystem;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import org.jbehave.core.io.rest.Resource;
+import org.jbehave.core.io.rest.ResourceExporter;
+import org.jbehave.core.io.rest.ResourceIndexer;
+import org.jbehave.core.io.rest.ResourceUploader;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -10,11 +12,9 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.jbehave.core.io.rest.Resource;
-import org.jbehave.core.io.rest.ResourceExporter;
-import org.jbehave.core.io.rest.ResourceIndexer;
-import org.jbehave.core.io.rest.ResourceUploader;
-import org.junit.Test;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ExportFromFilesystemBehaviour {
 
@@ -36,11 +36,11 @@ public class ExportFromFilesystemBehaviour {
         write(text2, file2);
         Map<String, Resource> index = new HashMap<String, Resource>();
         Resource aResource = new Resource(rootURI + "/A_story");
-		index.put("A_story", aResource);
+        index.put("A_story", aResource);
         Resource anotherResource = new Resource(rootURI + "/Another_story");
-		index.put("Another_story", anotherResource);
+        index.put("Another_story", anotherResource);
         String includes = "**";
-		when(indexer.indexResources(rootURI, sourcePath, sourceSyntax, includes)).thenReturn(index);
+        when(indexer.indexResources(rootURI, sourcePath, sourceSyntax, includes)).thenReturn(index);
 
         // When
         ResourceExporter exporter = new ExportFromFilesystem(indexer, uploader, sourcePath, sourceExt, sourceSyntax, includes);

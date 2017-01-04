@@ -1,10 +1,5 @@
 package org.jbehave.core.io.rest.mojo;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.jbehave.core.io.ResourceLoader;
@@ -12,12 +7,14 @@ import org.jbehave.core.io.rest.Resource;
 import org.jbehave.core.io.rest.ResourceIndexer;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.apache.commons.io.FileUtils.readFileToString;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.equalTo;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +39,7 @@ public class ImportToFilesystemMojoBehaviour {
         // When
         String targetPath = "target/stories";
         String targetExt = ".story";
-        ImportToFilesystemMojo mojo = new ImportToFilesystemMojo(){
+        ImportToFilesystemMojo mojo = new ImportToFilesystemMojo() {
 
             @Override
             ResourceIndexer newResourceIndexer() {
@@ -53,15 +50,15 @@ public class ImportToFilesystemMojoBehaviour {
             ResourceLoader newResourceLoader() {
                 return loader;
             }
-            
+
         };
         mojo.restProvider = "wiki";
         mojo.restRootURI = rootURI;
         mojo.resourcesPath = targetPath;
         mojo.resourcesExt = targetExt;
-        
+
         mojo.execute();
-        
+
         // Then
         File file1 = new File(targetPath + "/one" + targetExt);
         assertThat(file1.exists(), equalTo(true));

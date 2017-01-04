@@ -1,15 +1,5 @@
 package org.jbehave.mojo;
 
-import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-
 import org.apache.maven.plugin.AbstractMojo;
 import org.jbehave.core.ConfigurableEmbedder;
 import org.jbehave.core.InjectableEmbedder;
@@ -31,10 +21,20 @@ import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.model.StoryMaps;
 import org.jbehave.core.reporters.ReportsCount;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+
+import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
+
 /**
  * Abstract mojo that holds all the configuration parameters to specify and load
  * stories.
- * 
+ *
  * @requiresDependencyResolution test
  */
 public abstract class AbstractEmbedderMojo extends AbstractMojo {
@@ -67,7 +67,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * The scope of the mojo classpath, either "compile" or "test"
-     * 
+     *
      * @parameter default-value="compile"
      */
     String scope;
@@ -75,7 +75,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
     /**
      * Include filters, relative to the root source directory determined by the
      * scope
-     * 
+     *
      * @parameter
      */
     List<String> includes;
@@ -83,14 +83,14 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
     /**
      * Exclude filters, relative to the root source directory determined by the
      * scope
-     * 
+     *
      * @parameter
      */
     List<String> excludes;
 
     /**
      * Compile classpath.
-     * 
+     *
      * @parameter expression="${project.compileClasspathElements}"
      * @required
      * @readonly
@@ -99,7 +99,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * Test classpath.
-     * 
+     *
      * @parameter expression="${project.testClasspathElements}"
      * @required
      * @readonly
@@ -108,71 +108,71 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * The boolean flag to skip stories
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean skip = false;
 
     /**
      * The boolean flag to run in batch mode
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean batch = false;
 
     /**
      * The boolean flag to ignore failure in stories
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean ignoreFailureInStories = false;
 
     /**
      * The boolean flag to ignore failure in view
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean ignoreFailureInView = false;
 
     /**
      * The boolean flag to generate view after stories are run
-     * 
+     *
      * @parameter default-value="true"
      */
     boolean generateViewAfterStories = true;
 
     /**
      * The boolean flag to output failures in verbose mode
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean verboseFailures = false;
 
     /**
      * The boolean flag to output filtering in verbose mode
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean verboseFiltering = false;
 
     /**
      * The story timeouts
-     * 
+     *
      * @parameter
      */
     String storyTimeouts;
 
     /**
      * The story timeout in secs
-     * 
+     *
      * @parameter
      * @deprecated Use storyTimeouts
      */
     long storyTimeoutInSecs;
-    
+
     /**
      * The story timeout in secs by path
-     * 
+     *
      * @parameter
      * @deprecated Use storyTimeouts
      */
@@ -180,42 +180,42 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * The boolean flag to fail on story timeout
-     * 
+     *
      * @parameter default-value="false"
      */
     boolean failOnStoryTimeout = false;
 
     /**
      * The number of threads
-     * 
+     *
      * @parameter default-value="1"
      */
     int threads = 1;
 
     /**
      * The embedder class
-     * 
+     *
      * @parameter default-value="org.jbehave.core.embedder.Embedder"
      */
     String embedderClass = Embedder.class.getName();
 
     /**
      * The implementation class of the {@link ExecutorServiceFactory}
-     * 
+     *
      * @parameter
      */
     String executorsClass;
 
     /**
      * The class that is injected with the embedder
-     * 
+     *
      * @parameter
      */
     String injectableEmbedderClass;
 
     /**
      * The annotated embedder runner class
-     * 
+     *
      * @parameter default-value="org.jbehave.core.junit.AnnotatedEmbedderRunner"
      * @deprecated Obsolete
      */
@@ -223,21 +223,21 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * Used to find story paths and class names
-     * 
+     *
      * @parameter
      */
     String storyFinderClass = StoryFinder.class.getName();
 
     /**
      * The meta filter
-     * 
+     *
      * @parameter
      */
     String[] metaFilters;
 
     /**
      * The system properties
-     * 
+     *
      * @parameter
      */
     Properties systemProperties = new Properties();
@@ -249,7 +249,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * Determines if the scope of the mojo classpath is "test"
-     * 
+     *
      * @return A boolean <code>true</code> if test scoped
      */
     boolean isTestScope() {
@@ -282,7 +282,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
     /**
      * Returns the EmbedderClassLoader with the classpath element of the
      * selected scope.
-     * 
+     *
      * @return An EmbedderClassLoader
      */
     protected EmbedderClassLoader classLoader() {
@@ -304,7 +304,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
      * Finds story paths, using the {@link #newStoryFinder()}, in the
      * {@link #searchDirectory()} given specified {@link #includes} and
      * {@link #excludes}.
-     * 
+     *
      * @return A List of story paths found
      */
     protected List<String> storyPaths() {
@@ -318,7 +318,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
      * Finds class names, using the {@link #newStoryFinder()}, in the
      * {@link #searchDirectory()} given specified {@link #includes} and
      * {@link #excludes}.
-     * 
+     *
      * @return A List of class names found
      */
     protected List<String> classNames() {
@@ -330,7 +330,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
     /**
      * Creates an instance of StoryFinder, using the {@link #storyFinderClass}
-     * 
+     *
      * @return A StoryFinder
      */
     protected StoryFinder newStoryFinder() {
@@ -341,7 +341,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
      * Creates an instance of Embedder, either using
      * {@link #injectableEmbedderClass} (if set) or defaulting to
      * {@link #embedderClass}.
-     * 
+     *
      * @return An Embedder
      */
     protected Embedder newEmbedder() {
@@ -352,7 +352,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
         } else {
             embedder = classLoader.newInstance(Embedder.class, embedderClass);
         }
-        
+
         URL codeLocation = codeLocation();
         if (codeLocation != null) {
             embedder.configuration().storyReporterBuilder().withCodeLocation(codeLocation);
@@ -360,7 +360,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
 
         embedder.useClassLoader(classLoader);
         embedder.useEmbedderControls(embedderControls());
-        if ( executorsClass != null ){
+        if (executorsClass != null) {
             ExecutorServiceFactory executorServiceFactory = classLoader.newInstance(ExecutorServiceFactory.class, executorsClass);
             embedder.useExecutorService(executorServiceFactory.create(embedder.embedderControls()));
         }
@@ -390,16 +390,16 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
                 .doIgnoreFailureInView(ignoreFailureInView).doVerboseFailures(verboseFailures)
                 .doVerboseFiltering(verboseFiltering)
                 .doFailOnStoryTimeout(failOnStoryTimeout).useThreads(threads);
-        if ( storyTimeoutInSecs != 0 ){
-        	embedderControls.useStoryTimeoutInSecs(storyTimeoutInSecs);
+        if (storyTimeoutInSecs != 0) {
+            embedderControls.useStoryTimeoutInSecs(storyTimeoutInSecs);
         }
-        if ( storyTimeoutInSecsByPath != null ){
-        	embedderControls.useStoryTimeoutInSecsByPath(storyTimeoutInSecsByPath);
+        if (storyTimeoutInSecsByPath != null) {
+            embedderControls.useStoryTimeoutInSecsByPath(storyTimeoutInSecsByPath);
         }
-        if ( storyTimeouts != null ){
-        	embedderControls.useStoryTimeouts(storyTimeouts);
-        }        
-		return new UnmodifiableEmbedderControls(embedderControls);
+        if (storyTimeouts != null) {
+            embedderControls.useStoryTimeouts(storyTimeouts);
+        }
+        return new UnmodifiableEmbedderControls(embedderControls);
     }
 
     protected class MavenEmbedderMonitor extends NullEmbedderMonitor {
@@ -455,11 +455,11 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
             getLog().info(sb.toString());
         }
 
-    	public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
+        public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
             StringBuffer sb = new StringBuffer();
-            sb.append("Scenario '"+scenario.getTitle()+"' excluded by filter: " + filter.asString() + "\n");
+            sb.append("Scenario '" + scenario.getTitle() + "' excluded by filter: " + filter.asString() + "\n");
             getLog().info(sb.toString());
-    	}
+        }
 
         public void runningWithAnnotatedEmbedderRunner(String className) {
             getLog().info("Running with AnnotatedEmbedderRunner '" + className + "'");
@@ -476,7 +476,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
         }
 
         public void reportsViewGenerationFailed(File outputDirectory, List<String> formats, Properties viewProperties,
-                Throwable cause) {
+                                                Throwable cause) {
             String message = "Failed to generate reports view to '" + outputDirectory + "' using formats '" + formats
                     + "'" + " and view properties '" + viewProperties + "'";
             getLog().warn(message, cause);
@@ -513,7 +513,7 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
         }
 
         public void mapsViewGenerationFailed(File outputDirectory, StoryMaps storyMaps, Properties viewProperties,
-                Throwable cause) {
+                                             Throwable cause) {
             getLog().warn(
                     "Failed to generate maps view to '" + outputDirectory + "' using story maps '" + storyMaps + "'"
                             + " and view properties '" + viewProperties + "'", cause);
@@ -561,15 +561,15 @@ public abstract class AbstractEmbedderMojo extends AbstractMojo {
         public void usingControls(EmbedderControls embedderControls) {
             getLog().info("Using controls " + embedderControls);
         }
-        
-        public void invalidTimeoutFormat(String path) {
-        	getLog().warn("Failed to set specific story timeout for story " + path + " because 'storyTimeoutInSecsByPath' has incorrect format");
-        	getLog().warn("'storyTimeoutInSecsByPath' must be a CSV of regex expressions matching story paths. E.g. \"*/long/*.story:5000,*/short/*.story:200\"");
-    	}
 
-    	public void usingTimeout(String path, long timeout) {
-        	getLog().info("Using timeout for story " + path + " of "+timeout+" secs.");
-    	}
+        public void invalidTimeoutFormat(String path) {
+            getLog().warn("Failed to set specific story timeout for story " + path + " because 'storyTimeoutInSecsByPath' has incorrect format");
+            getLog().warn("'storyTimeoutInSecsByPath' must be a CSV of regex expressions matching story paths. E.g. \"*/long/*.story:5000,*/short/*.story:200\"");
+        }
+
+        public void usingTimeout(String path, long timeout) {
+            getLog().info("Using timeout for story " + path + " of " + timeout + " secs.");
+        }
 
         @Override
         public String toString() {

@@ -1,10 +1,5 @@
 package org.jbehave.mojo;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Predicate;
 import org.apache.maven.artifact.Artifact;
@@ -16,10 +11,15 @@ import org.codehaus.plexus.components.io.fileselectors.IncludeExcludeFileSelecto
 import org.codehaus.plexus.util.StringUtils;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Mojo to unpack resources to view directory, whose location is derived from
  * the configured StoryReporterBuilder accessible from the Embedder.
- * 
+ *
  * @goal unpack-view-resources
  * @phase process-resources
  * @requiresDependencyResolution test
@@ -41,12 +41,12 @@ public class UnpackViewResources extends AbstractEmbedderMojo {
     /**
      * @parameter
      */
-    String[] resourceArtifactIds = new String[] { "jbehave-site-resources", "jbehave-core" };
+    String[] resourceArtifactIds = new String[]{"jbehave-site-resources", "jbehave-core"};
 
     /**
      * @parameter
      */
-    String[] resourceTypes = new String[] { "zip" };
+    String[] resourceTypes = new String[]{"zip"};
 
     /**
      * @parameter
@@ -71,7 +71,7 @@ public class UnpackViewResources extends AbstractEmbedderMojo {
     }
 
     private File viewDirectory() {
-        if ( viewDirectory != null ){
+        if (viewDirectory != null) {
             return viewDirectory;
         }
         StoryReporterBuilder storyReporterBuilder = newEmbedder().configuration().storyReporterBuilder();
@@ -124,7 +124,7 @@ public class UnpackViewResources extends AbstractEmbedderMojo {
             unArchiver.setDestDirectory(destination);
 
             if (StringUtils.isNotEmpty(excludes) || StringUtils.isNotEmpty(includes)) {
-                IncludeExcludeFileSelector[] selectors = new IncludeExcludeFileSelector[] { new IncludeExcludeFileSelector() };
+                IncludeExcludeFileSelector[] selectors = new IncludeExcludeFileSelector[]{new IncludeExcludeFileSelector()};
                 if (StringUtils.isNotEmpty(excludes)) {
                     selectors[0].setExcludes(excludes.split(","));
                 }

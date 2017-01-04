@@ -1,20 +1,5 @@
 package org.jbehave.hudson;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-
-import javax.xml.transform.Result;
-import javax.xml.transform.Source;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.TransformerFactoryConfigurationError;
-import javax.xml.transform.dom.DOMResult;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.stream.StreamSource;
-
 import org.apache.commons.io.FileUtils;
 import org.custommonkey.xmlunit.XMLUnit;
 import org.custommonkey.xmlunit.XpathEngine;
@@ -34,6 +19,20 @@ import org.jbehave.core.steps.StepFinder.ByLevenshteinDistance;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMResult;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertEquals;
@@ -188,15 +187,15 @@ public class ReportTransformBehaviour {
 
         File report = new File(cd, "/target/jbehave/" + path);
         try {
-			String out = FileUtils.readFileToString(report);
-			System.out.println(out);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            String out = FileUtils.readFileToString(report);
+            System.out.println(out);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         Source xml = new StreamSource(report);
         Source xslt = new StreamSource(new File(cd,
-                "src/main/resources/org/jbehave/hudson/"+new JBehaveInputMetric().getXslName()));
+                "src/main/resources/org/jbehave/hudson/" + new JBehaveInputMetric().getXslName()));
 
         Result resultOutput = new StreamResult(System.out);
         DOMResult result = new DOMResult();

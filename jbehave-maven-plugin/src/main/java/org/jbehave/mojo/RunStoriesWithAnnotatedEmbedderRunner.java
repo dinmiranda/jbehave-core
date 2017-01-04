@@ -9,7 +9,7 @@ import org.junit.runner.RunWith;
 /**
  * Mojo that runs stories with {@link AnnotatedEmbedderRunner}, equivalent to
  * execution via JUnit's {@link RunWith}.
- * 
+ *
  * @goal run-stories-with-annotated-embedder
  */
 public class RunStoriesWithAnnotatedEmbedderRunner extends AbstractEmbedderMojo {

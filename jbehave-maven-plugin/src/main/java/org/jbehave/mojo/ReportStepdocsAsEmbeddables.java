@@ -11,7 +11,7 @@ import org.jbehave.core.steps.CandidateSteps;
  * Mojo to report stepdocs for the {@link Embeddable} instances provided (more
  * specifically instances of {@link ConfiguredEmbedder} which provides both
  * {@link Configuration} and {@link CandidateSteps}).
- * 
+ *
  * @goal report-stepdocs-as-embeddables
  */
 public class ReportStepdocsAsEmbeddables extends AbstractEmbedderMojo {

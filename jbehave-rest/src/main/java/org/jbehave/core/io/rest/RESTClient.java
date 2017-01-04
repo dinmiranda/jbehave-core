@@ -11,11 +11,8 @@ import static java.text.MessageFormat.format;
  */
 public class RESTClient {
 
-    public enum Type {
-        JSON, XML
-    };
-
     private static final String APPLICATION_TYPE = "application/{0}";
+
     private String username;
     private String password;
     private Type type;
@@ -31,25 +28,29 @@ public class RESTClient {
     }
 
     public Type getType() {
-        return type;
+        return this.type;
     }
 
     public String get(String uri) {
-        return client().resource(uri).accept(format(APPLICATION_TYPE, type.name().toLowerCase()))
+        return client().resource(uri).accept(format(APPLICATION_TYPE, this.type.name().toLowerCase()))
                 .get(ClientResponse.class).getEntity(String.class);
     }
 
     public void put(String uri, String entity) {
-        client().resource(uri).type(format(APPLICATION_TYPE, type.name().toLowerCase()))
+        client().resource(uri).type(format(APPLICATION_TYPE, this.type.name().toLowerCase()))
                 .put(ClientResponse.class, entity);
     }
 
     private Client client() {
         Client client = Client.create();
-        if (username != null) {
-            client.addFilter(new HTTPBasicAuthFilter(username, password));
+        if (this.username != null) {
+            client.addFilter(new HTTPBasicAuthFilter(this.username, this.password));
         }
         return client;
+    }
+
+    public enum Type {
+        JSON, XML
     }
 
 }

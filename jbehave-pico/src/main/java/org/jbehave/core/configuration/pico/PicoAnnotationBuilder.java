@@ -1,8 +1,5 @@
 package org.jbehave.core.configuration.pico;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jbehave.core.annotations.pico.UsingPico;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.configuration.AnnotationFinder;
@@ -18,10 +15,13 @@ import org.picocontainer.MutablePicoContainer;
 import org.picocontainer.PicoContainer;
 import org.picocontainer.injectors.AbstractInjector.AmbiguousComponentResolutionException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- * Extends {@link AnnotationBuilder} to provide PicoContainer-based 
+ * Extends {@link AnnotationBuilder} to provide PicoContainer-based
  * dependency injection if {@link UsingPico} annotation is present.
- * 
+ *
  * @author Cristiano Gavião
  * @author Mauro Talevi
  */
@@ -50,8 +50,8 @@ public class PicoAnnotationBuilder extends AnnotationBuilder {
                     annotationMonitor().elementCreationFailed(moduleClass, e);
                 }
             }
-            if ( modules.size() > 0 ){
-                container = createPicoContainer(modules);                
+            if (modules.size() > 0) {
+                container = createPicoContainer(modules);
             }
         } else {
             annotationMonitor().annotationNotFound(UsingPico.class, annotatedClass());
@@ -67,7 +67,7 @@ public class PicoAnnotationBuilder extends AnnotationBuilder {
         }
         return factoryUsingSteps;
     }
-    
+
     @Override
     protected ParameterConverters parameterConverters(AnnotationFinder annotationFinder) {
         ParameterConverters converters = super.parameterConverters(annotationFinder);
@@ -80,13 +80,13 @@ public class PicoAnnotationBuilder extends AnnotationBuilder {
     @Override
     protected <T, V extends T> T instanceOf(final Class<T> type, final Class<V> ofClass) {
         if (container != null) {
-            T instance = null;            
+            T instance = null;
             try {
                 instance = container.getComponent(type);
             } catch (AmbiguousComponentResolutionException e) {
                 instance = container.getComponent(ofClass);
             }
-            if ( instance != null ){
+            if (instance != null) {
                 return instance;
             }
         }
@@ -95,7 +95,7 @@ public class PicoAnnotationBuilder extends AnnotationBuilder {
 
     @SuppressWarnings("unchecked")
     protected PicoContainer createPicoContainer(List<PicoModule> modules) {
-        if ( container != null ){
+        if (container != null) {
             return container;
         }
         @SuppressWarnings("rawtypes")

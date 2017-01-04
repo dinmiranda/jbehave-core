@@ -10,12 +10,12 @@ import org.junit.runners.model.InitializationError;
  */
 public class NeedleAnnotatedPathRunner extends AnnotatedPathRunner {
 
-	public NeedleAnnotatedPathRunner(Class<?> testClass) throws InitializationError {
-		super(testClass);
-	}
+    public NeedleAnnotatedPathRunner(Class<?> testClass) throws InitializationError {
+        super(testClass);
+    }
 
-	public AnnotationBuilder annotationBuilder() {
-		return new NeedleAnnotationBuilder(testClass());
-	}
+    public AnnotationBuilder annotationBuilder() {
+        return new NeedleAnnotationBuilder(testClass());
+    }
 
 }

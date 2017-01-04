@@ -1,9 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -13,6 +9,10 @@ import org.jbehave.core.model.OutcomesTable;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Filters out the reports from all stories that pass, The delegate receives
@@ -34,20 +34,20 @@ public class SilentSuccessFilter implements StoryReporter {
 
     @Override
     public void dryRun() {
-        runState = new State(){
+        runState = new State() {
             @Override
-            public void report(){
+            public void report() {
                 delegate.dryRun();
             }
         };
         runState.report();
     }
-    
+
     @Override
     public void pendingMethods(final List<String> methods) {
-        runState = new State(){
+        runState = new State() {
             @Override
-            public void report(){
+            public void report() {
                 delegate.pendingMethods(methods);
             }
         };
@@ -57,7 +57,7 @@ public class SilentSuccessFilter implements StoryReporter {
     @Override
     public void restarted(String step, Throwable cause) {
     }
-    
+
     @Override
     public void restartedStory(Story story, Throwable cause) {
     }
@@ -115,7 +115,7 @@ public class SilentSuccessFilter implements StoryReporter {
     public void afterStory(boolean givenStory) {
         afterStoryState.report();
     }
-    
+
     @Override
     public void beforeStep(String step) {
     }
@@ -287,20 +287,6 @@ public class SilentSuccessFilter implements StoryReporter {
             }
         });
     }
-    
-    private static interface Todo {
-        void doNow();
-    }
-
-    private interface State {
-        State SILENT = new State() {
-            @Override
-            public void report() {
-            }
-        };
-
-        void report();
-    }
 
     private void setStateToNoisy() {
         scenarioState = new State() {
@@ -320,5 +306,19 @@ public class SilentSuccessFilter implements StoryReporter {
                 scenarioState = State.SILENT;
             }
         };
+    }
+
+    private static interface Todo {
+        void doNow();
+    }
+
+    private interface State {
+        State SILENT = new State() {
+            @Override
+            public void report() {
+            }
+        };
+
+        void report();
     }
 }

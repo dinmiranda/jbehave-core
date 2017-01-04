@@ -1,9 +1,9 @@
 package org.jbehave.core.failures;
 
+import org.jbehave.core.steps.StepCreator.PendingStep;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jbehave.core.steps.StepCreator.PendingStep;
 
 /**
  * Thrown when a pending step is found

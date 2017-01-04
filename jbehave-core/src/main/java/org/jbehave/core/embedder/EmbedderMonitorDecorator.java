@@ -1,10 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.io.File;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-
 import org.jbehave.core.failures.BatchFailures;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.Scenario;
@@ -12,6 +7,11 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.model.StoryMaps;
 import org.jbehave.core.reporters.ReportsCount;
+
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Decorator of EmbedderMonitor that delegates to an injected instance and
@@ -26,141 +26,141 @@ public class EmbedderMonitorDecorator implements EmbedderMonitor {
     }
 
     public void runningEmbeddable(String name) {
-        delegate.runningEmbeddable(name);
+        this.delegate.runningEmbeddable(name);
     }
 
     public void embeddableFailed(String name, Throwable cause) {
-        delegate.embeddableFailed(name, cause);
+        this.delegate.embeddableFailed(name, cause);
     }
 
     public void embeddableNotConfigurable(String name) {
-        delegate.embeddableNotConfigurable(name);
+        this.delegate.embeddableNotConfigurable(name);
     }
 
     public void embeddablesSkipped(List<String> classNames) {
-        delegate.embeddablesSkipped(classNames);
+        this.delegate.embeddablesSkipped(classNames);
     }
 
     public void metaNotAllowed(Meta meta, MetaFilter filter) {
-        delegate.metaNotAllowed(meta, filter);
+        this.delegate.metaNotAllowed(meta, filter);
     }
 
     public void runningStory(String path) {
-        delegate.runningStory(path);
+        this.delegate.runningStory(path);
     }
 
     public void storyFailed(String path, Throwable cause) {
-        delegate.storyFailed(path, cause);
+        this.delegate.storyFailed(path, cause);
     }
 
     public void storiesSkipped(List<String> storyPaths) {
-        delegate.storiesSkipped(storyPaths);
+        this.delegate.storiesSkipped(storyPaths);
     }
 
     public void storiesNotAllowed(List<Story> notAllowed, MetaFilter filter) {
-        delegate.storiesNotAllowed(notAllowed, filter);
+        this.delegate.storiesNotAllowed(notAllowed, filter);
     }
 
     public void storiesNotAllowed(List<Story> stories, MetaFilter filter, boolean verbose) {
-        delegate.storiesNotAllowed(stories, filter, verbose);
-     }
+        this.delegate.storiesNotAllowed(stories, filter, verbose);
+    }
 
-	public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
-		delegate.scenarioNotAllowed(scenario, filter);
-	}
+    public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
+        this.delegate.scenarioNotAllowed(scenario, filter);
+    }
 
     public void batchFailed(BatchFailures failures) {
-        delegate.batchFailed(failures);
+        this.delegate.batchFailed(failures);
     }
-    
+
     public void beforeOrAfterStoriesFailed() {
-        delegate.beforeOrAfterStoriesFailed();
+        this.delegate.beforeOrAfterStoriesFailed();
     }
 
     public void generatingReportsView(File outputDirectory, List<String> formats, Properties viewProperties) {
-        delegate.generatingReportsView(outputDirectory, formats, viewProperties);
+        this.delegate.generatingReportsView(outputDirectory, formats, viewProperties);
     }
 
     public void reportsViewGenerationFailed(File outputDirectory, List<String> formats, Properties viewProperties,
-            Throwable cause) {
-        delegate.reportsViewGenerationFailed(outputDirectory, formats, viewProperties, cause);
+                                            Throwable cause) {
+        this.delegate.reportsViewGenerationFailed(outputDirectory, formats, viewProperties, cause);
     }
 
     public void reportsViewGenerated(ReportsCount count) {
-        delegate.reportsViewGenerated(count);
+        this.delegate.reportsViewGenerated(count);
     }
 
     public void reportsViewFailures(ReportsCount count) {
-        delegate.reportsViewFailures(count);
+        this.delegate.reportsViewFailures(count);
     }
 
     public void reportsViewNotGenerated() {
-        delegate.reportsViewNotGenerated();
+        this.delegate.reportsViewNotGenerated();
     }
-    
+
     public void runningWithAnnotatedEmbedderRunner(String className) {
-        delegate.runningWithAnnotatedEmbedderRunner(className);
+        this.delegate.runningWithAnnotatedEmbedderRunner(className);
     }
 
     public void annotatedInstanceNotOfType(Object annotatedInstance, Class<?> type) {
-        delegate.annotatedInstanceNotOfType(annotatedInstance, type);
+        this.delegate.annotatedInstanceNotOfType(annotatedInstance, type);
     }
 
     public void mappingStory(String storyPath, List<String> metaFilters) {
-        delegate.mappingStory(storyPath, metaFilters);
+        this.delegate.mappingStory(storyPath, metaFilters);
     }
 
     public void generatingMapsView(File outputDirectory, StoryMaps storyMaps, Properties viewProperties) {
-        delegate.generatingMapsView(outputDirectory, storyMaps, viewProperties);
+        this.delegate.generatingMapsView(outputDirectory, storyMaps, viewProperties);
     }
 
     public void mapsViewGenerationFailed(File outputDirectory, StoryMaps storyMaps, Properties viewProperties,
-            Throwable cause) {
-        delegate.mapsViewGenerationFailed(outputDirectory, storyMaps, viewProperties, cause);
+                                         Throwable cause) {
+        this.delegate.mapsViewGenerationFailed(outputDirectory, storyMaps, viewProperties, cause);
     }
 
     public void generatingNavigatorView(File outputDirectory, Properties viewResources) {
-        delegate.generatingNavigatorView(outputDirectory, viewResources);
+        this.delegate.generatingNavigatorView(outputDirectory, viewResources);
     }
 
     public void navigatorViewGenerationFailed(File outputDirectory, Properties viewResources, Throwable cause) {
-        delegate.navigatorViewGenerationFailed(outputDirectory, viewResources, cause);
+        this.delegate.navigatorViewGenerationFailed(outputDirectory, viewResources, cause);
     }
 
     public void navigatorViewNotGenerated() {
-        delegate.navigatorViewNotGenerated();        
+        this.delegate.navigatorViewNotGenerated();
     }
 
     public void processingSystemProperties(Properties properties) {
-        delegate.processingSystemProperties(properties);
+        this.delegate.processingSystemProperties(properties);
     }
 
     public void systemPropertySet(String name, String value) {
-        delegate.systemPropertySet(name, value);
+        this.delegate.systemPropertySet(name, value);
     }
-    
+
     public void storyTimeout(Story story, StoryDuration storyDuration) {
-        delegate.storyTimeout(story, storyDuration);
+        this.delegate.storyTimeout(story, storyDuration);
     }
 
     public void usingThreads(int threads) {
-        delegate.usingThreads(threads);
+        this.delegate.usingThreads(threads);
     }
 
     public void usingExecutorService(ExecutorService executorService) {
-        delegate.usingExecutorService(executorService);
+        this.delegate.usingExecutorService(executorService);
     }
 
     public void usingControls(EmbedderControls embedderControls) {
-        delegate.usingControls(embedderControls);        
+        this.delegate.usingControls(embedderControls);
     }
 
-	public void invalidTimeoutFormat(String path) {
-		delegate.invalidTimeoutFormat(path);
-	}
+    public void invalidTimeoutFormat(String path) {
+        this.delegate.invalidTimeoutFormat(path);
+    }
 
-	public void usingTimeout(String path, long timeout) {
-		delegate.usingTimeout(path, timeout);
-	}
+    public void usingTimeout(String path, long timeout) {
+        this.delegate.usingTimeout(path, timeout);
+    }
 
 }

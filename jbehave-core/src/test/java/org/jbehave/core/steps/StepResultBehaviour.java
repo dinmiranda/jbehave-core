@@ -8,12 +8,10 @@ import org.jbehave.core.reporters.StoryReporter;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
-
+import static org.jbehave.core.steps.AbstractStepResult.comment;
 import static org.jbehave.core.steps.AbstractStepResult.failed;
 import static org.jbehave.core.steps.AbstractStepResult.ignorable;
-import static org.jbehave.core.steps.AbstractStepResult.comment;
 import static org.jbehave.core.steps.AbstractStepResult.notPerformed;
 import static org.jbehave.core.steps.AbstractStepResult.pending;
 import static org.jbehave.core.steps.AbstractStepResult.skipped;
@@ -24,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 
 public class StepResultBehaviour {
-    
+
     @Test
     public void shouldDescribeResultToReporter() {
         // Given
@@ -60,7 +58,7 @@ public class StepResultBehaviour {
         verify(reporter).failed(failed, cause);
         verify(reporter).failedOutcomes(failedOutcomes, outcomesTable);
     }
-    
+
     @Test
     public void shouldDescribeResultToReporterWithParameterValuesWhenAvailable() {
         // Given
@@ -89,7 +87,7 @@ public class StepResultBehaviour {
         // Given        
         String stepPattern = "Given that a step is $pending or $failing";
         String successful = "Given that a step is pending or failing";
-        
+
         // When
         StepResult resultWithoutParameterValues = successful(stepPattern);
         StepResult resultWithParameterValues = successful(stepPattern).withParameterValues(successful);

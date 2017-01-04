@@ -6,9 +6,9 @@ package org.jbehave.core.context;
 public interface ContextView {
 
     void show(String story, String scenario, String step);
-    
+
     void close();
-    
+
     public static class NULL implements ContextView {
         public void show(String story, String scenario, String step) {
         }

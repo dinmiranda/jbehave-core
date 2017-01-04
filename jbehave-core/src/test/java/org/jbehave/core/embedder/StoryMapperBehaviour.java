@@ -1,11 +1,5 @@
 package org.jbehave.core.embedder;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import org.jbehave.core.model.Description;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.Narrative;
@@ -14,6 +8,12 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryMap;
 import org.jbehave.core.model.StoryMaps;
 import org.junit.Test;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class StoryMapperBehaviour {
 
@@ -26,7 +26,7 @@ public class StoryMapperBehaviour {
         Story story2 = new Story("/path/to/story2", Description.EMPTY, meta2, Narrative.EMPTY, asList(new Scenario("scenario2", meta2)));
         MetaFilter filter = mock(MetaFilter.class);
         String filterAsString = "-some property";
-        
+
         // When
         StoryMapper mapper = new StoryMapper();
         when(meta1.inheritFrom(meta1)).thenReturn(meta1);
@@ -45,5 +45,5 @@ public class StoryMapperBehaviour {
         assertThat(storyMap.getStories().get(0).getPath(), equalTo(story2.getPath()));
         assertThat(storyMap.getStoryPaths(), equalTo(asList(story2.getPath())));
     }
-  
+
 }

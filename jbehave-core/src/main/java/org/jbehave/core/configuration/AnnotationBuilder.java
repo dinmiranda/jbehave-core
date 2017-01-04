@@ -1,12 +1,6 @@
 package org.jbehave.core.configuration;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
-
+import com.thoughtworks.paranamer.Paranamer;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.ConfigurableEmbedder;
 import org.jbehave.core.Embeddable;
@@ -40,12 +34,17 @@ import org.jbehave.core.steps.StepCollector;
 import org.jbehave.core.steps.StepFinder;
 import org.jbehave.core.steps.StepMonitor;
 
-import com.thoughtworks.paranamer.Paranamer;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 /**
  * Allows the building of {@link Configuration}, {@link CandidateSteps} and
  * {@link Embedder} from an annotated class.
- * 
+ *
  * @author Cristiano Gavião
  * @author Mauro Talevi
  */
@@ -73,7 +72,7 @@ public class AnnotationBuilder {
     /**
      * Builds a Configuration instance based on annotation {@link Configure}
      * found in the annotated object instance
-     * 
+     *
      * @return A Configuration instance
      */
     public Configuration buildConfiguration() throws AnnotationRequired {
@@ -114,7 +113,7 @@ public class AnnotationBuilder {
      * Builds CandidateSteps using annotation {@link UsingSteps} found in the
      * annotated object instance and using the configuration build by
      * {@link #buildConfiguration()}
-     * 
+     *
      * @return A List of CandidateSteps instances
      */
     public List<CandidateSteps> buildCandidateSteps() {
@@ -124,7 +123,7 @@ public class AnnotationBuilder {
     /**
      * Builds CandidateSteps using annotation {@link UsingSteps} found in the
      * annotated object instance and the configuration provided
-     * 
+     *
      * @param configuration the Configuration
      * @return A List of CandidateSteps instances
      */
@@ -136,7 +135,7 @@ public class AnnotationBuilder {
      * Builds the {@link InjectableStepsFactory} using annotation
      * {@link UsingSteps} found in the annotated object instance and the
      * configuration provided
-     * 
+     *
      * @param configuration the Configuration
      * @return A {@link InjectableStepsFactory}
      */
@@ -144,26 +143,26 @@ public class AnnotationBuilder {
         List<Object> stepsInstances = new ArrayList<Object>();
         InjectableStepsFactory factory = null;
         if (finder.isAnnotationPresent(UsingSteps.class)) {
-			List<Class<Object>> stepsClasses = finder.getAnnotatedClasses(
-					UsingSteps.class, Object.class, "instances");
-			if (!stepsClasses.isEmpty()) {
-				for (Class<Object> stepsClass : stepsClasses) {
-					stepsInstances.add(instanceOf(Object.class, stepsClass));
-				}
-				factory = new InstanceStepsFactory(configuration,
-						stepsInstances);
-			}
-			List<String> packages = finder.getAnnotatedValues(UsingSteps.class,
-					String.class, "packages");
-			if (!packages.isEmpty()) {
-				String matchingNames = finder.getAnnotatedValue(UsingSteps.class,
-						String.class, "matchingNames");
-				String notMatchingNames = finder.getAnnotatedValue(UsingSteps.class,
-						String.class, "notMatchingNames");
-				factory = new ScanningStepsFactory(configuration,
-						packages.toArray(new String[packages.size()]))
-						.matchingNames(matchingNames).notMatchingNames(notMatchingNames);
-			}
+            List<Class<Object>> stepsClasses = finder.getAnnotatedClasses(
+                    UsingSteps.class, Object.class, "instances");
+            if (!stepsClasses.isEmpty()) {
+                for (Class<Object> stepsClass : stepsClasses) {
+                    stepsInstances.add(instanceOf(Object.class, stepsClass));
+                }
+                factory = new InstanceStepsFactory(configuration,
+                        stepsInstances);
+            }
+            List<String> packages = finder.getAnnotatedValues(UsingSteps.class,
+                    String.class, "packages");
+            if (!packages.isEmpty()) {
+                String matchingNames = finder.getAnnotatedValue(UsingSteps.class,
+                        String.class, "matchingNames");
+                String notMatchingNames = finder.getAnnotatedValue(UsingSteps.class,
+                        String.class, "notMatchingNames");
+                factory = new ScanningStepsFactory(configuration,
+                        packages.toArray(new String[packages.size()]))
+                        .matchingNames(matchingNames).notMatchingNames(notMatchingNames);
+            }
         } else {
             annotationMonitor.annotationNotFound(UsingSteps.class, annotatedClass);
         }
@@ -192,20 +191,20 @@ public class AnnotationBuilder {
         boolean failOnStoryTimeout = control(finder, "failOnStoryTimeout");
         int threads = finder.getAnnotatedValue(UsingEmbedder.class, Integer.class, "threads");
         Embedder embedder = embedder();
-		EmbedderControls embedderControls = embedder.embedderControls();
-		embedderControls.doBatch(batch).doSkip(skip).doGenerateViewAfterStories(generateViewAfterStories)
+        EmbedderControls embedderControls = embedder.embedderControls();
+        embedderControls.doBatch(batch).doSkip(skip).doGenerateViewAfterStories(generateViewAfterStories)
                 .doIgnoreFailureInStories(ignoreFailureInStories).doIgnoreFailureInView(ignoreFailureInView)
                 .doVerboseFailures(verboseFailures).doVerboseFiltering(verboseFiltering)
                 .doFailOnStoryTimeout(failOnStoryTimeout).useThreads(threads);
-		if ( storyTimeoutInSecs != 0 ){
-			embedderControls.useStoryTimeoutInSecs(storyTimeoutInSecs);
-		}
-		if ( StringUtils.isNotBlank(storyTimeoutInSecsByPath) ){
-			embedderControls.useStoryTimeoutInSecsByPath(storyTimeoutInSecsByPath);
-		}
-		if ( StringUtils.isNotBlank(storyTimeouts) ){
-			embedderControls.useStoryTimeouts(storyTimeouts);
-		}
+        if (storyTimeoutInSecs != 0) {
+            embedderControls.useStoryTimeoutInSecs(storyTimeoutInSecs);
+        }
+        if (StringUtils.isNotBlank(storyTimeoutInSecsByPath)) {
+            embedderControls.useStoryTimeoutInSecsByPath(storyTimeoutInSecsByPath);
+        }
+        if (StringUtils.isNotBlank(storyTimeouts)) {
+            embedderControls.useStoryTimeouts(storyTimeouts);
+        }
         Configuration configuration = buildConfiguration();
         embedder.useConfiguration(configuration);
         boolean useStepsFactory = finder.getAnnotatedValue(UsingEmbedder.class, Boolean.class, "stepsFactory");
@@ -231,15 +230,15 @@ public class AnnotationBuilder {
         return instanceOf(Embedder.class,
                 (Class<? extends Embedder>) finder.getAnnotatedValue(UsingEmbedder.class, Class.class, "embedder"));
     }
-    
+
     protected Embedder defaultEmbedder() {
-    	return new Embedder();
+        return new Embedder();
     }
 
     public AnnotationFinder finder() {
-    	return finder;
+        return finder;
     }
-    
+
     public List<String> findPaths() {
         if (!finder.isAnnotationPresent(UsingPaths.class)) {
             return new ArrayList<String>();
@@ -253,7 +252,7 @@ public class AnnotationBuilder {
 
     @SuppressWarnings("unchecked")
     private StoryFinder storyFinder() {
-        return instanceOf(StoryFinder.class, (Class<? extends StoryFinder>)finder.getAnnotatedValue(UsingPaths.class, Class.class, "storyFinder"));
+        return instanceOf(StoryFinder.class, (Class<? extends StoryFinder>) finder.getAnnotatedValue(UsingPaths.class, Class.class, "storyFinder"));
     }
 
     private boolean control(AnnotationFinder finder, String name) {
@@ -266,7 +265,7 @@ public class AnnotationBuilder {
     }
 
     @SuppressWarnings("unchecked")
-	protected <T> Class<T> elementImplementation(AnnotationFinder finder, String name) {
+    protected <T> Class<T> elementImplementation(AnnotationFinder finder, String name) {
         return finder.getAnnotatedValue(Configure.class, Class.class, name);
     }
 
@@ -290,27 +289,24 @@ public class AnnotationBuilder {
     }
 
     protected <T, V extends T> T instanceOf(Class<T> type, Class<V> ofClass) {
-    	try { 
-    	    // by classloader constructor
-    		try {
-    			Constructor<V> constructor =
-    					ofClass.getConstructor(new Class<?>[]{ClassLoader.class});
-    			return constructor.newInstance(annotatedClass.getClassLoader());
-    		}
-    		catch(NoSuchMethodException ns){
-    		}
-    		// by class constructor
-    		try {
-    			Constructor<V> constructor =
-    					ofClass.getConstructor(new Class<?>[]{Class.class});
-    			return constructor.newInstance(annotatedClass);
-    		}
-    		catch(NoSuchMethodException ns){
-    		}    	     	
-    		// by class instance
+        try {
+            // by classloader constructor
+            try {
+                Constructor<V> constructor =
+                        ofClass.getConstructor(new Class<?>[]{ClassLoader.class});
+                return constructor.newInstance(annotatedClass.getClassLoader());
+            } catch (NoSuchMethodException ns) {
+            }
+            // by class constructor
+            try {
+                Constructor<V> constructor =
+                        ofClass.getConstructor(new Class<?>[]{Class.class});
+                return constructor.newInstance(annotatedClass);
+            } catch (NoSuchMethodException ns) {
+            }
+            // by class instance
             return ofClass.newInstance();
-    	}
-    	catch (Exception e) {
+        } catch (Exception e) {
             annotationMonitor.elementCreationFailed(ofClass, e);
             throw new InstantiationFailed(ofClass, type, e);
         }

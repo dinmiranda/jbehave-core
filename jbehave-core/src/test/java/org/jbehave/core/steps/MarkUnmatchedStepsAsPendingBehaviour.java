@@ -1,23 +1,6 @@
 package org.jbehave.core.steps;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.lessThan;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
+import com.thoughtworks.xstream.XStream;
 import org.hamcrest.Matchers;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.AfterScenario.Outcome;
@@ -32,14 +15,30 @@ import org.jbehave.core.model.Lifecycle;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
-import org.jbehave.core.steps.AbstractStepResult.Ignorable;
 import org.jbehave.core.steps.AbstractStepResult.Comment;
+import org.jbehave.core.steps.AbstractStepResult.Ignorable;
 import org.jbehave.core.steps.StepCollector.Stage;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepFinder.ByLevenshteinDistance;
 import org.junit.Test;
 
-import com.thoughtworks.xstream.XStream;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.lessThan;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class MarkUnmatchedStepsAsPendingBehaviour {
 
@@ -301,7 +300,7 @@ public class MarkUnmatchedStepsAsPendingBehaviour {
         assertThat(afterSteps, equalTo(asList(stepAfter1, stepAfter2)));
     }
 
-    
+
     @Test
     public void shouldCollectBeforeAndAfterStoryAnnotatedSteps() {
         // Given some candidate steps classes with before and after story
@@ -464,7 +463,7 @@ public class MarkUnmatchedStepsAsPendingBehaviour {
         steps.add(new ClassWithMethodsAandB());
         steps.add(new ClassWithMethodsCandD());
         String stepsAsString = steps.toString(); // includes object ID numbers
-                                                 // from JVM
+        // from JVM
 
         XStream xs = new XStream();
 

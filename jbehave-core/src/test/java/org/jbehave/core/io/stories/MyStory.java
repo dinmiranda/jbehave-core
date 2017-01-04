@@ -1,12 +1,12 @@
 package org.jbehave.core.io.stories;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
 import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.reporters.TxtOutput;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class MyStory extends JUnitStory {
 

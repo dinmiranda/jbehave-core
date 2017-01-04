@@ -13,5 +13,5 @@ public interface Step {
     StepResult doNotPerform(UUIDExceptionWrapper storyFailureIfItHappened);
 
     String asString(Keywords keywords);
-    
+
 }

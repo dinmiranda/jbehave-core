@@ -1,10 +1,6 @@
 package org.jbehave.core.steps;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import org.jbehave.core.annotations.Composite;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Named;
@@ -13,13 +9,14 @@ import org.jbehave.core.annotations.When;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-
 import static org.jbehave.core.steps.StepCandidateBehaviour.candidateMatchingStep;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -43,30 +40,6 @@ public class CompositeStepCandidateBehaviour {
         assertThat(steps.added, equalTo("ticket"));
     }
 
-    static class CompositeSteps extends Steps {
-
-        private String loggedIn;
-        private String added;
-
-        @Given("$customer has previously bought a $product")
-        @Composite(steps = { "Given <customer> is logged in",
-                             "When a <product> is added to the cart" })
-        public void aCompositeStep(@Named("customer") String customer, @Named("product") String product) {
-        }
-
-        @Given("<customer> is logged in")
-        public void aCustomerIsLoggedIn(@Named("customer") String customer) {
-            loggedIn = customer;
-        }
-
-        @When("a <product> is added to the cart")
-        public void aProductIsAddedToCart(@Named("product") String product) {
-            added = product;
-        }
-
-    }
-
-
     @Test
     public void shouldMatchCompositeStepsAndCreateComposedStepsUsingNamedParameters() {
         CompositeStepsUsingNamedParameters steps = new CompositeStepsUsingNamedParameters();
@@ -84,29 +57,6 @@ public class CompositeStepCandidateBehaviour {
         }
         assertThat(steps.loggedIn, equalTo("Mr Jones"));
         assertThat(steps.added, equalTo("ticket"));
-    }
-
-    static class CompositeStepsUsingNamedParameters extends Steps {
-
-        private String loggedIn;
-        private String added;
-
-        @Given("<customer> has previously bough a <product>")
-        @Composite(steps = { "Given <customer> is logged in",
-                             "When a <product> is added to the cart" })
-        public void aCompositeStep(@Named("customer") String customer, @Named("product") String product) {
-        }
-
-        @Given("<customer> is logged in")
-        public void aCustomerIsLoggedIn(@Named("customer") String customer) {
-            loggedIn = customer;
-        }
-
-        @When("a <product> is added to the cart")
-        public void aProductIsAddedToCart(@Named("product") String product) {
-            added = product;
-        }
-
     }
 
     @Test
@@ -128,6 +78,109 @@ public class CompositeStepCandidateBehaviour {
         }
         assertThat(steps.loggedIn, equalTo("Mr Jones"));
         assertThat(steps.added, equalTo("ticket"));
+    }
+
+    @Test
+    public void shouldMatchCompositeStepsAndCreateComposedNestedSteps() {
+        CompositeNestedSteps steps = new CompositeNestedSteps();
+        List<StepCandidate> candidates = steps.listCandidates();
+        // find main step
+        StepCandidate candidate = null;
+        for (StepCandidate cand : candidates) {
+            if (cand.getPatternAsString().equals("all buttons are enabled")) {
+                candidate = cand;
+                break;
+            }
+        }
+        assertNotNull(candidate);
+        assertThat(candidate.isComposite(), is(true));
+        Map<String, String> noNamedParameters = new HashMap<String, String>();
+        List<Step> composedSteps = new ArrayList<Step>();
+        candidate.addComposedSteps(composedSteps, "Then all buttons are enabled", noNamedParameters, candidates);
+        assertThat(composedSteps.size(), equalTo(6));
+        for (Step step : composedSteps) {
+            step.perform(null);
+        }
+        assertThat(steps.trail.toString(), equalTo("l>l1>l2>t>t1>t2>"));
+    }
+
+    @Test
+    public void shouldMatchCompositeStepsWhenStepParameterIsProvided() {
+        CompositeStepsParameterMatching steps = new CompositeStepsParameterMatching();
+        List<StepCandidate> candidates = steps.listCandidates();
+        StepCandidate candidate = candidateMatchingStep(candidates, "When I login");
+        assertThat(candidate.isComposite(), is(true));
+        Map<String, String> noNamedParameters = new HashMap<String, String>();
+        List<Step> composedSteps = new ArrayList<Step>();
+        candidate.addComposedSteps(composedSteps, "When I login", noNamedParameters, candidates);
+        assertThat(composedSteps.size(), equalTo(1));
+        for (Step step : composedSteps) {
+            step.perform(null);
+        }
+        assertThat(steps.button, equalTo("Login"));
+    }
+
+    @Test
+    public void recursiveCompositeStepsShouldWorkWithSomeMissingParameters() {
+        String userName = "someUserName";
+        CompositeStepParametersWithMissingParameters steps = new CompositeStepParametersWithMissingParameters();
+        List<StepCandidate> candidates = steps.listCandidates();
+        StepCandidate candidate = candidateMatchingStep(candidates, "Given I am logged in as " + userName);
+        assertThat(candidate.isComposite(), is(true));
+        Map<String, String> noNamedParameters = new HashMap<String, String>();
+        List<Step> composedSteps = new ArrayList<Step>();
+        candidate.addComposedSteps(composedSteps, "Given I am logged in as someUserName", noNamedParameters, candidates);
+        for (Step step : composedSteps) {
+            step.perform(null);
+        }
+        assertThat("Was unable to set the username", steps.username, equalTo(userName));
+        assertTrue("Didn't reach the login step", steps.isLoggedIn);
+    }
+
+    static class CompositeSteps extends Steps {
+
+        private String loggedIn;
+        private String added;
+
+        @Given("$customer has previously bought a $product")
+        @Composite(steps = {"Given <customer> is logged in",
+                "When a <product> is added to the cart"})
+        public void aCompositeStep(@Named("customer") String customer, @Named("product") String product) {
+        }
+
+        @Given("<customer> is logged in")
+        public void aCustomerIsLoggedIn(@Named("customer") String customer) {
+            loggedIn = customer;
+        }
+
+        @When("a <product> is added to the cart")
+        public void aProductIsAddedToCart(@Named("product") String product) {
+            added = product;
+        }
+
+    }
+
+    static class CompositeStepsUsingNamedParameters extends Steps {
+
+        private String loggedIn;
+        private String added;
+
+        @Given("<customer> has previously bough a <product>")
+        @Composite(steps = {"Given <customer> is logged in",
+                "When a <product> is added to the cart"})
+        public void aCompositeStep(@Named("customer") String customer, @Named("product") String product) {
+        }
+
+        @Given("<customer> is logged in")
+        public void aCustomerIsLoggedIn(@Named("customer") String customer) {
+            loggedIn = customer;
+        }
+
+        @When("a <product> is added to the cart")
+        public void aProductIsAddedToCart(@Named("product") String product) {
+            added = product;
+        }
+
     }
 
     static class CompositeStepsWithoutNamedAnnotation extends Steps {
@@ -152,39 +205,15 @@ public class CompositeStepCandidateBehaviour {
         }
 
     }
-    
-    @Test
-    public void shouldMatchCompositeStepsAndCreateComposedNestedSteps() {
-        CompositeNestedSteps steps = new CompositeNestedSteps();
-        List<StepCandidate> candidates = steps.listCandidates();
-        // find main step
-        StepCandidate candidate = null;
-        for(StepCandidate cand: candidates) {
-            if(cand.getPatternAsString().equals("all buttons are enabled")) {
-                candidate = cand;
-                break;
-            }
-        }
-        assertNotNull(candidate);
-        assertThat(candidate.isComposite(), is(true));
-        Map<String, String> noNamedParameters = new HashMap<String, String>();
-        List<Step> composedSteps = new ArrayList<Step>();
-        candidate.addComposedSteps(composedSteps, "Then all buttons are enabled", noNamedParameters, candidates);
-        assertThat(composedSteps.size(), equalTo(6));
-        for (Step step : composedSteps) {
-            step.perform(null);
-        }
-        assertThat(steps.trail.toString(), equalTo("l>l1>l2>t>t1>t2>"));
-    }
 
     static class CompositeNestedSteps extends Steps {
 
         private StringBuffer trail = new StringBuffer();
-        
+
         @Then("all buttons are enabled")
         @Composite(steps = {
-            "Then all left buttons are enabled",
-            "Then all top buttons are enabled" }
+                "Then all left buttons are enabled",
+                "Then all top buttons are enabled"}
         )
         public void all() {
             trail.append("a>");
@@ -192,27 +221,27 @@ public class CompositeStepCandidateBehaviour {
 
         @Then("all left buttons are enabled")
         @Composite(steps = {
-            "Then first left button is enabled",
-            "Then second left button is enabled" }
+                "Then first left button is enabled",
+                "Then second left button is enabled"}
         )
         public void leftAll() {
             trail.append("l>");
         }
 
         @Then("first left button is enabled")
-        public void leftOne(){
+        public void leftOne() {
             trail.append("l1>");
         }
 
         @Then("second left button is enabled")
-        public void leftTwo(){
+        public void leftTwo() {
             trail.append("l2>");
         }
 
         @Then("all top buttons are enabled")
         @Composite(steps = {
-            "Then first top button is enabled",
-            "Then second top button is enabled" }
+                "Then first top button is enabled",
+                "Then second top button is enabled"}
         )
         public void topAll() {
             trail.append("t>");
@@ -230,94 +259,67 @@ public class CompositeStepCandidateBehaviour {
 
     }
 
-    @Test
-    public void shouldMatchCompositeStepsWhenStepParameterIsProvided(){
-        CompositeStepsParameterMatching steps = new CompositeStepsParameterMatching();
-        List<StepCandidate> candidates = steps.listCandidates();
-        StepCandidate candidate = candidateMatchingStep(candidates, "When I login");
-        assertThat(candidate.isComposite(), is(true));
-        Map<String, String> noNamedParameters = new HashMap<String, String>();
-        List<Step> composedSteps = new ArrayList<Step>();
-        candidate.addComposedSteps(composedSteps, "When I login", noNamedParameters, candidates);
-        assertThat(composedSteps.size(), equalTo(1));
-        for (Step step : composedSteps) {
-            step.perform(null);
-        }
-        assertThat(steps.button, equalTo("Login"));
-    }
-    
     static class CompositeStepsParameterMatching extends Steps {
         private String button;
-        
+
 
         @When("I login")
-        @Composite(steps={"When I click the Login button"})
-        public void whenILogin(){}
-        
+        @Composite(steps = {"When I click the Login button"})
+        public void whenILogin() {
+        }
+
         @When("I click the $button button")
-        public void whenIClickTheButton(@Named("button") String button){
+        public void whenIClickTheButton(@Named("button") String button) {
             this.button = button;
         }
-        
+
     }
-    
-    @Test
-    public void recursiveCompositeStepsShouldWorkWithSomeMissingParameters(){
-        String userName = "someUserName";
-        CompositeStepParametersWithMissingParameters steps = new CompositeStepParametersWithMissingParameters();
-        List<StepCandidate> candidates = steps.listCandidates();
-        StepCandidate candidate = candidateMatchingStep(candidates, "Given I am logged in as " + userName);
-        assertThat(candidate.isComposite(), is(true));
-        Map<String, String> noNamedParameters = new HashMap<String, String>();
-        List<Step> composedSteps = new ArrayList<Step>();
-        candidate.addComposedSteps(composedSteps, "Given I am logged in as someUserName", noNamedParameters, candidates);
-        for (Step step : composedSteps) {
-            step.perform(null);
-        }
-        assertThat("Was unable to set the username", steps.username, equalTo(userName));
-        assertTrue("Didn't reach the login step", steps.isLoggedIn);
-    }
-    
+
     static class CompositeStepParametersWithMissingParameters extends Steps {
         private String username;
         private boolean isLoggedIn;
-        
-        
+
+
         @Given("I am logged in as $name")
         @Composite(steps = {
                 "Given my user name is <name>",
                 "Given I log in"
         })
-        public void logInAsUser(@Named("name")String name){}
-        
+        public void logInAsUser(@Named("name") String name) {
+        }
+
         @Given("my user name is $name")
-        public void setUsername(@Named("name")String name){
+        public void setUsername(@Named("name") String name) {
             this.username = name;
         }
-        
+
         @Given("I log in")
         @Composite(steps = {
-                "Given I am on the Login page", 
-                "When I type my user name into the Username field", 
-                "When I type my password into the Password field", 
-                "When I click the Login button"} )
-        public void logIn(){
+                "Given I am on the Login page",
+                "When I type my user name into the Username field",
+                "When I type my password into the Password field",
+                "When I click the Login button"})
+        public void logIn() {
             this.isLoggedIn = true;
         }
-        
+
         @Given("Given I am on the Login page")
-        public void onLoginPage(){}
-        
+        public void onLoginPage() {
+        }
+
         @Given("When I type my user name into the Username field")
-        public void typeUsername(){}
-        
+        public void typeUsername() {
+        }
+
         @Given("When I type my password into the Password field")
-        public void typePassword(){}
-        
+        public void typePassword() {
+        }
+
         @Given("When I click the Login button")
-        public void clickLogin(){}
-        
-        
+        public void clickLogin() {
+        }
+
+
     }
 
 }

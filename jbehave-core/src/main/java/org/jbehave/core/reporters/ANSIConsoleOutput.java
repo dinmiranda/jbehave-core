@@ -1,9 +1,10 @@
 package org.jbehave.core.reporters;
 
+import org.jbehave.core.configuration.Keywords;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import org.jbehave.core.configuration.Keywords;
 
 import static org.jbehave.core.reporters.ANSIConsoleOutput.SGRCode.BLUE;
 import static org.jbehave.core.reporters.ANSIConsoleOutput.SGRCode.BOLD;
@@ -87,7 +88,7 @@ public class ANSIConsoleOutput extends ConsoleOutput {
     public void assignCodeToEvent(String eventKey, SGRCode code) {
         codes.put(eventKey, code);
     }
-    
+
     public static enum SGRCode {
         RESET(0),
         BOLD(1),

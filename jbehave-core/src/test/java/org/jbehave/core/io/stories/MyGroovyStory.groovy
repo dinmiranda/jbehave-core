@@ -1,3 +1,3 @@
-class MyGroovyStory{
-    
+class MyGroovyStory {
+
 }

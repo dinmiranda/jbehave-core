@@ -1,7 +1,7 @@
 package org.jbehave.core.steps;
 
-import org.jbehave.core.context.ContextView;
 import org.jbehave.core.context.Context;
+import org.jbehave.core.context.ContextView;
 
 /**
  * Decorator of {@link StepMonitor} which shows the current context via the
@@ -9,21 +9,21 @@ import org.jbehave.core.context.Context;
  */
 public class ContextStepMonitor extends DelegatingStepMonitor {
 
-	private final Context context;
-	private final ContextView view;
+    private final Context context;
+    private final ContextView view;
 
-	public ContextStepMonitor(Context context, ContextView view,
-			StepMonitor delegate) {
-		super(delegate);
-		this.context = context;
-		this.view = view;
-	}
+    public ContextStepMonitor(Context context, ContextView view,
+                              StepMonitor delegate) {
+        super(delegate);
+        this.context = context;
+        this.view = view;
+    }
 
-	public void performing(String step, boolean dryRun) {
-		String currentStory = context.getCurrentStory();
-		String currentScenario = context.getCurrentScenario();
-		view.show(currentStory, currentScenario, step);
-		super.performing(step, dryRun);
-	}
+    public void performing(String step, boolean dryRun) {
+        String currentStory = context.getCurrentStory();
+        String currentScenario = context.getCurrentScenario();
+        view.show(currentStory, currentScenario, step);
+        super.performing(step, dryRun);
+    }
 
 }

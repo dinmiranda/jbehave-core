@@ -1,5 +1,11 @@
 package org.jbehave.core.embedder;
 
+import org.jbehave.core.model.Meta;
+import org.jbehave.core.model.Scenario;
+import org.jbehave.core.model.Story;
+import org.jbehave.core.model.StoryMap;
+import org.jbehave.core.model.StoryMaps;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,15 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.jbehave.core.model.Meta;
-import org.jbehave.core.model.Scenario;
-import org.jbehave.core.model.Story;
-import org.jbehave.core.model.StoryMap;
-import org.jbehave.core.model.StoryMaps;
-
 /**
  * Maps {@link Story}s by a {@link MetaFilter}.
- * 
+ *
  * @author Mauro Talevi
  */
 public class StoryMapper {
@@ -24,11 +24,9 @@ public class StoryMapper {
 
     /**
      * Maps a story if it is allowed by the meta filter
-     * 
-     * @param story
-     *            the Story
-     * @param metaFilter
-     *            the meta filter
+     *
+     * @param story      the Story
+     * @param metaFilter the meta filter
      */
     public void map(Story story, MetaFilter metaFilter) {
         if (metaFilter.allow(story.getMeta())) {

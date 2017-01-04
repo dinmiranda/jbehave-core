@@ -1,13 +1,13 @@
 package org.jbehave.core.reporters;
 
-import static java.util.Arrays.asList;
+import org.jbehave.core.configuration.Keywords;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Properties;
 
-import org.jbehave.core.configuration.Keywords;
+import static java.util.Arrays.asList;
 
 /**
  * Outputs to the console only if running in an IDE. Command line builds (Maven,

@@ -18,9 +18,9 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
 
 public class PostStoryStatisticsCollectorBehaviour {
@@ -83,7 +83,7 @@ public class PostStoryStatisticsCollectorBehaviour {
     public void shouldCollectStoryStatisticsWhenScenariosNotAllowedByFilter() {
         // When
         StoryNarrator.narrateAnInterestingStoryNotAllowedByFilter(reporter, false);
-        
+
         // Then
         String statistics = out.toString();
         assertThat(statistics, containsString("notAllowed=0"));
@@ -155,7 +155,7 @@ public class PostStoryStatisticsCollectorBehaviour {
         try {
             outcomesTable.verify();
         } catch (UUIDExceptionWrapper e) {
-            reporter.failedOutcomes("Then I don't return loan", ((OutcomesFailed)e.getCause()).outcomesTable());
+            reporter.failedOutcomes("Then I don't return loan", ((OutcomesFailed) e.getCause()).outcomesTable());
         }
         reporter.notPerformed("Then I should have $20");
         ExamplesTable table = new ExamplesTable("|money|to|\n|$30|Mauro|\n|$50|Paul|\n");
@@ -169,8 +169,8 @@ public class PostStoryStatisticsCollectorBehaviour {
         reporter.beforeScenario("A pending scenario");
         reporter.pending("When I have some money");
         reporter.notPerformed("Then I should have $20");
-        reporter.afterScenario();        
-        
+        reporter.afterScenario();
+
         // end story
         reporter.afterStory(false);
     }

@@ -4,19 +4,19 @@ import org.jbehave.core.context.Context;
 import org.jbehave.core.model.Story;
 
 public class ContextStoryReporter extends NullStoryReporter {
-	private final Context context;
+    private final Context context;
 
-	public ContextStoryReporter(Context context) {
-		this.context = context;
-	}
+    public ContextStoryReporter(Context context) {
+        this.context = context;
+    }
 
-	@Override
-	public void beforeStory(Story story, boolean givenStory) {
-		context.setCurrentStory(story.getPath());
-	}
+    @Override
+    public void beforeStory(Story story, boolean givenStory) {
+        context.setCurrentStory(story.getPath());
+    }
 
-	@Override
-	public void beforeScenario(String title) {
-		context.setCurrentScenario(title);
-	}
+    @Override
+    public void beforeScenario(String title) {
+        context.setCurrentScenario(title);
+    }
 }

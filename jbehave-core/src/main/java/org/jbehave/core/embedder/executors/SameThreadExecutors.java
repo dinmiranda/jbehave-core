@@ -1,13 +1,12 @@
 package org.jbehave.core.embedder.executors;
 
-import java.util.concurrent.ExecutorService;
-
+import com.google.common.util.concurrent.MoreExecutors;
 import org.jbehave.core.embedder.EmbedderControls;
 
-import com.google.common.util.concurrent.MoreExecutors;
+import java.util.concurrent.ExecutorService;
 
 /**
- *  Creates instances of {@link MoreExecutors#sameThreadExecutor()}.
+ * Creates instances of {@link MoreExecutors#sameThreadExecutor()}.
  */
 public class SameThreadExecutors implements ExecutorServiceFactory {
 

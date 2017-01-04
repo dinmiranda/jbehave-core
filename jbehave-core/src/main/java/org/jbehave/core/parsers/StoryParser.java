@@ -11,17 +11,17 @@ public interface StoryParser {
 
     /**
      * Parses story from its textual representation
-     * 
+     *
      * @param storyAsText the textual representation
      * @return The Story
      */
     Story parseStory(String storyAsText);
-    
+
     /**
      * Parses story from its textual representation and (optional) story path
-     * 
+     *
      * @param storyAsText the textual representation
-     * @param storyPath the story path, may be <code>null</code>
+     * @param storyPath   the story path, may be <code>null</code>
      * @return The Story
      * @since 2.4
      */

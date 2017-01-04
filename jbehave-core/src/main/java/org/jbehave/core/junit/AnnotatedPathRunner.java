@@ -1,7 +1,5 @@
 package org.jbehave.core.junit;
 
-import java.util.List;
-
 import org.jbehave.core.annotations.UsingPaths;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.embedder.Embedder;
@@ -14,6 +12,8 @@ import org.junit.runner.Runner;
 import org.junit.runner.notification.Failure;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.model.InitializationError;
+
+import java.util.List;
 
 /**
  * A JUnit {@link Runner} that uses a {@link UsingPaths} annotation to specify
@@ -30,7 +30,7 @@ public class AnnotatedPathRunner extends AnnotatedEmbedderRunner {
 
     /**
      * Class constructor.
-     * 
+     *
      * @param annotatedClass the annotated {@link Class}.
      * @throws InitializationError if an error occurs.
      */
@@ -93,7 +93,7 @@ public class AnnotatedPathRunner extends AnnotatedEmbedderRunner {
 
         /**
          * Creates a NotifierEmbedderMonitor
-         * 
+         *
          * @param delegate the EmbedderMonitor delegate
          * @param notifier the RunNotifier
          */

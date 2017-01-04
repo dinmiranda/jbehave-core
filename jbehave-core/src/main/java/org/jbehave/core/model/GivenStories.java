@@ -1,17 +1,17 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 public class GivenStories {
-    
+
     public static final GivenStories EMPTY = new GivenStories("");
 
     private final List<GivenStory> givenStories = new ArrayList<GivenStory>();
@@ -20,8 +20,8 @@ public class GivenStories {
 
     public GivenStories(String givenStoriesAsString) {
         this.givenStoriesAsString = givenStoriesAsString;
-        if ( !StringUtils.isBlank(givenStoriesAsString) ){
-            parse();            
+        if (!StringUtils.isBlank(givenStoriesAsString)) {
+            parse();
         }
     }
 
@@ -33,7 +33,7 @@ public class GivenStories {
     }
 
     public List<GivenStory> getStories() {
-        for (GivenStory givenStory : givenStories) {            
+        for (GivenStory givenStory : givenStories) {
             givenStory.useParameters(parametersByAnchor(givenStory.getAnchor()));
         }
         return givenStories;
@@ -41,7 +41,7 @@ public class GivenStories {
 
     private Map<String, String> parametersByAnchor(String anchor) {
         int examplesRow = -1;
-        if ( !StringUtils.isBlank(anchor) ){
+        if (!StringUtils.isBlank(anchor)) {
             try {
                 examplesRow = Integer.parseInt(anchor);
             } catch (NumberFormatException e) {
@@ -49,10 +49,10 @@ public class GivenStories {
             }
         }
         Map<String, String> parameters = null;
-        if ( examplesRow > -1 && examplesRow < examplesTable.getRowCount() ){
-             parameters = examplesTable.getRow(examplesRow);
+        if (examplesRow > -1 && examplesRow < examplesTable.getRowCount()) {
+            parameters = examplesTable.getRow(examplesRow);
         }
-        if ( parameters == null ){
+        if (parameters == null) {
             return new HashMap<String, String>();
         }
         return parameters;
@@ -68,7 +68,7 @@ public class GivenStories {
 
     public boolean requireParameters() {
         for (GivenStory givenStory : givenStories) {
-            if ( givenStory.hasAnchor() ){
+            if (givenStory.hasAnchor()) {
                 return true;
             }
         }
@@ -78,7 +78,7 @@ public class GivenStories {
     public void useExamplesTable(ExamplesTable examplesTable) {
         this.examplesTable = examplesTable;
     }
-    
+
     public String asString() {
         return givenStoriesAsString;
     }

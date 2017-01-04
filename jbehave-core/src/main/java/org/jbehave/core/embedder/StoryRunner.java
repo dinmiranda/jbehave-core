@@ -1,10 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.annotations.ScenarioType;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.Keywords;
@@ -34,12 +29,17 @@ import org.jbehave.core.steps.StepCreator.ParametrisedStep;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepResult;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import static org.codehaus.plexus.util.StringUtils.capitalizeFirstLetter;
 
 /**
  * Runs a {@link Story}, given a {@link Configuration} and a list of
  * {@link CandidateSteps}, describing the results to the {@link StoryReporter}.
- * 
+ *
  * @author Elizabeth Keogh
  * @author Mauro Talevi
  * @author Paul Hammant
@@ -60,11 +60,11 @@ public class StoryRunner {
     /**
      * Run steps before or after a collection of stories. Steps are execute only
      * <b>once</b> per collection of stories.
-     * 
-     * @param configuration the Configuration used to find the steps to run
+     *
+     * @param configuration  the Configuration used to find the steps to run
      * @param candidateSteps the List of CandidateSteps containing the candidate
-     *            steps methods
-     * @param stage the Stage
+     *                       steps methods
+     * @param stage          the Stage
      * @return The State after running the steps
      */
     public State runBeforeOrAfterStories(Configuration configuration, List<CandidateSteps> candidateSteps, Stage stage) {
@@ -110,13 +110,13 @@ public class StoryRunner {
 
     /**
      * Runs a Story with the given configuration and steps.
-     * 
-     * @param configuration the Configuration used to run story
+     *
+     * @param configuration  the Configuration used to run story
      * @param candidateSteps the List of CandidateSteps containing the candidate
-     *            steps methods
-     * @param story the Story to run
+     *                       steps methods
+     * @param story          the Story to run
      * @throws Throwable if failures occurred and FailureStrategy dictates it to
-     *             be re-thrown.
+     *                   be re-thrown.
      */
     public void run(Configuration configuration, List<CandidateSteps> candidateSteps, Story story) throws Throwable {
         run(configuration, candidateSteps, story, MetaFilter.EMPTY);
@@ -125,14 +125,14 @@ public class StoryRunner {
     /**
      * Runs a Story with the given configuration and steps, applying the given
      * meta filter.
-     * 
-     * @param configuration the Configuration used to run story
+     *
+     * @param configuration  the Configuration used to run story
      * @param candidateSteps the List of CandidateSteps containing the candidate
-     *            steps methods
-     * @param story the Story to run
-     * @param filter the Filter to apply to the story Meta
+     *                       steps methods
+     * @param story          the Story to run
+     * @param filter         the Filter to apply to the story Meta
      * @throws Throwable if failures occurred and FailureStrategy dictates it to
-     *             be re-thrown.
+     *                   be re-thrown.
      */
     public void run(Configuration configuration, List<CandidateSteps> candidateSteps, Story story, MetaFilter filter)
             throws Throwable {
@@ -142,39 +142,38 @@ public class StoryRunner {
     /**
      * Runs a Story with the given configuration and steps, applying the given
      * meta filter, and staring from given state.
-     * 
-     * @param configuration the Configuration used to run story
+     *
+     * @param configuration  the Configuration used to run story
      * @param candidateSteps the List of CandidateSteps containing the candidate
-     *            steps methods
-     * @param story the Story to run
-     * @param filter the Filter to apply to the story Meta
-     * @param beforeStories the State before running any of the stories, if not
-     *            <code>null</code>
+     *                       steps methods
+     * @param story          the Story to run
+     * @param filter         the Filter to apply to the story Meta
+     * @param beforeStories  the State before running any of the stories, if not
+     *                       <code>null</code>
      * @throws Throwable if failures occurred and FailureStrategy dictates it to
-     *             be re-thrown.
+     *                   be re-thrown.
      */
     public void run(Configuration configuration, List<CandidateSteps> candidateSteps, Story story, MetaFilter filter,
-            State beforeStories) throws Throwable {
+                    State beforeStories) throws Throwable {
         run(configuration, new ProvidedStepsFactory(candidateSteps), story, filter, beforeStories);
     }
 
     /**
      * Runs a Story with the given steps factory, applying the given meta
      * filter, and staring from given state.
-     * 
+     *
      * @param configuration the Configuration used to run story
-     * @param stepsFactory the InjectableStepsFactory used to created the
-     *            candidate steps methods
-     * @param story the Story to run
-     * @param filter the Filter to apply to the story Meta
+     * @param stepsFactory  the InjectableStepsFactory used to created the
+     *                      candidate steps methods
+     * @param story         the Story to run
+     * @param filter        the Filter to apply to the story Meta
      * @param beforeStories the State before running any of the stories, if not
-     *            <code>null</code>
-     * 
+     *                      <code>null</code>
      * @throws Throwable if failures occurred and FailureStrategy dictates it to
-     *             be re-thrown.
+     *                   be re-thrown.
      */
     public void run(Configuration configuration, InjectableStepsFactory stepsFactory, Story story, MetaFilter filter,
-            State beforeStories) throws Throwable {
+                    State beforeStories) throws Throwable {
         RunContext context = new RunContext(configuration, stepsFactory, story.getPath(), filter);
         if (beforeStories != null) {
             context.stateIs(beforeStories);
@@ -185,9 +184,9 @@ public class StoryRunner {
 
     /**
      * Returns the parsed story from the given path
-     * 
+     *
      * @param configuration the Configuration used to run story
-     * @param storyPath the story path
+     * @param storyPath     the story path
      * @return The parsed Story
      */
     public Story storyOfPath(Configuration configuration, String storyPath) {
@@ -197,10 +196,10 @@ public class StoryRunner {
 
     /**
      * Returns the parsed story from the given text
-     * 
+     *
      * @param configuration the Configuration used to run story
-     * @param storyAsText the story text
-     * @param storyId the story Id, which will be returned as story path
+     * @param storyAsText   the story text
+     * @param storyId       the story Id, which will be returned as story path
      * @return The parsed Story
      */
     public Story storyOfText(Configuration configuration, String storyAsText, String storyId) {
@@ -209,55 +208,56 @@ public class StoryRunner {
 
     /**
      * Cancels story execution following a timeout
-     * 
-     * @param story the Story that was timed out
+     *
+     * @param story         the Story that was timed out
      * @param storyDuration the StoryDuration
      */
     public void cancelStory(Story story, StoryDuration storyDuration) {
         cancelledStories.put(story, storyDuration);
     }
-    
+
     /**
      * Determines if the cause of a story failure is {@link RestartingStoryFailure}
+     *
      * @param cause the {@link Throwable} containing the {@link RestartingStoryFailure} in its stack trace
      * @return true if found, false otherwise
      */
-	private boolean restartStory(Throwable cause) {
-		while (cause != null) {
-			if (cause instanceof RestartingStoryFailure) {
-				return true;
-			}
-			cause = cause.getCause();
-		}
-		return false;
-	}
+    private boolean restartStory(Throwable cause) {
+        while (cause != null) {
+            if (cause instanceof RestartingStoryFailure) {
+                return true;
+            }
+            cause = cause.getCause();
+        }
+        return false;
+    }
 
     private void run(RunContext context, Story story, Map<String, String> storyParameters) throws Throwable {
 
-    	boolean restartingStory = false;
-    	
-    	try {
+        boolean restartingStory = false;
+
+        try {
             runCancellable(context, story, storyParameters);
         } catch (Throwable e) {
-        	
-			
-        	if (cancelledStories.containsKey(story)) {
-        		reporter.get().storyCancelled(story, cancelledStories.get(story));
-        		reporter.get().afterScenario();
-        		reporter.get().afterStory(context.givenStory);
-        	}
-        	
-			// Restart entire story if needed
-			if (restartStory(e)) {
-				//this is not getting logged when running in multi-threaded mode
-				reporter.get().restartedStory(story, e);
-				restartingStory = true;
-				run(context, story, storyParameters);
-			} else {
-				throw e;
-			}
 
-        }finally {
+
+            if (cancelledStories.containsKey(story)) {
+                reporter.get().storyCancelled(story, cancelledStories.get(story));
+                reporter.get().afterScenario();
+                reporter.get().afterStory(context.givenStory);
+            }
+
+            // Restart entire story if needed
+            if (restartStory(e)) {
+                //this is not getting logged when running in multi-threaded mode
+                reporter.get().restartedStory(story, e);
+                restartingStory = true;
+                run(context, story, storyParameters);
+            } else {
+                throw e;
+            }
+
+        } finally {
             if (!context.givenStory() && reporter.get() instanceof ConcurrentStoryReporter && !restartingStory) {
                 ((ConcurrentStoryReporter) reporter.get()).invokeDelayed();
             }
@@ -302,10 +302,10 @@ public class StoryRunner {
             addMetaParameters(storyParameters, storyMeta);
 
             runGivenStories(story.getGivenStories(), storyParameters, context);
-            
+
             // determine if before and after scenario steps should be run
             boolean runBeforeAndAfterScenarioSteps = shouldRunBeforeOrAfterScenarioSteps(context);
-            
+
             reporter.get().lifecyle(story.getLifecycle());
             for (Scenario scenario : story.getScenarios()) {
                 // scenario also inherits meta from story
@@ -414,7 +414,7 @@ public class StoryRunner {
                 RunContext childContext = context.childContextFor(givenStory);
                 // run given story, using any parameters provided
                 Story story = storyOfPath(context.configuration(), childContext.path());
-                if ( givenStory.hasAnchorParameters() ){
+                if (givenStory.hasAnchorParameters()) {
                     story = storyWithMatchingScenarios(story, givenStory.getAnchorParameters());
                 }
                 parameters.putAll(givenStory.getParameters());
@@ -423,21 +423,21 @@ public class StoryRunner {
         }
     }
 
-    private Story storyWithMatchingScenarios(Story story, Map<String,String> parameters) {
-        if ( parameters.isEmpty() ) return story;
+    private Story storyWithMatchingScenarios(Story story, Map<String, String> parameters) {
+        if (parameters.isEmpty()) return story;
         List<Scenario> scenarios = new ArrayList<Scenario>();
-        for ( Scenario scenario : story.getScenarios() ){
-            if ( matchesParameters(scenario, parameters) ){
+        for (Scenario scenario : story.getScenarios()) {
+            if (matchesParameters(scenario, parameters)) {
                 scenarios.add(scenario);
             }
         }
-        return new Story(story.getPath(), story.getDescription(), story.getMeta(), story.getNarrative(), scenarios); 
+        return new Story(story.getPath(), story.getDescription(), story.getMeta(), story.getNarrative(), scenarios);
     }
 
     private boolean matchesParameters(Scenario scenario, Map<String, String> parameters) {
         Meta meta = scenario.getMeta();
-        for ( String name : parameters.keySet() ){
-            if ( meta.hasProperty(name) ){
+        for (String name : parameters.keySet()) {
+            if (meta.hasProperty(name)) {
                 return meta.getProperty(name).equals(parameters.get(name));
             }
         }
@@ -452,12 +452,12 @@ public class StoryRunner {
             throws Throwable {
         ExamplesTable table = scenario.getExamplesTable();
         reporter.get().beforeExamples(scenario.getSteps(), table);
-    	Keywords keywords = context.configuration().keywords();
+        Keywords keywords = context.configuration().keywords();
         for (Map<String, String> scenarioParameters : table.getRows()) {
-			Meta parameterMeta = parameterMeta(keywords, scenarioParameters);
-			if ( !parameterMeta.isEmpty() && !context.filter.allow(parameterMeta) ){
-				continue;
-			}
+            Meta parameterMeta = parameterMeta(keywords, scenarioParameters);
+            if (!parameterMeta.isEmpty() && !context.filter.allow(parameterMeta)) {
+                continue;
+            }
             reporter.get().example(scenarioParameters);
             if (context.configuration().storyControls().resetStateBeforeScenario()) {
                 context.resetState();
@@ -480,25 +480,25 @@ public class StoryRunner {
     }
 
     private Meta parameterMeta(Keywords keywords,
-			Map<String, String> scenarioParameters) {
-		String meta = keywords.meta();
-		if (scenarioParameters.containsKey(meta)) {
-			return Meta.createMeta(scenarioParameters.get(meta), keywords);
-		}
-		return Meta.EMPTY;
-	}
+                               Map<String, String> scenarioParameters) {
+        String meta = keywords.meta();
+        if (scenarioParameters.containsKey(meta)) {
+            return Meta.createMeta(scenarioParameters.get(meta), keywords);
+        }
+        return Meta.EMPTY;
+    }
 
-	private void runBeforeOrAfterStorySteps(RunContext context, Story story, Stage stage) throws InterruptedException {
+    private void runBeforeOrAfterStorySteps(RunContext context, Story story, Stage stage) throws InterruptedException {
         runStepsWhileKeepingState(context, context.collectBeforeOrAfterStorySteps(story, stage));
     }
 
     private void runBeforeOrAfterScenarioSteps(RunContext context, Scenario scenario, Meta storyAndScenarioMeta,
-            Stage stage, ScenarioType type) throws InterruptedException {
+                                               Stage stage, ScenarioType type) throws InterruptedException {
         runStepsWhileKeepingState(context, context.collectBeforeOrAfterScenarioSteps(storyAndScenarioMeta, stage, type));
     }
 
     private void runLifecycleSteps(RunContext context, Lifecycle lifecycle, Stage stage, Meta storyAndScenarioMeta) throws InterruptedException {
-        runStepsWhileKeepingState(context, context.collectLifecycleSteps(lifecycle, storyAndScenarioMeta, stage));        
+        runStepsWhileKeepingState(context, context.collectLifecycleSteps(lifecycle, storyAndScenarioMeta, stage));
     }
 
     private void runScenarioSteps(RunContext context, Scenario scenario, Map<String, String> scenarioParameters)
@@ -553,6 +553,22 @@ public class StoryRunner {
         context.stateIs(state);
     }
 
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+    public boolean failed(State state) {
+        return !state.getClass().equals(FineSoFar.class);
+    }
+
+    public Throwable failure(State state) {
+        if (failed(state)) {
+            return ((SomethingHappened) state).failure.getCause();
+        }
+        return null;
+    }
+
     public interface State {
         State run(Step step);
     }
@@ -560,10 +576,10 @@ public class StoryRunner {
     private final class FineSoFar implements State {
 
         public State run(Step step) {
-            if ( step instanceof ParametrisedStep ){
-                ((ParametrisedStep)step).describeTo(reporter.get());
+            if (step instanceof ParametrisedStep) {
+                ((ParametrisedStep) step).describeTo(reporter.get());
             }
-            UUIDExceptionWrapper storyFailureIfItHappened = storyFailure.get(); 
+            UUIDExceptionWrapper storyFailureIfItHappened = storyFailure.get();
             StepResult result = step.perform(storyFailureIfItHappened);
             result.describeTo(reporter.get());
             UUIDExceptionWrapper stepFailure = result.getFailure();
@@ -579,7 +595,7 @@ public class StoryRunner {
         private UUIDExceptionWrapper mostImportantOf(UUIDExceptionWrapper failure1, UUIDExceptionWrapper failure2) {
             return failure1 == null ? failure2
                     : failure1.getCause() instanceof PendingStepFound ? (failure2 == null ? failure1 : failure2)
-                            : failure1;
+                    : failure1;
         }
 
         private FailureStrategy strategyFor(Throwable failure) {
@@ -605,11 +621,6 @@ public class StoryRunner {
         }
     }
 
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
-    }
-
     /**
      * The context for running a story.
      */
@@ -619,11 +630,11 @@ public class StoryRunner {
         private final String path;
         private final MetaFilter filter;
         private final boolean givenStory;
-		private State state;
-		private RunContext parentContext;
+        private State state;
+        private RunContext parentContext;
 
         public RunContext(Configuration configuration, InjectableStepsFactory stepsFactory, String path,
-                MetaFilter filter) {
+                          MetaFilter filter) {
             this(configuration, stepsFactory.createCandidateSteps(), path, filter);
         }
 
@@ -632,13 +643,13 @@ public class StoryRunner {
         }
 
         private RunContext(Configuration configuration, List<CandidateSteps> steps, String path, MetaFilter filter,
-                boolean givenStory, RunContext parentContext) {
+                           boolean givenStory, RunContext parentContext) {
             this.configuration = configuration;
             this.candidateSteps = steps;
             this.path = path;
             this.filter = filter;
             this.givenStory = givenStory;
-			this.parentContext = parentContext;
+            this.parentContext = parentContext;
             resetState();
         }
 
@@ -677,7 +688,7 @@ public class StoryRunner {
         public String metaFilterAsString() {
             return filter.asString();
         }
-        
+
         public List<Step> collectBeforeOrAfterStorySteps(Story story, Stage stage) {
             return configuration.stepCollector().collectBeforeOrAfterStorySteps(candidateSteps, story, stage,
                     givenStory);
@@ -707,8 +718,8 @@ public class StoryRunner {
 
         public void stateIs(State state) {
             this.state = state;
-            if ( parentContext != null ){
-            	parentContext.stateIs(state);
+            if (parentContext != null) {
+                parentContext.stateIs(state);
             }
         }
 
@@ -720,16 +731,5 @@ public class StoryRunner {
             this.state = new FineSoFar();
         }
 
-    }
-
-    public boolean failed(State state) {
-        return !state.getClass().equals(FineSoFar.class);
-    }
-
-    public Throwable failure(State state) {
-        if (failed(state)) {
-            return ((SomethingHappened) state).failure.getCause();
-        }
-        return null;
     }
 }

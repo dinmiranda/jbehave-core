@@ -1,15 +1,5 @@
 package org.jbehave.core.reporters;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.equalTo;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.Properties;
-
 import org.hamcrest.core.IsEqual;
 import org.jbehave.core.failures.RestartingScenarioFailure;
 import org.jbehave.core.failures.RestartingStoryFailure;
@@ -21,16 +11,26 @@ import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.Narrative;
 import org.jbehave.core.model.OutcomesTable;
+import org.jbehave.core.model.OutcomesTable.OutcomesFailed;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
-import org.jbehave.core.model.OutcomesTable.OutcomesFailed;
 import org.jbehave.core.steps.StepCreator;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.Properties;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.Matchers.equalTo;
 
 class StoryNarrator {
 
     static void narrateAnInterestingStory(StoryReporter reporter,
-            boolean withFailure) {
+                                          boolean withFailure) {
         Properties meta = new Properties();
         meta.setProperty("theme", "testing");
         meta.setProperty("author", "Mauro");
@@ -47,13 +47,13 @@ class StoryNarrator {
         reporter.comment("!-- A comment");
         reporter.successful("When I request $20");
         reporter.successful("When I ask Liz for a loan of $100");
-        reporter.successful("When I ask Liz for a loan of $"+StepCreator.PARAMETER_VALUE_START+"99"+StepCreator.PARAMETER_VALUE_END);
+        reporter.successful("When I ask Liz for a loan of $" + StepCreator.PARAMETER_VALUE_START + "99" + StepCreator.PARAMETER_VALUE_END);
         reporter.successful("When I write special chars <>&\"");
-        reporter.successful("When I write special chars in parameter "+StepCreator.PARAMETER_VALUE_START+"<>&\""+StepCreator.PARAMETER_VALUE_END);
+        reporter.successful("When I write special chars in parameter " + StepCreator.PARAMETER_VALUE_START + "<>&\"" + StepCreator.PARAMETER_VALUE_END);
         reporter.successful("When I write two parameters "
-                + StepCreator.PARAMETER_VALUE_START+",,,"+StepCreator.PARAMETER_VALUE_END
+                + StepCreator.PARAMETER_VALUE_START + ",,," + StepCreator.PARAMETER_VALUE_END
                 + " and "
-                + StepCreator.PARAMETER_VALUE_START+"&&&"+StepCreator.PARAMETER_VALUE_END);
+                + StepCreator.PARAMETER_VALUE_START + "&&&" + StepCreator.PARAMETER_VALUE_END);
         reporter.restarted("Then I should... - try again", new RestartingScenarioFailure("hi"));
         reporter.restartedStory(story, new RestartingStoryFailure("Restarted Story"));
         reporter.storyCancelled(story, new StoryDuration(1).setDurationInSecs(2));
@@ -90,12 +90,12 @@ class StoryNarrator {
         }
         reporter.afterExamples();
         reporter.afterScenario();
-        String method1="@When(\"something \\\"$param\\\"\")\n"
+        String method1 = "@When(\"something \\\"$param\\\"\")\n"
                 + "@Pending\n"
                 + "public void whenSomething() {\n"
                 + "  // PENDING\n"
                 + "}\n";
-        String method2="@Then(\"something is <param1>\")\n"
+        String method2 = "@Then(\"something is <param1>\")\n"
                 + "@Pending\n"
                 + "public void thenSomethingIsParam1() {\n"
                 + "  // PENDING\n"
@@ -104,23 +104,6 @@ class StoryNarrator {
         reporter.afterStory(givenStory);
     }
 
-    public static class IsDateEqual extends IsEqual<Date> {
-
-        private Date date;
-        private String dateFormat;
-
-        public IsDateEqual(Date equalArg, String dateFormat) {
-            super(equalArg);
-            this.date = equalArg;
-            this.dateFormat = dateFormat;
-        }
-
-        @Override
-        public void describeTo(org.hamcrest.Description description) {
-            description.appendValue(new SimpleDateFormat(dateFormat).format(date));
-        }
-        
-    }
     static Date dateFor(String date) {
         try {
             return new SimpleDateFormat("dd/MM/yyyy").parse(date);
@@ -141,12 +124,30 @@ class StoryNarrator {
         reporter.beforeStory(story, false);
         if (storyNotAllowed) {
             reporter.storyNotAllowed(story, "-theme testing");
-        } else  {
+        } else {
             reporter.beforeScenario(story.getScenarios().get(0).getTitle());
             reporter.scenarioNotAllowed(story.getScenarios().get(0), "-theme testing");
             reporter.afterScenario();
         }
         reporter.afterStory(false);
+    }
+
+    public static class IsDateEqual extends IsEqual<Date> {
+
+        private Date date;
+        private String dateFormat;
+
+        public IsDateEqual(Date equalArg, String dateFormat) {
+            super(equalArg);
+            this.date = equalArg;
+            this.dateFormat = dateFormat;
+        }
+
+        @Override
+        public void describeTo(org.hamcrest.Description description) {
+            description.appendValue(new SimpleDateFormat(dateFormat).format(date));
+        }
+
     }
 
 }

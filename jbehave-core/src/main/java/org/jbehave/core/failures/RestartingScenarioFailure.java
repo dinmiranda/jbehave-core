@@ -5,7 +5,7 @@ package org.jbehave.core.failures;
  */
 @SuppressWarnings("serial")
 public class RestartingScenarioFailure extends RuntimeException {
-    
+
     public RestartingScenarioFailure(String message) {
         super(message);
     }

@@ -1,10 +1,10 @@
 package org.jbehave.core.parsers;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-
 import org.jbehave.core.model.Story;
 import org.junit.Test;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 
 public class TransformingStoryParserBehaviour {
@@ -14,11 +14,11 @@ public class TransformingStoryParserBehaviour {
     @Test
     public void shouldTransformAndParseStory() {
         StoryParser delegate = new RegexStoryParser();
-        StoryTransformer transformer = new StoryTransformer() {			
-			public String transform(String storyAsText) {
-				return storyAsText.replaceAll(",", "|");
-			}
-		};
+        StoryTransformer transformer = new StoryTransformer() {
+            public String transform(String storyAsText) {
+                return storyAsText.replaceAll(",", "|");
+            }
+        };
         StoryParser parser = new TransformingStoryParser(delegate, transformer);
         String storyAsText = "Scenario: a scenario " + NL +
                 "Given a scenario Given" + NL +
@@ -34,6 +34,5 @@ public class TransformingStoryParserBehaviour {
         assertThat(story.getScenarios().get(0).getExamplesTable().getRowCount(), equalTo(1));
     }
 
-   
 
 }

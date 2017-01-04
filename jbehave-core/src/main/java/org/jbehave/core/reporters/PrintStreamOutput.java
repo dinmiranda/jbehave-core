@@ -1,17 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.text.MessageFormat;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.Transformer;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,6 +21,18 @@ import org.jbehave.core.model.OutcomesTable.Outcome;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
+
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
 
 import static org.apache.commons.lang3.StringEscapeUtils.escapeHtml4;
 import static org.apache.commons.lang3.StringEscapeUtils.escapeXml;
@@ -61,12 +61,12 @@ import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
  * failed event. <br/>
  * we'd need to provide the custom pattern, say we want to have something like
  * "(step being executed) <<< FAILED", keyed on the method name:
- * 
+ * <p>
  * <pre>
  * Properties patterns = new Properties();
  * patterns.setProperty(&quot;failed&quot;, &quot;{0} &lt;&lt;&lt; {1}&quot;);
  * </pre>
- * 
+ * <p>
  * The pattern is by default processed and formatted by the
  * {@link MessageFormat}. Both the
  * {@link #format(String key, String defaultPattern, Object... args)} and
@@ -79,21 +79,16 @@ import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
  * be expressed in a different language, all we need to do is to provide an
  * instance of {@link org.jbehave.core.i18n.LocalizedKeywords} using the
  * appropriate {@link Locale}, e.g.
- * 
+ * <p>
  * <pre>
  * Keywords keywords = new LocalizedKeywords(new Locale(&quot;it&quot;));
  * </pre>
- * 
+ * <p>
  * </p>
  */
 public abstract class PrintStreamOutput implements StoryReporter {
 
     private static final String EMPTY = "";
-
-    public enum Format {
-        TXT, HTML, XML
-    }
-
     private final Format format;
     private final PrintStream output;
     private final Properties outputPatterns;
@@ -101,9 +96,8 @@ public abstract class PrintStreamOutput implements StoryReporter {
     private ThreadLocal<Boolean> reportFailureTrace = new ThreadLocal<Boolean>();
     private ThreadLocal<Boolean> compressFailureTrace = new ThreadLocal<Boolean>();
     private ThreadLocal<Throwable> cause = new ThreadLocal<Throwable>();
-
     protected PrintStreamOutput(Format format, PrintStream output, Properties outputPatterns, Keywords keywords,
-            boolean reportFailureTrace, boolean compressFailureTrace) {
+                                boolean reportFailureTrace, boolean compressFailureTrace) {
         this.format = format;
         this.output = output;
         this.outputPatterns = outputPatterns;
@@ -234,10 +228,10 @@ public abstract class PrintStreamOutput implements StoryReporter {
             }
             if (!lifecycle.getAfterSteps().isEmpty()) {
                 print(format("lifecycleAfterStart", "{0}\n", keywords.after()));
-                for ( org.jbehave.core.annotations.AfterScenario.Outcome outcome : lifecycle.getOutcomes() ){
+                for (org.jbehave.core.annotations.AfterScenario.Outcome outcome : lifecycle.getOutcomes()) {
                     print(format("lifecycleOutcome", "{0} {1}\n", keywords.outcome(), i18n(outcome)));
                     MetaFilter metaFilter = lifecycle.getMetaFilter(outcome);
-                    if ( !metaFilter.isEmpty() ){
+                    if (!metaFilter.isEmpty()) {
                         print(format("lifecycleMetaFilter", "{0} {1}\n", keywords.metaFilter(), metaFilter.asString()));
                     }
                     print(lifecycle.getAfterSteps(outcome));
@@ -249,11 +243,15 @@ public abstract class PrintStreamOutput implements StoryReporter {
     }
 
     private String i18n(org.jbehave.core.annotations.AfterScenario.Outcome outcome) {
-        switch ( outcome ){
-        case ANY: return keywords.outcomeAny();
-        case SUCCESS: return keywords.outcomeSuccess();
-        case FAILURE: return keywords.outcomeFailure();
-        default: return outcome.name();
+        switch (outcome) {
+            case ANY:
+                return keywords.outcomeAny();
+            case SUCCESS:
+                return keywords.outcomeSuccess();
+            case FAILURE:
+                return keywords.outcomeFailure();
+            default:
+                return outcome.name();
         }
     }
 
@@ -316,7 +314,7 @@ public abstract class PrintStreamOutput implements StoryReporter {
 
     @Override
     public void afterScenario() {
-        if (cause.get() != null && !(cause.get() instanceof KnownFailure) && reportFailureTrace() ) {
+        if (cause.get() != null && !(cause.get() instanceof KnownFailure) && reportFailureTrace()) {
             print(format("afterScenarioWithFailure", "\n{0}\n",
                     new StackTraceFormatter(compressFailureTrace()).stackTrace(cause.get())));
         } else {
@@ -359,7 +357,7 @@ public abstract class PrintStreamOutput implements StoryReporter {
     public void restarted(String step, Throwable cause) {
         print(format("restarted", "{0} {1}\n", step, cause.getMessage()));
     }
-    
+
     @Override
     public void restartedStory(Story story, Throwable cause) {
         print(format("restartedStory", "{0} {1}\n", story.getPath(), cause.getMessage()));
@@ -367,11 +365,11 @@ public abstract class PrintStreamOutput implements StoryReporter {
 
     /**
      * Formats event output by key, usually equal to the method name.
-     * 
-     * @param key the event key
+     *
+     * @param key            the event key
      * @param defaultPattern the default pattern to return if a custom pattern
-     *            is not found
-     * @param args the args used to format output
+     *                       is not found
+     * @param args           the args used to format output
      * @return A formatted event output
      */
     protected String format(String key, String defaultPattern, Object... args) {
@@ -417,7 +415,7 @@ public abstract class PrintStreamOutput implements StoryReporter {
      * Escapes args' string values according to format
      *
      * @param format the Format used by the PrintStream
-     * @param args the array of args to escape
+     * @param args   the array of args to escape
      * @return The cloned and escaped array of args
      */
     protected Object[] escape(final Format format, Object... args) {
@@ -426,12 +424,12 @@ public abstract class PrintStreamOutput implements StoryReporter {
             @Override
             public Object transform(Object object) {
                 switch (format) {
-                case HTML:
-                    return escapeHtml4(asString(object));
-                case XML:
-                    return escapeXml(asString(object));
-                default:
-                    return object;
+                    case HTML:
+                        return escapeHtml4(asString(object));
+                    case XML:
+                        return escapeXml(asString(object));
+                    default:
+                        return object;
                 }
             }
 
@@ -451,8 +449,8 @@ public abstract class PrintStreamOutput implements StoryReporter {
      * using the {@link MessageFormat#format(String, Object...)} method. If no
      * pattern is found for key or needs to be overridden, the default pattern
      * should be returned.
-     * 
-     * @param key the format pattern key
+     *
+     * @param key            the format pattern key
      * @param defaultPattern the default pattern if no pattern is
      * @return The format patter for the given key
      */
@@ -465,7 +463,7 @@ public abstract class PrintStreamOutput implements StoryReporter {
 
     public boolean reportFailureTrace() {
         Boolean reportFailure = reportFailureTrace.get();
-        if ( reportFailure != null ){
+        if (reportFailure != null) {
             return reportFailure;
         }
         return false;
@@ -492,7 +490,7 @@ public abstract class PrintStreamOutput implements StoryReporter {
     /**
      * Prints text to output stream, replacing parameter start and end
      * placeholders
-     * 
+     *
      * @param text the String to print
      */
     protected void print(String text) {
@@ -526,5 +524,9 @@ public abstract class PrintStreamOutput implements StoryReporter {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(format).append(output).toString();
+    }
+
+    public enum Format {
+        TXT, HTML, XML
     }
 }

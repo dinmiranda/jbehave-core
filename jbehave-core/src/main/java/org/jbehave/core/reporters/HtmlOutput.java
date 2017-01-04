@@ -15,7 +15,7 @@ import static org.jbehave.core.reporters.PrintStreamOutput.Format.HTML;
  * patterns, which can be overridden via the {@link
  * HtmlOutput (PrintStream,Properties)} constructor.
  * </p>
- * 
+ *
  * @author Mirko FriedenHagen
  * @author Mauro Talevi
  */
@@ -28,7 +28,7 @@ public class HtmlOutput extends PrintStreamOutput {
     public HtmlOutput(PrintStream output, Properties outputPatterns) {
         this(output, outputPatterns, new LocalizedKeywords());
     }
-    
+
     public HtmlOutput(PrintStream output, Keywords keywords) {
         this(output, new Properties(), keywords);
     }
@@ -38,12 +38,12 @@ public class HtmlOutput extends PrintStreamOutput {
     }
 
     public HtmlOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace) {
+                      Keywords keywords, boolean reportFailureTrace) {
         this(output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, false);
     }
 
     public HtmlOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
+                      Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
         super(HTML, output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, compressFailureTrace);
     }
 
@@ -56,25 +56,25 @@ public class HtmlOutput extends PrintStreamOutput {
 
     private static Properties defaultHtmlPatterns() {
         Properties patterns = new Properties();
-        patterns.setProperty("dryRun", "<div class=\"dryRun\">{0}</div>\n");        
+        patterns.setProperty("dryRun", "<div class=\"dryRun\">{0}</div>\n");
         patterns.setProperty("beforeStory", "<div class=\"story\">\n<h1>{0}</h1>\n<div class=\"path\">{1}</div>\n");
         patterns.setProperty("storyCancelled", "<div class=\"cancelled\">{0} ({1} {2} s)</div>\n");
         patterns.setProperty("afterStory", "</div>\n");
-        patterns.setProperty("pendingMethod", "<div><pre class=\"pending\">{0}</pre></div>\n");        
+        patterns.setProperty("pendingMethod", "<div><pre class=\"pending\">{0}</pre></div>\n");
         patterns.setProperty("metaStart", "<div class=\"meta\">\n<div class=\"keyword\">{0}</div>\n");
         patterns.setProperty("metaProperty", "<div class=\"property\">{0}{1} {2}</div>\n");
         patterns.setProperty("metaEnd", "</div>\n");
-        patterns.setProperty("filter", "<div class=\"filter\">{0}</div>\n");        
-        patterns.setProperty("narrative", "<div class=\"narrative\"><h2>{0}</h2>\n<div class=\"element inOrderTo\"><span class=\"keyword inOrderTo\">{1}</span> {2}</div>\n<div class=\"element asA\"><span class=\"keyword asA\">{3}</span> {4}</div>\n<div class=\"element iWantTo\"><span class=\"keyword iWantTo\">{5}</span> {6}</div>\n</div>\n");        
+        patterns.setProperty("filter", "<div class=\"filter\">{0}</div>\n");
+        patterns.setProperty("narrative", "<div class=\"narrative\"><h2>{0}</h2>\n<div class=\"element inOrderTo\"><span class=\"keyword inOrderTo\">{1}</span> {2}</div>\n<div class=\"element asA\"><span class=\"keyword asA\">{3}</span> {4}</div>\n<div class=\"element iWantTo\"><span class=\"keyword iWantTo\">{5}</span> {6}</div>\n</div>\n");
         patterns.setProperty("lifecycleStart", "<div class=\"lifecycle\"><h2>{0}</h2>");
-        patterns.setProperty("lifecycleEnd", "</div>");        
+        patterns.setProperty("lifecycleEnd", "</div>");
         patterns.setProperty("lifecycleBeforeStart", "<div class=\"before\"><h3>{0}</h3>");
-        patterns.setProperty("lifecycleBeforeEnd", "</div>");        
+        patterns.setProperty("lifecycleBeforeEnd", "</div>");
         patterns.setProperty("lifecycleAfterStart", "<div class=\"after\"><h3>{0}</h3>");
-        patterns.setProperty("lifecycleAfterEnd", "</div>");   
+        patterns.setProperty("lifecycleAfterEnd", "</div>");
         patterns.setProperty("lifecycleOutcome", "<div class=\"outcome\">{0} {1}</div>");
         patterns.setProperty("lifecycleMetaFilter", "<div class=\"metaFilter step\">{0} {1}</div>");
-        patterns.setProperty("lifecycleStep", "<div class=\"step\">{0}</div>\n");          
+        patterns.setProperty("lifecycleStep", "<div class=\"step\">{0}</div>\n");
         patterns.setProperty("beforeScenario", "<div class=\"scenario\">\n<h2>{0} {1}</h2>\n");
         patterns.setProperty("afterScenario", "</div>\n");
         patterns.setProperty("afterScenarioWithFailure", "<pre class=\"failure\">{0}</pre>\n</div>\n");

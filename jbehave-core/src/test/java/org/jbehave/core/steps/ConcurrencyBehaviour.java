@@ -15,9 +15,9 @@ public class ConcurrencyBehaviour {
 
         final ParameterConverters parameterConverters = new ParameterConverters(true);
 
-        final boolean[] active = new boolean[] { true };
-        final ParameterConverter[] toAdd = new ParameterConverter[] { mock(ParameterConverter.class, "one"),
-                mock(ParameterConverter.class, "two"), mock(ParameterConverter.class, "three") };
+        final boolean[] active = new boolean[]{true};
+        final ParameterConverter[] toAdd = new ParameterConverter[]{mock(ParameterConverter.class, "one"),
+                mock(ParameterConverter.class, "two"), mock(ParameterConverter.class, "three")};
         Thread t = new Thread(new Runnable() {
             public void run() {
                 while (active[0]) {

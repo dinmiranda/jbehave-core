@@ -6,8 +6,8 @@ import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.InitializationError;
 
 /**
- * A JUnit {@link Runner} that uses the {@link AnnotationBuilder} to 
- * create an embeddable test instance.  
+ * A JUnit {@link Runner} that uses the {@link AnnotationBuilder} to
+ * create an embeddable test instance.
  */
 public class AnnotatedEmbedderRunner extends BlockJUnit4ClassRunner {
 

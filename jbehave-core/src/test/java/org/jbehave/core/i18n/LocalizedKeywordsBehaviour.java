@@ -1,5 +1,18 @@
 package org.jbehave.core.i18n;
 
+import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.configuration.Keywords;
+import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.jbehave.core.i18n.LocalizedKeywords.ResourceBundleNotFound;
+import org.jbehave.core.steps.StepType;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Properties;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.not;
@@ -24,19 +37,6 @@ import static org.jbehave.core.configuration.Keywords.PENDING;
 import static org.jbehave.core.configuration.Keywords.SCENARIO;
 import static org.jbehave.core.configuration.Keywords.THEN;
 import static org.jbehave.core.configuration.Keywords.WHEN;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Properties;
-
-import org.jbehave.core.configuration.Configuration;
-import org.jbehave.core.configuration.Keywords;
-import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.i18n.LocalizedKeywords.ResourceBundleNotFound;
-import org.jbehave.core.steps.StepType;
-import org.junit.Test;
 
 public class LocalizedKeywordsBehaviour {
 
@@ -71,7 +71,7 @@ public class LocalizedKeywordsBehaviour {
         assertThat(it.toString(), not(equalTo(pt.toString())));
     }
 
-    
+
     @Test(expected = ResourceBundleNotFound.class)
     public void shouldFailIfResourceBundleIsNotFound() throws IOException {
         ensureKeywordsAreLocalisedFor(new Locale("en"), "unknown");
@@ -98,7 +98,7 @@ public class LocalizedKeywordsBehaviour {
     private void ensureKeywordsAreLocalisedFor(Locale locale) throws IOException {
         ensureKeywordsAreLocalisedFor(locale, null);
     }
-    
+
     private void ensureKeywordsAreLocalisedFor(Locale locale, String bundleName) throws IOException {
         Keywords keywords = keywordsFor(locale, bundleName, null);
         Properties properties = bundleFor(locale);
@@ -124,11 +124,11 @@ public class LocalizedKeywordsBehaviour {
         ensureKeywordIs(properties, NOT_PERFORMED, keywords.notPerformed());
         ensureKeywordIs(properties, FAILED, keywords.failed());
     }
-    
+
     private LocalizedKeywords keywordsFor(Locale locale) {
         return keywordsFor(locale, null, null);
     }
-        
+
     private LocalizedKeywords keywordsFor(Locale locale, String bundleName, ClassLoader classLoader) {
         LocalizedKeywords keywords;
         if (bundleName == null) {
@@ -136,7 +136,7 @@ public class LocalizedKeywordsBehaviour {
         } else {
             keywords = new LocalizedKeywords(locale, bundleName, classLoader);
         }
-        if ( locale != null ){
+        if (locale != null) {
             assertThat(keywords.getLocale(), equalTo(locale));
         }
         return keywords;

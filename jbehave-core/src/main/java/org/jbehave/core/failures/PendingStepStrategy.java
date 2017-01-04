@@ -9,5 +9,5 @@ package org.jbehave.core.failures;
  * </ul>
  */
 public interface PendingStepStrategy extends FailureStrategy {
-    
+
 }

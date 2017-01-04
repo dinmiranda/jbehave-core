@@ -7,32 +7,30 @@ import org.jbehave.core.steps.StepType;
  * Parses a step pattern, as provided in the method annotations, creating a
  * {@link StepMatcher} which will in turn match textual steps conforming to the pattern.
  * E.g.:
- * 
+ * <p>
  * <pre>
  * I give $money to $name
  * </pre>
- * 
+ * <p>
  * will match
- * 
+ * <p>
  * <pre>
  * I give �10 to Fred
  * </pre>
- * 
+ * <p>
  * and the captured parameters will be &quot;�10&quot; and &quot;Fred&quot;.
  * </p>
- * 
  */
 public interface StepPatternParser {
 
-	/**
-	 * Parses a step pattern to create a step matcher
-	 * 
-	 *
+    /**
+     * Parses a step pattern to create a step matcher
+     *
      * @param stepType
      * @param stepPattern the step pattern
      * @return A StepMatcher that will capture the parameters associated with a
-	 *         step
-	 */
-	StepMatcher parseStep(StepType stepType, String stepPattern);
+     * step
+     */
+    StepMatcher parseStep(StepType stepType, String stepPattern);
 
 }

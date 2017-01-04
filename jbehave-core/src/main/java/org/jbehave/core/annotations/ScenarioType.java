@@ -6,15 +6,15 @@ public enum ScenarioType {
      * Any type of scenario
      */
     ANY,
-    
+
     /**
      * Scenario that is part of normal story execution
      */
-    NORMAL, 
-    
+    NORMAL,
+
     /**
      * Scenario that is parametrised by example
      */
     EXAMPLE
-    
+
 }

@@ -13,62 +13,62 @@ public class UnmodifiableEmbedderControls extends EmbedderControls {
 
     @Override
     public boolean batch() {
-        return delegate.batch();
+        return this.delegate.batch();
     }
 
     @Override
     public boolean ignoreFailureInView() {
-        return delegate.ignoreFailureInView();
+        return this.delegate.ignoreFailureInView();
     }
 
     @Override
     public boolean ignoreFailureInStories() {
-        return delegate.ignoreFailureInStories();
+        return this.delegate.ignoreFailureInStories();
     }
 
     @Override
     public boolean generateViewAfterStories() {
-        return delegate.generateViewAfterStories();
+        return this.delegate.generateViewAfterStories();
     }
 
     @Override
     public boolean skip() {
-        return delegate.skip();
+        return this.delegate.skip();
     }
 
     @Override
     public boolean verboseFailures() {
-        return delegate.verboseFailures();
+        return this.delegate.verboseFailures();
     }
 
     @Override
     public boolean verboseFiltering() {
-        return delegate.verboseFiltering();
+        return this.delegate.verboseFiltering();
     }
 
     @Override
     public String storyTimeouts() {
-        return delegate.storyTimeouts();
+        return this.delegate.storyTimeouts();
     }
-    
+
     @Override
     public long storyTimeoutInSecs() {
-        return delegate.storyTimeoutInSecs();
+        return this.delegate.storyTimeoutInSecs();
     }
-    
+
     @Override
     public String storyTimeoutInSecsByPath() {
-        return delegate.storyTimeoutInSecsByPath();
+        return this.delegate.storyTimeoutInSecsByPath();
     }
-    
-    @Override
-	public boolean failOnStoryTimeout() {
-        return delegate.failOnStoryTimeout();
-	}
 
-	@Override
+    @Override
+    public boolean failOnStoryTimeout() {
+        return this.delegate.failOnStoryTimeout();
+    }
+
+    @Override
     public int threads() {
-        return delegate.threads();
+        return this.delegate.threads();
     }
 
     @Override
@@ -110,7 +110,7 @@ public class UnmodifiableEmbedderControls extends EmbedderControls {
     public EmbedderControls useStoryTimeoutInSecs(long storyTimeoutInSecs) {
         throw notAllowed();
     }
-    
+
     @Override
     public EmbedderControls useStoryTimeoutInSecsByPath(String storyTimeoutInSecsByPath) {
         throw notAllowed();
@@ -127,10 +127,9 @@ public class UnmodifiableEmbedderControls extends EmbedderControls {
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(delegate).toString();
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(this.delegate).toString();
     }
 
-    @SuppressWarnings("serial")
     public static class ModificationNotAllowed extends RuntimeException {
         public ModificationNotAllowed() {
             super("Configuration elements are unmodifiable");

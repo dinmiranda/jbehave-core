@@ -1,12 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.failures.RestartingStoryFailure;
@@ -19,6 +12,13 @@ import org.jbehave.core.model.OutcomesTable;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
 
 import static java.util.Arrays.asList;
 
@@ -142,7 +142,7 @@ public class PostStoryStatisticsCollector implements StoryReporter {
         boolean write = false;
         if (givenStory) {
             this.givenStories--;
-            if ( has("stepsFailed") ){
+            if (has("stepsFailed")) {
                 add("scenariosFailed");
                 write = true;
             }
@@ -152,7 +152,7 @@ public class PostStoryStatisticsCollector implements StoryReporter {
             }
             write = true;
         }
-        if ( write ) {
+        if (write) {
             writeData();
         }
     }
@@ -208,7 +208,7 @@ public class PostStoryStatisticsCollector implements StoryReporter {
 
     private void countScenarios(String namespace) {
         add(namespace);
-        if (!currentScenarioNotAllowed){
+        if (!currentScenarioNotAllowed) {
             if (cause != null || outcomesFailed != null) {
                 add(namespace + "Failed");
             } else {

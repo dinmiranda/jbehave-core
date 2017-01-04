@@ -1,20 +1,20 @@
 package org.jbehave.core.reporters;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.not;
-
-import java.io.File;
-import java.net.URL;
-
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.StoryLocation;
 import org.jbehave.core.reporters.FilePrintStreamFactory.FileConfiguration;
 import org.jbehave.core.reporters.FilePrintStreamFactory.FilePathResolver;
-import org.jbehave.core.reporters.FilePrintStreamFactory.ResolveToSimpleName;
 import org.jbehave.core.reporters.FilePrintStreamFactory.PrintStreamCreationFailed;
+import org.jbehave.core.reporters.FilePrintStreamFactory.ResolveToSimpleName;
 import org.junit.Test;
+
+import java.io.File;
+import java.net.URL;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.not;
 
 
 public class FilePrintStreamFactoryBehaviour {
@@ -39,24 +39,24 @@ public class FilePrintStreamFactoryBehaviour {
         String storyPath = codeLocation + "org/jbehave/examples/trader/stories/my_given.story";
         ensureOutputFileIsSame(codeLocation, storyPath);
     }
-    
+
     @Test
-    public void shouldAllowOverrideOfDefaultConfiguration(){
+    public void shouldAllowOverrideOfDefaultConfiguration() {
         // Given
         URL codeLocation = CodeLocations.codeLocationFromClass(this.getClass());
         String storyPath = "org/jbehave/examples/trader/stories/my_given.story";
         FileConfiguration configuration = new FileConfiguration("ext");
-        
+
         // When
         FilePrintStreamFactory factory = new FilePrintStreamFactory(new StoryLocation(codeLocation, storyPath), configuration);
-        assertThat(factory.configuration(), equalTo(configuration));        
+        assertThat(factory.configuration(), equalTo(configuration));
         FileConfiguration newConfiguration = new FileConfiguration();
         factory.useConfiguration(newConfiguration);
-        
+
         // Then
-        assertThat(factory.configuration(), not(equalTo(configuration)));        
-        assertThat(factory.configuration().toString(), containsString(FileConfiguration.EXTENSION));        
-        assertThat(factory.configuration().toString(), containsString(FileConfiguration.RELATIVE_DIRECTORY));        
+        assertThat(factory.configuration(), not(equalTo(configuration)));
+        assertThat(factory.configuration().toString(), containsString(FileConfiguration.EXTENSION));
+        assertThat(factory.configuration().toString(), containsString(FileConfiguration.RELATIVE_DIRECTORY));
     }
 
     @Test
@@ -83,28 +83,28 @@ public class FilePrintStreamFactoryBehaviour {
     private void assertThatOutputNameIs(String storyPath, String outputName, FilePathResolver pathResolver) {
         // Given
         URL codeLocation = CodeLocations.codeLocationFromClass(this.getClass());
-        String extension = "ext";        
+        String extension = "ext";
         FileConfiguration configuration = (pathResolver != null ? new FileConfiguration("", extension, pathResolver) : new FileConfiguration(extension));
         // When
         FilePrintStreamFactory factory = new FilePrintStreamFactory(new StoryLocation(codeLocation, storyPath), configuration);
         // Then
         assertThat(factory.outputName(), equalTo(outputName));
     }
-    
-    @Test(expected=PrintStreamCreationFailed.class)
-    public void shouldFailIfPrintStreamCannotBeCreated(){
+
+    @Test(expected = PrintStreamCreationFailed.class)
+    public void shouldFailIfPrintStreamCannotBeCreated() {
         // Given
         URL codeLocation = CodeLocations.codeLocationFromClass(this.getClass());
         String storyPath = "org/jbehave/examples/trader/stories/my_given.story";
         FileConfiguration configuration = new FileConfiguration("ext");
-        FilePrintStreamFactory factory = new FilePrintStreamFactory(new StoryLocation(codeLocation, storyPath), configuration){
+        FilePrintStreamFactory factory = new FilePrintStreamFactory(new StoryLocation(codeLocation, storyPath), configuration) {
             protected File outputDirectory() {
-                return new File((String)null);
+                return new File((String) null);
             }
         };
         // When
         factory.createPrintStream();
-        
+
         // Then fail as expected
     }
 

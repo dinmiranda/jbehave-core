@@ -1,15 +1,5 @@
 package org.jbehave.core.reporters;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.commons.io.IOUtils;
 import org.jbehave.core.embedder.MatchingStepMonitor.StepMatch;
 import org.jbehave.core.embedder.PerformableTree.NormalPerformableScenario;
@@ -27,6 +17,16 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.steps.StepType;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+
 
 public class CrossReferenceBehaviour {
 
@@ -40,7 +40,7 @@ public class CrossReferenceBehaviour {
         PerformableRoot root = performableRoot();
         File outputDirectory = new File("target");
         crossReference.serialise(root, outputDirectory);
-        
+
 
         // Then
         String expectedXml = resource("xref.xml");
@@ -48,7 +48,7 @@ public class CrossReferenceBehaviour {
 
         String expectedJson = resource("xref.json");
         String actualJson = output(outputDirectory, "xref.json");
-        
+
         assertEquals(expectedXml, actualXml);
         assertEquals(expectedJson, actualJson);
     }
@@ -58,7 +58,7 @@ public class CrossReferenceBehaviour {
     }
 
     private String output(File outputDirectory, String name) throws IOException, FileNotFoundException {
-        return IOUtils.toString(new FileReader(new File(outputDirectory, "view/"+name))).replaceAll("(?:\\n|\\r)", "");
+        return IOUtils.toString(new FileReader(new File(outputDirectory, "view/" + name))).replaceAll("(?:\\n|\\r)", "");
     }
 
     private PerformableRoot performableRoot() {
@@ -75,7 +75,7 @@ public class CrossReferenceBehaviour {
         normalScenario.addSteps(new PerformableSteps(null, stepMatches));
         performableScenario.useNormalScenario(normalScenario);
         return root;
-    }   
+    }
 
 
 }

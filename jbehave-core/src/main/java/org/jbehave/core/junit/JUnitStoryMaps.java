@@ -1,9 +1,9 @@
 package org.jbehave.core.junit;
 
-import java.util.List;
-
 import org.jbehave.core.ConfigurableEmbedder;
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * <p>

@@ -1,12 +1,6 @@
 package org.jbehave.core.io;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyInt;
-import static org.mockito.Mockito.isA;
+import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
@@ -16,7 +10,13 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.isA;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class IOUtilsBehaviour {
 
@@ -28,11 +28,11 @@ public class IOUtilsBehaviour {
         assertEquals("äöü", IOUtils.toString(new StringReader("äöü"), true));
 
         // close() can be called more than once, a more elaborate test is below 
-        Reader reader=new StringReader("hello");
+        Reader reader = new StringReader("hello");
         assertEquals("hello", IOUtils.toString(reader, false));
         reader.close();
 
-        String longString=createLongString();
+        String longString = createLongString();
         assertEquals(longString, IOUtils.toString(new StringReader(longString), true));
 
         // read an actual file
@@ -40,11 +40,11 @@ public class IOUtilsBehaviour {
 
     }
 
-    @Test(expected=NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void shouldHandleReaderNull() throws IOException {
         // this causes a NPE in the apache-commons code, no point
         // in changing the logic in our implementation, I guess
-        IOUtils.toString((Reader)null, true);
+        IOUtils.toString((Reader) null, true);
     }
 
     @Test
@@ -86,18 +86,18 @@ public class IOUtilsBehaviour {
         assertEquals("asdf", IOUtils.toString(input, false));
         input.close();
 
-        String longString=createLongString();
+        String longString = createLongString();
         assertEquals(longString, IOUtils.toString(new ByteArrayInputStream(longString.getBytes("UTF-8")), true));
 
         assertEquals("##########", IOUtils.toString(new FileInputStream("src/test/resources/testfile"), true));
 
     }
 
-    @Test(expected=NullPointerException.class)
+    @Test(expected = NullPointerException.class)
     public void shouldHandleInputStreamNull() throws IOException {
         // this causes a NPE in the apache-commons code, no point
         // in changing the logic in our implementation, I guess
-        IOUtils.toString((InputStream)null, true);
+        IOUtils.toString((InputStream) null, true);
     }
 
     @Test
@@ -131,9 +131,9 @@ public class IOUtilsBehaviour {
      * create a 1mb String
      */
     private String createLongString() {
-        StringBuilder sb=new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         sb.append("*");
-        for(int i=0;i<20;i++) {
+        for (int i = 0; i < 20; i++) {
             sb.append(sb);
         }
         return sb.toString();

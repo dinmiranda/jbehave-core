@@ -1,11 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -32,7 +26,6 @@ import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.reporters.ConcurrentStoryReporter;
 import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.steps.CandidateSteps;
-import org.jbehave.core.steps.context.StepsContext;
 import org.jbehave.core.steps.InjectableStepsFactory;
 import org.jbehave.core.steps.PendingStepMethodGenerator;
 import org.jbehave.core.steps.Step;
@@ -41,6 +34,13 @@ import org.jbehave.core.steps.StepCreator.ParametrisedStep;
 import org.jbehave.core.steps.StepCreator.PendingStep;
 import org.jbehave.core.steps.StepResult;
 import org.jbehave.core.steps.Timer;
+import org.jbehave.core.steps.context.StepsContext;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Creates a tree of {@link Performable} objects for a set of stories, grouping
@@ -62,16 +62,34 @@ public class PerformableTree {
 
     private PerformableRoot root = new PerformableRoot();
 
+    static void generatePendingStepMethods(RunContext context, List<Step> steps) {
+        List<PendingStep> pendingSteps = new ArrayList<PendingStep>();
+        for (Step step : steps) {
+            if (step instanceof PendingStep) {
+                pendingSteps.add((PendingStep) step);
+            }
+        }
+        if (!pendingSteps.isEmpty()) {
+            PendingStepMethodGenerator generator = new PendingStepMethodGenerator(context.configuration().keywords());
+            List<String> methods = new ArrayList<String>();
+            for (PendingStep pendingStep : pendingSteps) {
+                if (!pendingStep.annotated()) {
+                    methods.add(generator.generateMethod(pendingStep));
+                }
+            }
+        }
+    }
+
     public PerformableRoot getRoot() {
-        return root;
+        return this.root;
     }
 
     public void addStories(RunContext context, List<Story> stories) {
-        root.addBeforeSteps(context.beforeOrAfterStoriesSteps(Stage.BEFORE));
+        this.root.addBeforeSteps(context.beforeOrAfterStoriesSteps(Stage.BEFORE));
         for (Story story : stories) {
-            root.add(performableStory(context, story, NO_PARAMETERS));
+            this.root.add(performableStory(context, story, NO_PARAMETERS));
         }
-        root.addAfterSteps(context.beforeOrAfterStoriesSteps(Stage.AFTER));
+        this.root.addAfterSteps(context.beforeOrAfterStoriesSteps(Stage.AFTER));
     }
 
     private PerformableStory performableStory(RunContext context, Story story, Map<String, String> storyParameters) {
@@ -119,8 +137,8 @@ public class PerformableTree {
     }
 
     private PerformableScenario performableScenario(RunContext context, Story story,
-            Map<String, String> storyParameters, FilteredStory filterContext, Meta storyMeta,
-            boolean runBeforeAndAfterScenarioSteps, Scenario scenario) {
+                                                    Map<String, String> storyParameters, FilteredStory filterContext, Meta storyMeta,
+                                                    boolean runBeforeAndAfterScenarioSteps, Scenario scenario) {
         PerformableScenario performableScenario = new PerformableScenario(scenario, story.getPath());
         // scenario also inherits meta from story
         boolean scenarioAllowed = true;
@@ -138,17 +156,17 @@ public class PerformableTree {
             Lifecycle lifecycle = story.getLifecycle();
 
             Meta storyAndScenarioMeta = scenario.getMeta().inheritFrom(storyMeta);
-			NormalPerformableScenario normalScenario = normalScenario(
-					context, lifecycle, scenario, storyAndScenarioMeta,
-					storyParameters);
+            NormalPerformableScenario normalScenario = normalScenario(
+                    context, lifecycle, scenario, storyAndScenarioMeta,
+                    storyParameters);
 
             // run before scenario steps, if allowed
             if (runBeforeAndAfterScenarioSteps) {
-            	normalScenario.addBeforeSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta,
+                normalScenario.addBeforeSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta,
                         Stage.BEFORE, ScenarioType.NORMAL));
             }
-            
-			if (isParameterisedByExamples(scenario)) {
+
+            if (isParameterisedByExamples(scenario)) {
                 ExamplesTable table = scenario.getExamplesTable();
                 for (Map<String, String> scenarioParameters : table.getRows()) {
                     Meta exampleScenarioMeta = parameterMeta(context, scenarioParameters).inheritFrom(storyAndScenarioMeta);
@@ -162,12 +180,12 @@ public class PerformableTree {
                     }
                 }
             } else { // plain old scenario
-				performableScenario.useNormalScenario(normalScenario);
+                performableScenario.useNormalScenario(normalScenario);
             }
 
             // after scenario steps, if allowed
             if (runBeforeAndAfterScenarioSteps) {
-            	normalScenario.addAfterSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.AFTER,
+                normalScenario.addAfterSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.AFTER,
                         ScenarioType.NORMAL));
             }
 
@@ -175,21 +193,21 @@ public class PerformableTree {
         return performableScenario;
     }
 
-	private NormalPerformableScenario normalScenario(RunContext context,
-			Lifecycle lifecycle, Scenario scenario, Meta storyAndScenarioMeta,
-			Map<String, String> storyParameters) {
-		NormalPerformableScenario normalScenario = new NormalPerformableScenario(scenario);
-		normalScenario.setStoryAndScenarioMeta(storyAndScenarioMeta);
-		addStepsWithLifecycle(normalScenario, context, lifecycle, storyParameters,
-				scenario, storyAndScenarioMeta);
-		return normalScenario;
-	}
+    private NormalPerformableScenario normalScenario(RunContext context,
+                                                     Lifecycle lifecycle, Scenario scenario, Meta storyAndScenarioMeta,
+                                                     Map<String, String> storyParameters) {
+        NormalPerformableScenario normalScenario = new NormalPerformableScenario(scenario);
+        normalScenario.setStoryAndScenarioMeta(storyAndScenarioMeta);
+        addStepsWithLifecycle(normalScenario, context, lifecycle, storyParameters,
+                scenario, storyAndScenarioMeta);
+        return normalScenario;
+    }
 
-	private ExamplePerformableScenario exampleScenario(RunContext context,
-			Lifecycle lifecycle, Scenario scenario, Meta storyAndScenarioMeta,
-			Map<String, String> parameters) {
-	    ExamplePerformableScenario exampleScenario = new ExamplePerformableScenario(scenario, parameters);
-	    exampleScenario.setStoryAndScenarioMeta(storyAndScenarioMeta);
+    private ExamplePerformableScenario exampleScenario(RunContext context,
+                                                       Lifecycle lifecycle, Scenario scenario, Meta storyAndScenarioMeta,
+                                                       Map<String, String> parameters) {
+        ExamplePerformableScenario exampleScenario = new ExamplePerformableScenario(scenario, parameters);
+        exampleScenario.setStoryAndScenarioMeta(storyAndScenarioMeta);
         exampleScenario.addBeforeSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.BEFORE,
                 ScenarioType.EXAMPLE));
         addStepsWithLifecycle(exampleScenario, context, lifecycle, parameters, scenario, storyAndScenarioMeta);
@@ -197,40 +215,40 @@ public class PerformableTree {
                 ScenarioType.EXAMPLE));
         return exampleScenario;
     }
-	
-	private Meta parameterMeta(RunContext context, Map<String, String> parameters) {
-	    Meta meta = Meta.EMPTY;
+
+    private Meta parameterMeta(RunContext context, Map<String, String> parameters) {
+        Meta meta = Meta.EMPTY;
         Keywords keywords = context.configuration().keywords();
         String metaText = keywords.meta();
         if (parameters.containsKey(metaText)) {
             meta = Meta.createMeta(parameters.get(metaText), keywords);
         }
         return meta;
-	}
+    }
 
-	private void addStepsWithLifecycle(AbstractPerformableScenario performableScenario, RunContext context,
-			Lifecycle lifecycle, Map<String, String> parameters, Scenario scenario, Meta storyAndScenarioMeta) {
-		performableScenario.addBeforeSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.BEFORE,
+    private void addStepsWithLifecycle(AbstractPerformableScenario performableScenario, RunContext context,
+                                       Lifecycle lifecycle, Map<String, String> parameters, Scenario scenario, Meta storyAndScenarioMeta) {
+        performableScenario.addBeforeSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.BEFORE,
                 ScenarioType.ANY));
-		performableScenario.addBeforeSteps(context.lifecycleSteps(lifecycle, storyAndScenarioMeta, Stage.BEFORE));
-		addMetaParameters(parameters, storyAndScenarioMeta);
-		performableScenario.addGivenStories(performableGivenStories(context, scenario.getGivenStories(),
-		        parameters));
-		performableScenario.addSteps(context.scenarioSteps(scenario, parameters));
-		performableScenario.addAfterSteps(context.lifecycleSteps(lifecycle, storyAndScenarioMeta, Stage.AFTER));
-		performableScenario.addAfterSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.AFTER,
+        performableScenario.addBeforeSteps(context.lifecycleSteps(lifecycle, storyAndScenarioMeta, Stage.BEFORE));
+        addMetaParameters(parameters, storyAndScenarioMeta);
+        performableScenario.addGivenStories(performableGivenStories(context, scenario.getGivenStories(),
+                parameters));
+        performableScenario.addSteps(context.scenarioSteps(scenario, parameters));
+        performableScenario.addAfterSteps(context.lifecycleSteps(lifecycle, storyAndScenarioMeta, Stage.AFTER));
+        performableScenario.addAfterSteps(context.beforeOrAfterScenarioSteps(storyAndScenarioMeta, Stage.AFTER,
                 ScenarioType.ANY));
-	}
+    }
 
     private List<PerformableStory> performableGivenStories(RunContext context, GivenStories givenStories,
-            Map<String, String> parameters) {
+                                                           Map<String, String> parameters) {
         List<PerformableStory> stories = new ArrayList<PerformableStory>();
         if (givenStories.getPaths().size() > 0) {
             for (GivenStory givenStory : givenStories.getStories()) {
                 RunContext childContext = context.childContextFor(givenStory);
                 // run given story, using any parameters provided
-                Story story = storyOfPath(context.configuration(), childContext.path());                
-                if ( givenStory.hasAnchorParameters() ){
+                Story story = storyOfPath(context.configuration(), childContext.path());
+                if (givenStory.hasAnchorParameters()) {
                     story = storyWithMatchingScenarios(story, givenStory.getAnchorParameters());
                 }
                 parameters.putAll(givenStory.getParameters());
@@ -240,21 +258,21 @@ public class PerformableTree {
         return stories;
     }
 
-    private Story storyWithMatchingScenarios(Story story, Map<String,String> parameters) {
-        if ( parameters.isEmpty() ) return story;
+    private Story storyWithMatchingScenarios(Story story, Map<String, String> parameters) {
+        if (parameters.isEmpty()) return story;
         List<Scenario> scenarios = new ArrayList<Scenario>();
-        for ( Scenario scenario : story.getScenarios() ){
-            if ( matchesParameters(scenario, parameters) ){
+        for (Scenario scenario : story.getScenarios()) {
+            if (matchesParameters(scenario, parameters)) {
                 scenarios.add(scenario);
             }
         }
-        return new Story(story.getPath(), story.getDescription(), story.getMeta(), story.getNarrative(), scenarios); 
+        return new Story(story.getPath(), story.getDescription(), story.getMeta(), story.getNarrative(), scenarios);
     }
 
     private boolean matchesParameters(Scenario scenario, Map<String, String> parameters) {
         Meta meta = scenario.getMeta();
-        for ( String name : parameters.keySet() ){
-            if ( meta.hasProperty(name) ){
+        for (String name : parameters.keySet()) {
+            if (meta.hasProperty(name)) {
                 return meta.getProperty(name).equals(parameters.get(name));
             }
         }
@@ -263,9 +281,9 @@ public class PerformableTree {
 
     /**
      * Returns the parsed story from the given path
-     * 
+     *
      * @param configuration the Configuration used to run story
-     * @param storyPath the story path
+     * @param storyPath     the story path
      * @return The parsed Story
      */
     public Story storyOfPath(Configuration configuration, String storyPath) {
@@ -275,10 +293,10 @@ public class PerformableTree {
 
     /**
      * Returns the parsed story from the given text
-     * 
+     *
      * @param configuration the Configuration used to run story
-     * @param storyAsText the story text
-     * @param storyId the story Id, which will be returned as story path
+     * @param storyAsText   the story text
+     * @param storyId       the story Id, which will be returned as story path
      * @return The parsed Story
      */
     public Story storyOfText(Configuration configuration, String storyAsText, String storyId) {
@@ -310,36 +328,93 @@ public class PerformableTree {
         return scenario.getExamplesTable().getHeaders().size() > 0 && !scenario.getGivenStories().requireParameters();
     }
 
-    static void generatePendingStepMethods(RunContext context, List<Step> steps) {
-        List<PendingStep> pendingSteps = new ArrayList<PendingStep>();
-        for (Step step : steps) {
-            if (step instanceof PendingStep) {
-                pendingSteps.add((PendingStep) step);
+    public void perform(RunContext context, Story story) {
+        boolean restartingStory = false;
+
+        try {
+            performCancellable(context, story);
+            if (context.restartStory()) {
+                context.reporter().restartedStory(story, context.failure(context.state()));
+                restartingStory = true;
+                perform(context, story);
             }
-        }
-        if (!pendingSteps.isEmpty()) {
-            PendingStepMethodGenerator generator = new PendingStepMethodGenerator(context.configuration().keywords());
-            List<String> methods = new ArrayList<String>();
-            for (PendingStep pendingStep : pendingSteps) {
-                if (!pendingStep.annotated()) {
-                    methods.add(generator.generateMethod(pendingStep));
-                }
+        } catch (InterruptedException e) {
+            if (context.isCancelled(story)) {
+                context.reporter().storyCancelled(story, context.storyDuration(story));
+                context.reporter().afterStory(context.givenStory);
+            }
+            throw new UUIDExceptionWrapper(e);
+        } finally {
+            if (!context.givenStory() && context.reporter() instanceof ConcurrentStoryReporter && !restartingStory) {
+                ((ConcurrentStoryReporter) context.reporter()).invokeDelayed();
             }
         }
     }
 
+    private void performCancellable(RunContext context, Story story) throws InterruptedException {
+        if (context.configuration().storyControls().resetStateBeforeStory()) {
+            context.resetState();
+            context.resetFailures();
+        }
+
+        if (!story.getPath().equals(context.path())) {
+            context.currentPath(story.getPath());
+        }
+
+        this.root.get(story).perform(context);
+        if (context.failureOccurred()) {
+            context.addFailure();
+        }
+    }
+
+    public void performBeforeOrAfterStories(RunContext context, Stage stage) {
+        String storyPath = StringUtils.capitalize(stage.name().toLowerCase()) + "Stories";
+        context.currentPath(storyPath);
+        context.reporter().beforeStory(new Story(storyPath), false);
+        try {
+            (stage == Stage.BEFORE ? this.root.beforeSteps : this.root.afterSteps).perform(context);
+        } catch (InterruptedException e) {
+            throw new UUIDExceptionWrapper(e);
+        } finally {
+            if (context.reporter() instanceof ConcurrentStoryReporter) {
+                ((ConcurrentStoryReporter) context.reporter()).invokeDelayed();
+            }
+        }
+        context.reporter().afterStory(false);
+    }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
+
+    public RunContext newRunContext(Configuration configuration, InjectableStepsFactory stepsFactory,
+                                    EmbedderMonitor embedderMonitor, MetaFilter filter, BatchFailures failures) {
+        return new RunContext(configuration, stepsFactory, embedderMonitor, filter, failures);
+    }
+
+    public static enum Status {
+        SUCCESSFUL, FAILED, PENDING, NOT_PERFORMED, NOT_ALLOWED
+    }
+
     public interface State {
-        
+
         State run(Step step, List<StepResult> results, StoryReporter reporter,
-                UUIDExceptionWrapper storyFailureIfItHappened);
+                  UUIDExceptionWrapper storyFailureIfItHappened);
 
         UUIDExceptionWrapper getFailure();
+    }
+
+    public static interface Performable {
+
+        void perform(RunContext context) throws InterruptedException;
+
     }
 
     private final static class FineSoFar implements State {
 
         public State run(Step step, List<StepResult> results, StoryReporter reporter,
-                UUIDExceptionWrapper storyFailureIfItHappened) {
+                         UUIDExceptionWrapper storyFailureIfItHappened) {
             if (step instanceof ParametrisedStep) {
                 ((ParametrisedStep) step).describeTo(reporter);
             }
@@ -358,7 +433,7 @@ public class PerformableTree {
         private UUIDExceptionWrapper mostImportantOf(UUIDExceptionWrapper failure1, UUIDExceptionWrapper failure2) {
             return failure1 == null ? failure2
                     : failure1.getCause() instanceof PendingStepFound ? (failure2 == null ? failure1 : failure2)
-                            : failure1;
+                    : failure1;
         }
 
         public UUIDExceptionWrapper getFailure() {
@@ -382,68 +457,8 @@ public class PerformableTree {
         }
 
         public UUIDExceptionWrapper getFailure() {
-            return failure;
+            return this.failure;
         }
-    }
-
-    public void perform(RunContext context, Story story) {
-    	boolean restartingStory = false;
-
-        try {
-            performCancellable(context, story);
-            if (context.restartStory()){
-				context.reporter().restartedStory(story, context.failure(context.state()));
-				restartingStory = true;
-            	perform(context, story);
-            }
-        } catch (InterruptedException e) {
-            if (context.isCancelled(story)) {
-                context.reporter().storyCancelled(story, context.storyDuration(story));
-                context.reporter().afterStory(context.givenStory);
-            }
-	        throw new UUIDExceptionWrapper(e);
-        } finally {
-            if (!context.givenStory() && context.reporter() instanceof ConcurrentStoryReporter && !restartingStory ) {
-                ((ConcurrentStoryReporter) context.reporter()).invokeDelayed();
-            }
-        }
-    }
-
-    private void performCancellable(RunContext context, Story story) throws InterruptedException {
-        if (context.configuration().storyControls().resetStateBeforeStory()) {
-            context.resetState();
-            context.resetFailures();
-        }
-
-        if (!story.getPath().equals(context.path())) {
-            context.currentPath(story.getPath());
-        }
-
-        root.get(story).perform(context);
-        if (context.failureOccurred()) {
-            context.addFailure();
-        }
-    }
-
-    public void performBeforeOrAfterStories(RunContext context, Stage stage) {
-        String storyPath = StringUtils.capitalize(stage.name().toLowerCase()) + "Stories";
-        context.currentPath(storyPath);
-        context.reporter().beforeStory(new Story(storyPath), false);
-        try {
-            (stage == Stage.BEFORE ? root.beforeSteps : root.afterSteps).perform(context);
-        } catch (InterruptedException e) {
-            throw new UUIDExceptionWrapper(e);
-        } finally {
-            if (context.reporter() instanceof ConcurrentStoryReporter) {
-                ((ConcurrentStoryReporter) context.reporter()).invokeDelayed();
-            }
-        }
-        context.reporter().afterStory(false);
-    }
-
-    @Override
-    public String toString() {
-        return this.getClass().getSimpleName();
     }
 
     /**
@@ -453,22 +468,22 @@ public class PerformableTree {
         private final Configuration configuration;
         private final InjectableStepsFactory stepsFactory;
         private final List<CandidateSteps> candidateSteps;
-		private final EmbedderMonitor embedderMonitor;
+        private final EmbedderMonitor embedderMonitor;
         private final MetaFilter filter;
         private final BatchFailures failures;
-		private final StepsContext stepsContext;
+        private final StepsContext stepsContext;
+        private final ThreadLocal<StoryReporter> reporter = new ThreadLocal<StoryReporter>();
         private Map<Story, StoryDuration> cancelledStories = new HashMap<Story, StoryDuration>();
         private Map<String, List<PendingStep>> pendingStories = new HashMap<String, List<PendingStep>>();
-        private final ThreadLocal<StoryReporter> reporter = new ThreadLocal<StoryReporter>();
         private String path;
         private boolean givenStory;
         private State state;
 
         public RunContext(Configuration configuration, InjectableStepsFactory stepsFactory, EmbedderMonitor embedderMonitor,
-                MetaFilter filter, BatchFailures failures) {
+                          MetaFilter filter, BatchFailures failures) {
             this.configuration = configuration;
             this.stepsFactory = stepsFactory;
-			this.embedderMonitor = embedderMonitor;
+            this.embedderMonitor = embedderMonitor;
             this.candidateSteps = stepsFactory.createCandidateSteps();
             this.filter = filter;
             this.failures = failures;
@@ -476,118 +491,118 @@ public class PerformableTree {
             resetState();
         }
 
-		public StepsContext stepsContext() {
-			return stepsContext;
-		}
+        public StepsContext stepsContext() {
+            return this.stepsContext;
+        }
 
-    	public boolean restartScenario() {
-    		Throwable cause = failure(state);
-    		while (cause != null) {
-    			if (cause instanceof RestartingScenarioFailure) {
-    				return true;
-    			}
-    			cause = cause.getCause();
-    		}
-    		return false;
-    	}
+        public boolean restartScenario() {
+            Throwable cause = failure(this.state);
+            while (cause != null) {
+                if (cause instanceof RestartingScenarioFailure) {
+                    return true;
+                }
+                cause = cause.getCause();
+            }
+            return false;
+        }
 
-    	public boolean restartStory() {
-    		Throwable cause = failure(state);
-    		while (cause != null) {
-    			if (cause instanceof RestartingStoryFailure) {
-    				return true;
-    			}
-    			cause = cause.getCause();
-    		}
-    		return false;
-    	}
+        public boolean restartStory() {
+            Throwable cause = failure(this.state);
+            while (cause != null) {
+                if (cause instanceof RestartingStoryFailure) {
+                    return true;
+                }
+                cause = cause.getCause();
+            }
+            return false;
+        }
 
-		public void currentPath(String path) {
+        public void currentPath(String path) {
             this.path = path;
-            this.reporter.set(configuration.storyReporter(path));
+            this.reporter.set(this.configuration.storyReporter(path));
         }
 
         public void interruptIfCancelled() throws InterruptedException {
-            for (Story story : cancelledStories.keySet()) {
-                if (path.equals(story.getPath())) {
-                    throw new InterruptedException(path);
+            for (Story story : this.cancelledStories.keySet()) {
+                if (this.path.equals(story.getPath())) {
+                    throw new InterruptedException(this.path);
                 }
             }
         }
 
         public boolean dryRun() {
-            return configuration.storyControls().dryRun();
+            return this.configuration.storyControls().dryRun();
         }
 
         public Configuration configuration() {
-            return configuration;
+            return this.configuration;
         }
 
         public boolean givenStory() {
-            return givenStory;
+            return this.givenStory;
         }
 
         public String path() {
-            return path;
+            return this.path;
         }
 
         public FilteredStory filter(Story story) {
-            return new FilteredStory(filter, story, configuration.storyControls(), givenStory);
+            return new FilteredStory(this.filter, story, this.configuration.storyControls(), this.givenStory);
         }
 
         public MetaFilter filter() {
-            return filter;
+            return this.filter;
         }
 
         public PerformableSteps beforeOrAfterStoriesSteps(Stage stage) {
-            return new PerformableSteps(configuration.stepCollector().collectBeforeOrAfterStoriesSteps(candidateSteps,
+            return new PerformableSteps(this.configuration.stepCollector().collectBeforeOrAfterStoriesSteps(this.candidateSteps,
                     stage));
         }
 
         public PerformableSteps beforeOrAfterStorySteps(Story story, Stage stage) {
-            return new PerformableSteps(configuration.stepCollector().collectBeforeOrAfterStorySteps(candidateSteps,
-                    story, stage, givenStory));
+            return new PerformableSteps(this.configuration.stepCollector().collectBeforeOrAfterStorySteps(this.candidateSteps,
+                    story, stage, this.givenStory));
         }
 
         public PerformableSteps beforeOrAfterScenarioSteps(Meta storyAndScenarioMeta, Stage stage, ScenarioType type) {
-            return new PerformableSteps(configuration.stepCollector().collectBeforeOrAfterScenarioSteps(candidateSteps,
+            return new PerformableSteps(this.configuration.stepCollector().collectBeforeOrAfterScenarioSteps(this.candidateSteps,
                     storyAndScenarioMeta, stage, type));
         }
 
         public PerformableSteps lifecycleSteps(Lifecycle lifecycle, Meta meta, Stage stage) {
-            MatchingStepMonitor monitor = new MatchingStepMonitor(configuration.stepMonitor());
-            List<Step> steps = configuration.stepCollector().collectLifecycleSteps(candidateSteps, lifecycle, meta, stage);
+            MatchingStepMonitor monitor = new MatchingStepMonitor(this.configuration.stepMonitor());
+            List<Step> steps = this.configuration.stepCollector().collectLifecycleSteps(this.candidateSteps, lifecycle, meta, stage);
             return new PerformableSteps(steps, monitor.matched());
         }
 
         public PerformableSteps scenarioSteps(Scenario scenario, Map<String, String> parameters) {
-            MatchingStepMonitor monitor = new MatchingStepMonitor(configuration.stepMonitor());
-            List<Step> steps = configuration.stepCollector().collectScenarioSteps(candidateSteps, scenario, parameters,
+            MatchingStepMonitor monitor = new MatchingStepMonitor(this.configuration.stepMonitor());
+            List<Step> steps = this.configuration.stepCollector().collectScenarioSteps(this.candidateSteps, scenario, parameters,
                     monitor);
             return new PerformableSteps(steps, monitor.matched());
         }
 
         public RunContext childContextFor(GivenStory givenStory) {
-            RunContext child = new RunContext(configuration, stepsFactory, embedderMonitor, filter, failures);
-            child.path = configuration.pathCalculator().calculate(path, givenStory.getPath());
+            RunContext child = new RunContext(this.configuration, this.stepsFactory, this.embedderMonitor, this.filter, this.failures);
+            child.path = this.configuration.pathCalculator().calculate(this.path, givenStory.getPath());
             child.givenStory = true;
             return child;
         }
 
         public void cancelStory(Story story, StoryDuration storyDuration) {
-            cancelledStories.put(story, storyDuration);
+            this.cancelledStories.put(story, storyDuration);
         }
 
         public boolean isCancelled(Story story) {
-            return cancelledStories.containsKey(story);
+            return this.cancelledStories.containsKey(story);
         }
 
         public StoryDuration storyDuration(Story story) {
-            return cancelledStories.get(story);
+            return this.cancelledStories.get(story);
         }
 
         public State state() {
-            return state;
+            return this.state;
         }
 
         public void stateIs(State state) {
@@ -595,7 +610,7 @@ public class PerformableTree {
         }
 
         public boolean failureOccurred() {
-            return failed(state);
+            return failed(this.state);
         }
 
         public void resetState() {
@@ -607,7 +622,7 @@ public class PerformableTree {
         }
 
         public StoryReporter reporter() {
-            return reporter.get();
+            return this.reporter.get();
         }
 
         public boolean failed(State state) {
@@ -622,34 +637,34 @@ public class PerformableTree {
         }
 
         public void addFailure() {
-            Throwable failure = failure(state);
+            Throwable failure = failure(this.state);
             if (failure != null) {
-                failures.put(state.toString(), failure);
+                this.failures.put(this.state.toString(), failure);
             }
         }
 
         public void addFailure(String path, Throwable cause) {
             if (cause != null) {
-                failures.put(path, cause);
+                this.failures.put(path, cause);
             }
         }
 
         public void pendingSteps(List<PendingStep> pendingSteps) {
             if (!pendingSteps.isEmpty()) {
-                pendingStories.put(path, pendingSteps);
+                this.pendingStories.put(this.path, pendingSteps);
             }
         }
 
         public boolean hasPendingSteps() {
-            return pendingStories.containsKey(path);
+            return this.pendingStories.containsKey(this.path);
         }
 
         public boolean isStoryPending() {
-            return pendingStories.containsKey(path);
+            return this.pendingStories.containsKey(this.path);
         }
 
         public boolean hasFailed() {
-            return failed(state);
+            return failed(this.state);
         }
 
         public Status status(State initial) {
@@ -663,22 +678,16 @@ public class PerformableTree {
         }
 
         public MetaFilter getFilter() {
-            return filter;
+            return this.filter;
         }
 
         public BatchFailures getFailures() {
-            return failures;
-        }
-        
-        public EmbedderMonitor embedderMonitor(){
-        	return embedderMonitor;
+            return this.failures;
         }
 
-    }
-
-    public static interface Performable {
-
-        void perform(RunContext context) throws InterruptedException;
+        public EmbedderMonitor embedderMonitor() {
+            return this.embedderMonitor;
+        }
 
     }
 
@@ -693,7 +702,7 @@ public class PerformableTree {
         }
 
         public void add(PerformableStory performableStory) {
-            stories.put(performableStory.getStory().getPath(), performableStory);
+            this.stories.put(performableStory.getStory().getPath(), performableStory);
         }
 
         public void addAfterSteps(PerformableSteps afterSteps) {
@@ -701,7 +710,7 @@ public class PerformableTree {
         }
 
         public PerformableStory get(Story story) {
-            PerformableStory performableStory = stories.get(story.getPath());
+            PerformableStory performableStory = this.stories.get(story.getPath());
             if (performableStory != null) {
                 return performableStory;
             }
@@ -709,13 +718,9 @@ public class PerformableTree {
         }
 
         public List<PerformableStory> getStories() {
-            return new ArrayList<PerformableStory>(stories.values());
+            return new ArrayList<PerformableStory>(this.stories.values());
         }
 
-    }
-
-    public static enum Status {
-        SUCCESSFUL, FAILED, PENDING, NOT_PERFORMED, NOT_ALLOWED;
     }
 
     public static class PerformableStory implements Performable {
@@ -742,15 +747,15 @@ public class PerformableTree {
         }
 
         public boolean isAllowed() {
-            return allowed;
+            return this.allowed;
         }
 
         public boolean givenStory() {
-            return givenStory;
+            return this.givenStory;
         }
 
         public Status getStatus() {
-            return status;
+            return this.status;
         }
 
         public void addGivenStories(List<PerformableStory> performableGivenStories) {
@@ -766,39 +771,39 @@ public class PerformableTree {
         }
 
         public void add(PerformableScenario performableScenario) {
-            scenarios.add(performableScenario);
+            this.scenarios.add(performableScenario);
         }
 
         public Story getStory() {
-            return story;
+            return this.story;
         }
 
         public String getLocalisedNarrative() {
-            return localizedNarrative;
+            return this.localizedNarrative;
         }
 
         public Timing getTiming() {
-            return timing;
+            return this.timing;
         }
 
         public void perform(RunContext context) throws InterruptedException {
-            if (!allowed) {
-                context.reporter().storyNotAllowed(story, context.filter.asString());
+            if (!this.allowed) {
+                context.reporter().storyNotAllowed(this.story, context.filter.asString());
                 this.status = Status.NOT_ALLOWED;
             }
             context.stepsContext().resetStory();
-            context.reporter().beforeStory(story, context.givenStory);
-            context.reporter().narrative(story.getNarrative());
-            context.reporter().lifecyle(story.getLifecycle());
+            context.reporter().beforeStory(this.story, context.givenStory);
+            context.reporter().narrative(this.story.getNarrative());
+            context.reporter().lifecyle(this.story.getLifecycle());
             State state = context.state();
             Timer timer = new Timer().start();
             try {
-                beforeSteps.perform(context);
-            	performGivenStories(context);
+                this.beforeSteps.perform(context);
+                performGivenStories(context);
                 performScenarios(context);
-                afterSteps.perform(context);
+                this.afterSteps.perform(context);
             } finally {
-                timing.setTimings(timer.stop());
+                this.timing.setTimings(timer.stop());
             }
             if (context.restartStory()) {
                 context.reporter().afterStory(true);
@@ -809,25 +814,25 @@ public class PerformableTree {
         }
 
         private void performGivenStories(RunContext context) throws InterruptedException {
-            if (givenStories.size() > 0) {
-                context.reporter().givenStories(story.getGivenStories());
+            if (this.givenStories.size() > 0) {
+                context.reporter().givenStories(this.story.getGivenStories());
                 final boolean parentGivenStory = context.givenStory;
-                for (PerformableStory story : givenStories) {
+                for (PerformableStory story : this.givenStories) {
                     context.givenStory = story.givenStory();
                     story.perform(context);
                 }
                 context.givenStory = parentGivenStory;
-           }
+            }
         }
 
         private void performScenarios(RunContext context) throws InterruptedException {
-            for (PerformableScenario scenario : scenarios) {
+            for (PerformableScenario scenario : this.scenarios) {
                 scenario.perform(context);
             }
         }
 
         public List<PerformableScenario> getScenarios() {
-            return scenarios;
+            return this.scenarios;
         }
 
     }
@@ -837,10 +842,9 @@ public class PerformableTree {
         private final Scenario scenario;
         private final String storyPath;
         private boolean allowed;
-		private NormalPerformableScenario normalPerformableScenario;
+        private NormalPerformableScenario normalPerformableScenario;
         private List<ExamplePerformableScenario> examplePerformableScenarios = new ArrayList<ExamplePerformableScenario>();
-        @SuppressWarnings("unused")
-		private Status status;
+        private Status status;
 
         public PerformableScenario(Scenario scenario, String storyPath) {
             this.scenario = scenario;
@@ -860,50 +864,50 @@ public class PerformableTree {
         }
 
         public boolean isAllowed() {
-            return allowed;
+            return this.allowed;
         }
 
         public Scenario getScenario() {
-            return scenario;
+            return this.scenario;
         }
 
         public String getStoryPath() {
-            return storyPath;
+            return this.storyPath;
         }
 
         public boolean hasExamples() {
-            return examplePerformableScenarios.size() > 0;
+            return this.examplePerformableScenarios.size() > 0;
         }
 
         public List<ExamplePerformableScenario> getExamples() {
-            return examplePerformableScenarios;
+            return this.examplePerformableScenarios;
         }
-        
+
         public boolean isNormalPerformableScenario() {
-            return normalPerformableScenario != null;
+            return this.normalPerformableScenario != null;
         }
 
         public void perform(RunContext context) throws InterruptedException {
-        	if ( !isAllowed() ) {
-        		context.embedderMonitor().scenarioNotAllowed(scenario, context.filter());
-        		return;
-        	}
-        	context.stepsContext().resetScenario();
-            context.reporter().beforeScenario(scenario.getTitle());
+            if (!isAllowed()) {
+                context.embedderMonitor().scenarioNotAllowed(this.scenario, context.filter());
+                return;
+            }
+            context.stepsContext().resetScenario();
+            context.reporter().beforeScenario(this.scenario.getTitle());
             State state = context.state();
-			if (!examplePerformableScenarios.isEmpty()) {
-				context.reporter().beforeExamples(scenario.getSteps(),
-						scenario.getExamplesTable());
-				for (ExamplePerformableScenario exampleScenario : examplePerformableScenarios) {
-					exampleScenario.perform(context);
-				}
-				context.reporter().afterExamples();
-			} else {
-			    context.stepsContext().resetExample();
-				normalPerformableScenario.perform(context);
-			}
-			this.status = context.status(state);
-			context.reporter().afterScenario();
+            if (!this.examplePerformableScenarios.isEmpty()) {
+                context.reporter().beforeExamples(this.scenario.getSteps(),
+                        this.scenario.getExamplesTable());
+                for (ExamplePerformableScenario exampleScenario : this.examplePerformableScenarios) {
+                    exampleScenario.perform(context);
+                }
+                context.reporter().afterExamples();
+            } else {
+                context.stepsContext().resetExample();
+                this.normalPerformableScenario.perform(context);
+            }
+            this.status = context.status(state);
+            context.reporter().afterScenario();
         }
 
     }
@@ -942,56 +946,56 @@ public class PerformableTree {
         }
 
         public Map<String, String> getParameters() {
-            return parameters;
+            return this.parameters;
         }
 
-		protected void performRestartableSteps(RunContext context)
-				throws InterruptedException {
-			boolean restart = true;
-			while (restart) {
-				restart = false;
-				try {
-				    steps.perform(context);
-				} catch (RestartingScenarioFailure e) {
-				    restart = true;
-				    continue;
-				}
-			}
-		}
+        protected void performRestartableSteps(RunContext context)
+                throws InterruptedException {
+            boolean restart = true;
+            while (restart) {
+                restart = false;
+                try {
+                    this.steps.perform(context);
+                } catch (RestartingScenarioFailure e) {
+                    restart = true;
+                    continue;
+                }
+            }
+        }
 
-		public Meta getStoryAndScenarioMeta() {
-		    return storyAndScenarioMeta;
-		}
+        public Meta getStoryAndScenarioMeta() {
+            return this.storyAndScenarioMeta;
+        }
 
-		public void setStoryAndScenarioMeta(Meta storyAndScenarioMeta) {
-		    this.storyAndScenarioMeta = storyAndScenarioMeta;
-		}
+        public void setStoryAndScenarioMeta(Meta storyAndScenarioMeta) {
+            this.storyAndScenarioMeta = storyAndScenarioMeta;
+        }
     }
 
     public static class NormalPerformableScenario extends AbstractPerformableScenario {
 
         private Scenario scenario;
 
-		public NormalPerformableScenario(Scenario scenario) {
-			this.scenario = scenario;
+        public NormalPerformableScenario(Scenario scenario) {
+            this.scenario = scenario;
         }
 
         public void perform(RunContext context) throws InterruptedException {
             if (context.configuration().storyControls().resetStateBeforeScenario()) {
                 context.resetState();
             }
-            beforeSteps.perform(context);
-			if (givenStories.size() > 0) {
-				context.reporter().givenStories(scenario.getGivenStories());
+            this.beforeSteps.perform(context);
+            if (this.givenStories.size() > 0) {
+                context.reporter().givenStories(this.scenario.getGivenStories());
                 final boolean parentGivenStory = context.givenStory;
-				for (PerformableStory story : givenStories) {
-					context.givenStory = story.givenStory();
-					story.perform(context);
-				}
-				context.givenStory = parentGivenStory;
-			}
-			performRestartableSteps(context);	        
-            afterSteps.perform(context);
+                for (PerformableStory story : this.givenStories) {
+                    context.givenStory = story.givenStory();
+                    story.perform(context);
+                }
+                context.givenStory = parentGivenStory;
+            }
+            performRestartableSteps(context);
+            this.afterSteps.perform(context);
         }
 
     }
@@ -1000,33 +1004,33 @@ public class PerformableTree {
 
         private Scenario scenario;
 
-		public ExamplePerformableScenario(Scenario scenario, Map<String, String> exampleParameters) {
-        	super(exampleParameters);
-			this.scenario = scenario;
+        public ExamplePerformableScenario(Scenario scenario, Map<String, String> exampleParameters) {
+            super(exampleParameters);
+            this.scenario = scenario;
         }
 
         public void perform(RunContext context) throws InterruptedException {
-			Meta parameterMeta = parameterMeta(context.configuration().keywords(), parameters).inheritFrom(getStoryAndScenarioMeta());
-			if (!parameterMeta.isEmpty() && !context.filter().allow(parameterMeta)) {
-				return;
-			}
+            Meta parameterMeta = parameterMeta(context.configuration().keywords(), this.parameters).inheritFrom(getStoryAndScenarioMeta());
+            if (!parameterMeta.isEmpty() && !context.filter().allow(parameterMeta)) {
+                return;
+            }
             if (context.configuration().storyControls().resetStateBeforeScenario()) {
                 context.resetState();
             }
             context.stepsContext().resetExample();
-            context.reporter().example(parameters);
-            beforeSteps.perform(context);
-			if (givenStories.size() > 0) {
-				context.reporter().givenStories(scenario.getGivenStories());
-				final boolean parentGivenStory = context.givenStory;
-				for (PerformableStory story : givenStories) {
-					context.givenStory = story.givenStory();
-					story.perform(context);
-				}
-				context.givenStory = parentGivenStory;
-			}
-			performRestartableSteps(context);	        
-            afterSteps.perform(context);
+            context.reporter().example(this.parameters);
+            this.beforeSteps.perform(context);
+            if (this.givenStories.size() > 0) {
+                context.reporter().givenStories(this.scenario.getGivenStories());
+                final boolean parentGivenStory = context.givenStory;
+                for (PerformableStory story : this.givenStories) {
+                    context.givenStory = story.givenStory();
+                    story.perform(context);
+                }
+                context.givenStory = parentGivenStory;
+            }
+            performRestartableSteps(context);
+            this.afterSteps.perform(context);
         }
 
         private Meta parameterMeta(Keywords keywords, Map<String, String> parameters) {
@@ -1055,55 +1059,55 @@ public class PerformableTree {
         }
 
         public PerformableSteps(List<Step> steps, List<StepMatch> stepMatches) {
-            this.steps =  ( steps == null ? new ArrayList<Step>() : steps );
+            this.steps = (steps == null ? new ArrayList<Step>() : steps);
             this.pendingSteps = pendingSteps();
             this.matches = stepMatches;
         }
 
-        public void add(PerformableSteps performableSteps){
+        public void add(PerformableSteps performableSteps) {
             this.steps.addAll(performableSteps.steps);
             this.pendingSteps.addAll(performableSteps.pendingSteps);
-            if ( performableSteps.matches != null ){
-                if ( this.matches == null ){
+            if (performableSteps.matches != null) {
+                if (this.matches == null) {
                     this.matches = new ArrayList<StepMatch>();
                 }
                 this.matches.addAll(performableSteps.matches);
             }
         }
-        
+
         public void perform(RunContext context) throws InterruptedException {
-            if (steps.size() == 0) {
+            if (this.steps.size() == 0) {
                 return;
             }
-		    Keywords keywords = context.configuration().keywords();
+            Keywords keywords = context.configuration().keywords();
             State state = context.state();
             StoryReporter reporter = context.reporter();
-            results = new ArrayList<StepResult>();
+            this.results = new ArrayList<StepResult>();
             boolean ignoring = false;
-            for (Step step : steps) {
+            for (Step step : this.steps) {
                 try {
-					context.interruptIfCancelled();
-					if (ignoring) {
-						reporter.ignorable(step.asString(keywords));
-					} else {
-					    state = state.run(step, results, reporter, state.getFailure());
-					}
-				} catch (IgnoringStepsFailure e) {
-					reporter.ignorable(step.asString(keywords));
-				    ignoring = true;
-				} catch (RestartingScenarioFailure e) {
-	                reporter.restarted(step.asString(keywords), e);
-	                throw e;
-				}
+                    context.interruptIfCancelled();
+                    if (ignoring) {
+                        reporter.ignorable(step.asString(keywords));
+                    } else {
+                        state = state.run(step, this.results, reporter, state.getFailure());
+                    }
+                } catch (IgnoringStepsFailure e) {
+                    reporter.ignorable(step.asString(keywords));
+                    ignoring = true;
+                } catch (RestartingScenarioFailure e) {
+                    reporter.restarted(step.asString(keywords), e);
+                    throw e;
+                }
             }
             context.stateIs(state);
-            context.pendingSteps(pendingSteps);
-            generatePendingStepMethods(context, pendingSteps);
+            context.pendingSteps(this.pendingSteps);
+            generatePendingStepMethods(context, this.pendingSteps);
         }
 
         private List<PendingStep> pendingSteps() {
             List<PendingStep> pending = new ArrayList<PendingStep>();
-            for (Step step : steps) {
+            for (Step step : this.steps) {
                 if (step instanceof PendingStep) {
                     pending.add((PendingStep) step);
                 }
@@ -1122,8 +1126,8 @@ public class PerformableTree {
                     }
                 }
                 context.reporter().pendingMethods(methods);
-                if ( context.configuration().pendingStepStrategy() instanceof FailingUponPendingStep ){
-                     throw new PendingStepsFound(pendingSteps);
+                if (context.configuration().pendingStepStrategy() instanceof FailingUponPendingStep) {
+                    throw new PendingStepsFound(pendingSteps);
                 }
             }
         }
@@ -1141,7 +1145,7 @@ public class PerformableTree {
         private long end;
 
         public long getDurationInMillis() {
-            return durationInMillis;
+            return this.durationInMillis;
         }
 
         public void setTimings(Timer timer) {
@@ -1149,11 +1153,6 @@ public class PerformableTree {
             this.end = timer.getEnd();
             this.durationInMillis = timer.getDuration();
         }
-    }
-
-    public RunContext newRunContext(Configuration configuration, InjectableStepsFactory stepsFactory,
-            EmbedderMonitor embedderMonitor, MetaFilter filter, BatchFailures failures) {
-        return new RunContext(configuration, stepsFactory, embedderMonitor, filter, failures);
     }
 
 }

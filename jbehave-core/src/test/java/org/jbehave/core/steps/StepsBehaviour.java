@@ -1,10 +1,5 @@
 package org.jbehave.core.steps;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
 import org.hamcrest.Matchers;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.annotations.ScenarioType;
@@ -20,10 +15,13 @@ import org.jbehave.core.steps.StepCollector.Stage;
 import org.jbehave.core.steps.Steps.DuplicateCandidateFound;
 import org.junit.Test;
 
-import static org.hamcrest.Matchers.equalTo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
+import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
@@ -43,18 +41,18 @@ public class StepsBehaviour {
         findCandidate(candidates, "WHEN a when alias").createMatchedStep("When a when alias", tableRow).perform(null);
         findCandidate(candidates, "THEN a then").createMatchedStep("Then a then", tableRow).perform(null);
         findCandidate(candidates, "THEN a then alias").createMatchedStep("Then a then alias", tableRow).perform(null);
-        
+
         assertThat(steps.givens, equalTo(2));
         assertThat(steps.whens, equalTo(2));
         assertThat(steps.thens, equalTo(2));
     }
 
-	@Test
+    @Test
     public void shouldListCandidateStepsFromAnnotatedMethodsWithMultipleAliases() {
         MultipleAliasesSteps steps = new MultipleAliasesSteps();
         List<StepCandidate> candidates = steps.listCandidates();
         assertThat(candidates.size(), equalTo(9));
-        
+
         findCandidate(candidates, "GIVEN a given").createMatchedStep("Given a given", tableRow).perform(null);
         findCandidate(candidates, "GIVEN a given alias").createMatchedStep("Given a given alias", tableRow).perform(null);
         findCandidate(candidates, "GIVEN another given alias").createMatchedStep("Given another given alias", tableRow).perform(null);
@@ -74,7 +72,7 @@ public class StepsBehaviour {
     public void shouldListCandidateStepsFromAnnotatedMethodsInPojo() {
         PojoSteps steps = new PojoSteps();
         Configuration configuration = new MostUsefulConfiguration();
-		List<StepCandidate> candidates = new InstanceStepsFactory(configuration, steps).createCandidateSteps().get(0).listCandidates();
+        List<StepCandidate> candidates = new InstanceStepsFactory(configuration, steps).createCandidateSteps().get(0).listCandidates();
         assertThat(candidates.size(), equalTo(6));
 
         findCandidate(candidates, "GIVEN a given").createMatchedStep("Given a given", tableRow).perform(null);
@@ -83,7 +81,7 @@ public class StepsBehaviour {
         findCandidate(candidates, "WHEN a when alias").createMatchedStep("When a when alias", tableRow).perform(null);
         findCandidate(candidates, "THEN a then").createMatchedStep("Then a then", tableRow).perform(null);
         findCandidate(candidates, "THEN a then alias").createMatchedStep("Then a then alias", tableRow).perform(null);
-        
+
         assertThat(steps.givens, equalTo(2));
         assertThat(steps.whens, equalTo(2));
         assertThat(steps.thens, equalTo(2));
@@ -91,11 +89,11 @@ public class StepsBehaviour {
 
     private StepCandidate findCandidate(List<StepCandidate> candidates, String candidateAsString) {
         for (StepCandidate candidate : candidates) {
-            if ( candidateAsString.equals(candidate.toString()) ){
+            if (candidateAsString.equals(candidate.toString())) {
                 return candidate;
             }
         }
-        throw new RuntimeException("StepCandidate "+candidateAsString+" not found amongst "+candidates);
+        throw new RuntimeException("StepCandidate " + candidateAsString + " not found amongst " + candidates);
     }
 
     @Test
@@ -103,7 +101,7 @@ public class StepsBehaviour {
         MultipleAliasesSteps steps = new MultipleAliasesSteps();
 
         List<BeforeOrAfterStep> beforeAfterStories = steps.listBeforeOrAfterStories();
-        assertThat(beforeAfterStories.size(), equalTo(2));        
+        assertThat(beforeAfterStories.size(), equalTo(2));
         beforeAfterStories.get(0).createStep().perform(null);
         assertThat(beforeAfterStories.get(0).getStage(), equalTo(Stage.BEFORE));
         assertThat(beforeAfterStories.get(0).getMethod().getName(), equalTo("beforeStories"));
@@ -112,7 +110,7 @@ public class StepsBehaviour {
         assertThat(beforeAfterStories.get(1).getStage(), equalTo(Stage.AFTER));
         assertThat(beforeAfterStories.get(1).getMethod().getName(), equalTo("afterStories"));
         assertThat(steps.afterStories, is(true));
-        
+
     }
 
     @Test
@@ -120,7 +118,7 @@ public class StepsBehaviour {
         MultipleAliasesSteps steps = new MultipleAliasesSteps();
 
         List<BeforeOrAfterStep> beforeAfterStory = steps.listBeforeOrAfterStory(false);
-        assertThat(beforeAfterStory.size(), equalTo(2));        
+        assertThat(beforeAfterStory.size(), equalTo(2));
         beforeAfterStory.get(0).createStep().perform(null);
         assertThat(beforeAfterStory.get(0).getStage(), equalTo(Stage.BEFORE));
         assertThat(beforeAfterStory.get(0).getMethod().getName(), equalTo("beforeStory"));
@@ -129,15 +127,15 @@ public class StepsBehaviour {
         assertThat(beforeAfterStory.get(1).getStage(), equalTo(Stage.AFTER));
         assertThat(beforeAfterStory.get(1).getMethod().getName(), equalTo("afterStory"));
         assertThat(steps.afterStory, is(true));
-        
+
         List<BeforeOrAfterStep> beforeAfterGivenStory = steps.listBeforeOrAfterStory(true);
-        assertThat(beforeAfterGivenStory.size(), equalTo(2));        
+        assertThat(beforeAfterGivenStory.size(), equalTo(2));
         beforeAfterGivenStory.get(0).createStep().perform(null);
         assertThat(steps.beforeGivenStory, is(true));
         beforeAfterGivenStory.get(1).createStep().perform(null);
         assertThat(steps.afterGivenStory, is(true));
     }
-    
+
     @Test
     public void shouldProvideStepsToBePerformedBeforeAndAfterScenariosWithFailureOccuring() {
         MultipleAliasesSteps steps = new MultipleAliasesSteps();
@@ -168,7 +166,7 @@ public class StepsBehaviour {
         ScenarioType scenarioType = ScenarioType.NORMAL;
         List<BeforeOrAfterStep> beforeAfterScenario = steps.listBeforeOrAfterScenario(scenarioType);
         assertThat(beforeAfterScenario.size(), equalTo(4));
-        
+
         beforeAfterScenario.get(0).createStep().perform(null);
         assertThat(steps.beforeNormalScenario, is(true));
 
@@ -176,40 +174,40 @@ public class StepsBehaviour {
         // uponOutcome=ANY
         beforeAfterScenario.get(1).createStepUponOutcome(storyAndScenarioMeta).perform(null);
         assertThat(steps.afterNormalScenario, is(true));
-        
+
         // uponOutcome=SUCCESS
         beforeAfterScenario.get(2).createStepUponOutcome(storyAndScenarioMeta).perform(null);
         assertThat(steps.afterSuccessfulScenario, is(true));
-        
+
         // uponOutcome=FAILURE      
         beforeAfterScenario.get(3).createStepUponOutcome(storyAndScenarioMeta).perform(null);
         assertThat(steps.afterFailedScenario, is(false));
 
     }
-        
+
     @Test
     public void shouldProvideStepsToBeNotPerformedAfterScenarioUponOutcome() {
-    	MultipleAliasesSteps steps = new MultipleAliasesSteps();
+        MultipleAliasesSteps steps = new MultipleAliasesSteps();
         ScenarioType scenarioType = ScenarioType.NORMAL;
         List<BeforeOrAfterStep> beforeAfterScenario = steps.listBeforeOrAfterScenario(scenarioType);
-		assertThat(beforeAfterScenario.size(), equalTo(4));
-		
-    	beforeAfterScenario.get(0).createStep().doNotPerform(null);
-    	assertThat(steps.beforeNormalScenario, is(true));
+        assertThat(beforeAfterScenario.size(), equalTo(4));
+
+        beforeAfterScenario.get(0).createStep().doNotPerform(null);
+        assertThat(steps.beforeNormalScenario, is(true));
 
         Meta storyAndScenarioMeta = null;
         UUIDExceptionWrapper failure = new UUIDExceptionWrapper();
         // uponOutcome=ANY
         beforeAfterScenario.get(1).createStepUponOutcome(storyAndScenarioMeta).doNotPerform(failure);
-    	assertThat(steps.afterNormalScenario, is(true));
-    	
-    	// uponOutcome=SUCCESS
+        assertThat(steps.afterNormalScenario, is(true));
+
+        // uponOutcome=SUCCESS
         beforeAfterScenario.get(2).createStepUponOutcome(storyAndScenarioMeta).doNotPerform(failure);
-    	assertThat(steps.afterSuccessfulScenario, is(false));
-    	
-		// uponOutcome=FAILURE    	
+        assertThat(steps.afterSuccessfulScenario, is(false));
+
+        // uponOutcome=FAILURE
         beforeAfterScenario.get(3).createStepUponOutcome(storyAndScenarioMeta).doNotPerform(failure);
-    	assertThat(steps.afterFailedScenario, is(true));
+        assertThat(steps.afterFailedScenario, is(true));
     }
 
     @Test
@@ -218,7 +216,7 @@ public class StepsBehaviour {
         ScenarioType scenarioType = ScenarioType.EXAMPLE;
         List<BeforeOrAfterStep> beforeAfterScenario = steps.listBeforeOrAfterScenario(scenarioType);
         assertThat(beforeAfterScenario.size(), equalTo(2));
-        
+
         beforeAfterScenario.get(0).createStep().perform(null);
         assertThat(steps.beforeExampleScenario, is(true));
 
@@ -253,10 +251,10 @@ public class StepsBehaviour {
     }
 
     @Test
-    public void shouldAllowLocalizationOfSteps(){
+    public void shouldAllowLocalizationOfSteps() {
         Configuration configuration = new MostUsefulConfiguration();
         configuration.useKeywords(new LocalizedKeywords(new Locale("it")));
-    	LocalizedSteps steps = new LocalizedSteps(configuration);
+        LocalizedSteps steps = new LocalizedSteps(configuration);
         List<StepCandidate> candidates = steps.listCandidates();
         assertThat(candidates.size(), equalTo(3));
 
@@ -266,7 +264,7 @@ public class StepsBehaviour {
 
         assertThat(steps.givens, equalTo(1));
         assertThat(steps.whens, equalTo(1));
-        assertThat(steps.thens, equalTo(1));    	    	
+        assertThat(steps.thens, equalTo(1));
     }
 
     @Test
@@ -288,7 +286,7 @@ public class StepsBehaviour {
         assertThat(stepResult.getFailure().getCause(), instanceOf(BeforeOrAfterFailed.class));
     }
 
-    @Test(expected=DuplicateCandidateFound.class)
+    @Test(expected = DuplicateCandidateFound.class)
     public void shouldFailIfDuplicateStepsAreEncountered() {
         DuplicateSteps steps = new DuplicateSteps();
         List<StepCandidate> candidates = steps.listCandidates();
@@ -297,25 +295,25 @@ public class StepsBehaviour {
 
     }
 
-    @Test(expected=StartingWordNotFound.class)
-    public void shouldNotCreateStepIfStartingWordNotFound(){
+    @Test(expected = StartingWordNotFound.class)
+    public void shouldNotCreateStepIfStartingWordNotFound() {
         Configuration configuration = new MostUsefulConfiguration();
         configuration.useKeywords(new LocalizedKeywords(new Locale("it")));
-    	LocalizedSteps steps = new LocalizedSteps(configuration);
+        LocalizedSteps steps = new LocalizedSteps(configuration);
         List<StepCandidate> candidates = steps.listCandidates();
         assertThat(candidates.size(), equalTo(3));
 
         // misspelled starting word 
-        candidates.get(0).createMatchedStep("Dado che un dato che", tableRow); 
-        
+        candidates.get(0).createMatchedStep("Dado che un dato che", tableRow);
+
     }
-    
+
     static class MultipleAliasesSteps extends Steps {
-        
+
         private int givens;
         private int whens;
         private int thens;
-        
+
         private boolean beforeNormalScenario;
         private boolean afterNormalScenario;
         private boolean afterSuccessfulScenario;
@@ -330,21 +328,21 @@ public class StepsBehaviour {
         private boolean afterGivenStory;
         private boolean beforeStories;
         private boolean afterStories;
-        
+
         @org.jbehave.core.annotations.Given("a given")
-        @org.jbehave.core.annotations.Aliases(values={"a given alias", "another given alias"})
+        @org.jbehave.core.annotations.Aliases(values = {"a given alias", "another given alias"})
         public void given() {
             givens++;
         }
 
         @org.jbehave.core.annotations.When("a when")
-        @org.jbehave.core.annotations.Aliases(values={"a when alias", "another when alias"})
+        @org.jbehave.core.annotations.Aliases(values = {"a when alias", "another when alias"})
         public void when() {
             whens++;
         }
-        
+
         @org.jbehave.core.annotations.Then("a then")
-        @org.jbehave.core.annotations.Aliases(values={"a then alias", "another then alias"})
+        @org.jbehave.core.annotations.Aliases(values = {"a then alias", "another then alias"})
         public void then() {
             thens++;
         }
@@ -353,7 +351,7 @@ public class StepsBehaviour {
         public void beforeStories() {
             beforeStories = true;
         }
-        
+
         @org.jbehave.core.annotations.AfterStories
         public void afterStories() {
             afterStories = true;
@@ -363,63 +361,63 @@ public class StepsBehaviour {
         public void beforeStory() {
             beforeStory = true;
         }
-        
+
         @org.jbehave.core.annotations.AfterStory
         public void afterStory() {
             afterStory = true;
         }
 
-        @org.jbehave.core.annotations.BeforeStory(uponGivenStory=true)
+        @org.jbehave.core.annotations.BeforeStory(uponGivenStory = true)
         public void beforeGivenStory() {
             beforeGivenStory = true;
         }
-        
-        @org.jbehave.core.annotations.AfterStory(uponGivenStory=true)
+
+        @org.jbehave.core.annotations.AfterStory(uponGivenStory = true)
         public void afterGivenStory() {
             afterGivenStory = true;
-        }        
-        
-        @org.jbehave.core.annotations.BeforeScenario
-        public void beforeNormalScenarios() {
-        	beforeNormalScenario = true;
         }
 
-        @org.jbehave.core.annotations.BeforeScenario(uponType=ScenarioType.EXAMPLE)
+        @org.jbehave.core.annotations.BeforeScenario
+        public void beforeNormalScenarios() {
+            beforeNormalScenario = true;
+        }
+
+        @org.jbehave.core.annotations.BeforeScenario(uponType = ScenarioType.EXAMPLE)
         public void beforeExampleScenarios() {
             beforeExampleScenario = true;
         }
 
-        @org.jbehave.core.annotations.BeforeScenario(uponType=ScenarioType.ANY)
+        @org.jbehave.core.annotations.BeforeScenario(uponType = ScenarioType.ANY)
         public void beforeAnyScenarios() {
             beforeAnyScenario = true;
         }
 
         @org.jbehave.core.annotations.AfterScenario
         public void afterNormalScenarios() {
-        	afterNormalScenario = true;
+            afterNormalScenario = true;
         }
 
-        @org.jbehave.core.annotations.AfterScenario(uponType=ScenarioType.EXAMPLE)
+        @org.jbehave.core.annotations.AfterScenario(uponType = ScenarioType.EXAMPLE)
         public void afterExampleScenarios() {
             afterExampleScenario = true;
         }
 
-        @org.jbehave.core.annotations.AfterScenario(uponType=ScenarioType.ANY)
+        @org.jbehave.core.annotations.AfterScenario(uponType = ScenarioType.ANY)
         public void afterAnyScenarios() {
             afterAnyScenario = true;
         }
 
-        @org.jbehave.core.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.SUCCESS)
+        @org.jbehave.core.annotations.AfterScenario(uponOutcome = AfterScenario.Outcome.SUCCESS)
         public void afterSuccessfulScenarios() {
-        	afterSuccessfulScenario = true;
+            afterSuccessfulScenario = true;
         }
-        
-        @org.jbehave.core.annotations.AfterScenario(uponOutcome=AfterScenario.Outcome.FAILURE)
+
+        @org.jbehave.core.annotations.AfterScenario(uponOutcome = AfterScenario.Outcome.FAILURE)
         public void afterFailedScenarios() {
-        	afterFailedScenario = true;
+            afterFailedScenario = true;
         }
-        
-        
+
+
     }
 
     static class SingleAliasSteps extends Steps {
@@ -475,7 +473,7 @@ public class StepsBehaviour {
     }
 
     static class BeforeSteps extends Steps {
-        
+
         @org.jbehave.core.annotations.BeforeScenario
         public void beforeScenario() {
             throw new RuntimeException("Damn, I failed!");
@@ -493,7 +491,7 @@ public class StepsBehaviour {
     }
 
     static class DuplicateSteps extends Steps {
-        
+
         @org.jbehave.core.annotations.Given("a given")
         public void given() {
         }
@@ -501,7 +499,7 @@ public class StepsBehaviour {
         @org.jbehave.core.annotations.Given("a given")
         public void duplicateGiven() {
         }
-                
+
     }
 
     static class LocalizedSteps extends Steps {
@@ -511,10 +509,10 @@ public class StepsBehaviour {
         private int thens;
 
         public LocalizedSteps(Configuration configuration) {
-        	super(configuration);
-		}
+            super(configuration);
+        }
 
-		@org.jbehave.core.annotations.Given("un dato che")
+        @org.jbehave.core.annotations.Given("un dato che")
         public void given() {
             givens++;
         }

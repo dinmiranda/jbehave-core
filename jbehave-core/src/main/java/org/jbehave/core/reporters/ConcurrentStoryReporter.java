@@ -1,12 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -17,8 +10,15 @@ import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
- * When running a multithreading mode, reports cannot be written concurrently but should 
+ * When running a multithreading mode, reports cannot be written concurrently but should
  * be delayed and invoked only at the end of a story, ensuring synchronization on the delegate
  * responsible for the reporting.
  */
@@ -86,10 +86,10 @@ public class ConcurrentStoryReporter implements StoryReporter {
         }
     }
 
-    private List<DelayedMethod> delayedMethods = new ArrayList<DelayedMethod>();
     private final StoryReporter crossReferencing;
     private final StoryReporter delegate;
     private final boolean multiThreading;
+    private List<DelayedMethod> delayedMethods = new ArrayList<DelayedMethod>();
     private boolean invoked = false;
 
     public ConcurrentStoryReporter(StoryReporter crossReferencing, StoryReporter delegate, boolean multiThreading) {
@@ -137,7 +137,7 @@ public class ConcurrentStoryReporter implements StoryReporter {
             delegate.narrative(aNarrative);
         }
     }
-    
+
     @Override
     public void lifecyle(Lifecycle aLifecycle) {
         crossReferencing.lifecyle(aLifecycle);
@@ -336,9 +336,9 @@ public class ConcurrentStoryReporter implements StoryReporter {
         } else {
             delegate.pendingMethods(methods);
         }
-        
+
     }
-    
+
     @Override
     public void restarted(String step, Throwable cause) {
         crossReferencing.restarted(step, cause);
@@ -348,9 +348,9 @@ public class ConcurrentStoryReporter implements StoryReporter {
             delegate.restarted(step, cause);
         }
     }
-    
+
     @Override
-    public void restartedStory(Story story, Throwable cause){
+    public void restartedStory(Story story, Throwable cause) {
         crossReferencing.restartedStory(story, cause);
         if (multiThreading) {
             delayedMethods.add(new DelayedMethod(restartedStory, story, cause));
@@ -373,12 +373,12 @@ public class ConcurrentStoryReporter implements StoryReporter {
         return delegate;
     }
 
-    public boolean invoked(){
-    	return invoked;
+    public boolean invoked() {
+        return invoked;
     }
-    
+
     public void invokeDelayed() {
-        if ( !multiThreading ){
+        if (!multiThreading) {
             return;
         }
         synchronized (delegate) {

@@ -1,8 +1,8 @@
 package org.jbehave.core.reporters;
 
-import java.io.PrintStream;
-
 import org.jbehave.core.reporters.StoryReporterBuilder.ProvidedFormat;
+
+import java.io.PrintStream;
 
 /**
  * A Format is a {@link StoryReporter} factory, allowing named-based pre-defined
@@ -17,7 +17,7 @@ public abstract class Format {
     public static final Format CONSOLE = new Format("CONSOLE") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             return new ConsoleOutput(storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
                     storyReporterBuilder.compressFailureTrace());
@@ -27,7 +27,7 @@ public abstract class Format {
     public static final Format ANSI_CONSOLE = new Format("ANSI_CONSOLE") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             return new ANSIConsoleOutput(storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
                     storyReporterBuilder.compressFailureTrace());
@@ -37,7 +37,7 @@ public abstract class Format {
     public static final Format IDE_CONSOLE = new Format("IDE_CONSOLE") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             return new IdeOnlyConsoleOutput(storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
                     storyReporterBuilder.compressFailureTrace());
@@ -47,7 +47,7 @@ public abstract class Format {
     public static final Format TXT = new Format("TXT") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("txt"));
             return new TxtOutput(factory.createPrintStream(), storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
@@ -59,7 +59,7 @@ public abstract class Format {
 
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("html"));
             return new HtmlOutput(factory.createPrintStream(), storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
@@ -70,7 +70,7 @@ public abstract class Format {
     public static final Format HTML_TEMPLATE = new Format("HTML") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("html"));
             return new HtmlTemplateOutput(factory.getOutputFile(), storyReporterBuilder.keywords());
         }
@@ -79,7 +79,7 @@ public abstract class Format {
     public static final Format XML = new Format("XML") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("xml"));
             return new XmlOutput(factory.createPrintStream(), storyReporterBuilder.keywords()).doReportFailureTrace(
                     storyReporterBuilder.reportFailureTrace()).doCompressFailureTrace(
@@ -90,7 +90,7 @@ public abstract class Format {
     public static final Format XML_TEMPLATE = new Format("XML") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("xml"));
             return new XmlTemplateOutput(factory.getOutputFile(), storyReporterBuilder.keywords());
         }
@@ -103,7 +103,7 @@ public abstract class Format {
     public static final Format STATS = new Format("STATS") {
         @Override
         public StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-                StoryReporterBuilder storyReporterBuilder) {
+                                                 StoryReporterBuilder storyReporterBuilder) {
             factory.useConfiguration(storyReporterBuilder.fileConfiguration("stats"));
             return new PostStoryStatisticsCollector(factory.createPrintStream());
         }
@@ -115,16 +115,16 @@ public abstract class Format {
         this.name = name;
     }
 
+    public static void println(PrintStream writer, Object what) {
+        writer.println(what);
+    }
+
     public String name() {
         return name;
     }
 
     public abstract StoryReporter createStoryReporter(FilePrintStreamFactory factory,
-            StoryReporterBuilder storyReporterBuilder);
-
-    public static void println(PrintStream writer, Object what) {
-        writer.println(what);
-    }
+                                                      StoryReporterBuilder storyReporterBuilder);
 
     @Override
     public String toString() {

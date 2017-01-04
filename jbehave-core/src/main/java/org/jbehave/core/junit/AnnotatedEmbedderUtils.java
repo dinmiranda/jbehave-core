@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 public class AnnotatedEmbedderUtils {
 
     public static AnnotatedEmbedderRunner annotatedEmbedderRunner(String annotatedClassName,
-            EmbedderClassLoader classLoader) {
+                                                                  EmbedderClassLoader classLoader) {
         Class<?> runnerClass = runnerClass(annotatedClassName, classLoader);
         return newAnnotatedEmbedderRunner(runnerClass, annotatedClassName, classLoader);
     }
@@ -21,7 +21,7 @@ public class AnnotatedEmbedderUtils {
     }
 
     private static AnnotatedEmbedderRunner newAnnotatedEmbedderRunner(Class<?> runnerClass, String annotatedClassName,
-            EmbedderClassLoader classLoader) {
+                                                                      EmbedderClassLoader classLoader) {
         try {
             Class<?> annotatedClass = loadClass(annotatedClassName, classLoader);
             return (AnnotatedEmbedderRunner) runnerClass.getConstructor(Class.class).newInstance(annotatedClass);
@@ -51,7 +51,7 @@ public class AnnotatedEmbedderUtils {
     public static class AnnotatedEmbedderRunnerInstantiationFailed extends RuntimeException {
 
         public AnnotatedEmbedderRunnerInstantiationFailed(Class<?> runnerClass, String annotatedClassName,
-                EmbedderClassLoader classLoader, Throwable cause) {
+                                                          EmbedderClassLoader classLoader, Throwable cause) {
             super("Failed to instantiate annotated embedder runner " + runnerClass + " with annotatedClassName "
                     + annotatedClassName + " and classLoader " + classLoader, cause);
         }

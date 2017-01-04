@@ -1,11 +1,11 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static java.util.Collections.unmodifiableList;
 
@@ -33,7 +33,7 @@ public class Story {
     }
 
     public Story(Description description, Narrative narrative, List<Scenario> scenarios) {
-        this((String)null, description, narrative, scenarios);
+        this((String) null, description, narrative, scenarios);
     }
 
     public Story(String path, Description description, Narrative narrative, List<Scenario> scenarios) {
@@ -47,7 +47,7 @@ public class Story {
     public Story(String path, Description description, Meta meta, Narrative narrative, GivenStories givenStories, List<Scenario> scenarios) {
         this(path, description, meta, narrative, givenStories, Lifecycle.EMPTY, scenarios);
     }
-    
+
     public Story(String path, Description description, Meta meta, Narrative narrative, GivenStories givenStories, Lifecycle lifecycle, List<Scenario> scenarios) {
         this.path = (path != null ? path : "");
         this.description = description;
@@ -59,43 +59,43 @@ public class Story {
     }
 
     public String getPath() {
-        return path;
+        return this.path;
     }
 
     public Description getDescription() {
-        return description;
+        return this.description;
     }
 
     public Narrative getNarrative() {
-        return narrative;
+        return this.narrative;
     }
 
-    public Meta asMeta(String prefix){
+    public Meta asMeta(String prefix) {
         Properties p = new Properties();
-        p.setProperty(prefix+"path", path);
-        p.setProperty(prefix+"description", description.asString());
-        p.setProperty(prefix+"narrative", narrative.toString());
+        p.setProperty(prefix + "path", this.path);
+        p.setProperty(prefix + "description", this.description.asString());
+        p.setProperty(prefix + "narrative", this.narrative.toString());
         return new Meta(p);
     }
 
     public Meta getMeta() {
-        return meta;
+        return this.meta;
     }
 
-    public GivenStories getGivenStories(){
-        return givenStories;
+    public GivenStories getGivenStories() {
+        return this.givenStories;
     }
 
-    public Lifecycle getLifecycle(){
-        return lifecycle;
+    public Lifecycle getLifecycle() {
+        return this.lifecycle;
     }
-    
+
     public List<Scenario> getScenarios() {
-        return unmodifiableList(scenarios);
+        return unmodifiableList(this.scenarios);
     }
 
     public String getName() {
-        return (name != null ? name : path);
+        return (this.name != null ? this.name : this.path);
     }
 
     public void namedAs(String name) {

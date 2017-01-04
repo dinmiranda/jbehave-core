@@ -1,27 +1,5 @@
 package org.jbehave.core.reporters;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.is;
-import static org.jbehave.core.reporters.Format.HTML;
-import static org.jbehave.core.reporters.Format.TXT;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.Date;
-import java.util.Locale;
-import java.util.Properties;
-
 import org.custommonkey.xmlunit.XMLUnit;
 import org.jbehave.core.failures.KnownFailure;
 import org.jbehave.core.failures.UUIDExceptionWrapper;
@@ -38,6 +16,28 @@ import org.jbehave.core.reporters.StoryNarrator.IsDateEqual;
 import org.jbehave.core.reporters.TemplateableViewGenerator.ViewGenerationFailedForTemplate;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Date;
+import java.util.Locale;
+import java.util.Properties;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.jbehave.core.reporters.Format.HTML;
+import static org.jbehave.core.reporters.Format.TXT;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class PrintStreamOutputBehaviour {
 
@@ -131,12 +131,12 @@ public class PrintStreamOutputBehaviour {
 
         // Then
         String expected = "An interesting story\n"
-                +"(/path/to/story)\n"
-                +"Meta:\n"
-                +"@author Mauro\n"
-                +"@theme testing\n\n"
-                +"Scenario: A scenario\n"
-                +"-theme testing\n\n\n";
+                + "(/path/to/story)\n"
+                + "Meta:\n"
+                + "@author Mauro\n"
+                + "@theme testing\n\n"
+                + "Scenario: A scenario\n"
+                + "-theme testing\n\n\n";
         assertThatOutputIs(out, expected);
     }
 
@@ -260,7 +260,7 @@ public class PrintStreamOutputBehaviour {
                 .narrateAnInterestingStoryNotAllowedByFilter(reporter, false);
 
         // Then
-        String expected ="<div class=\"story\">\n"
+        String expected = "<div class=\"story\">\n"
                 + "<h1>An interesting story</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
                 + "<div class=\"meta\">\n"
@@ -275,7 +275,7 @@ public class PrintStreamOutputBehaviour {
                 + "</div>\n";
         assertThatOutputIs(out, expected);
     }
-    
+
     @Test
     public void shouldReportEventsToHtmlOutputUsingCustomPatterns() {
         // Given
@@ -296,7 +296,7 @@ public class PrintStreamOutputBehaviour {
         StoryNarrator.narrateAnInterestingStory(reporter, false);
 
         // Then
-        String expected =  "<div class=\"story\">\n"
+        String expected = "<div class=\"story\">\n"
                 + "<h1>An interesting story &amp; special chars</h1>\n"
                 + "<div class=\"path\">/path/to/story</div>\n"
                 + "<div class=\"meta\">\n"
@@ -477,7 +477,7 @@ public class PrintStreamOutputBehaviour {
                 + "}\n"
                 + "</pendingMethod>\n"
                 + "</story>\n";
-        String xmlDocument=out.toString();
+        String xmlDocument = out.toString();
         XMLUnit.buildTestDocument(xmlDocument);
         assertEquals(expected, xmlDocument);
     }
@@ -583,13 +583,13 @@ public class PrintStreamOutputBehaviour {
         reporter.afterScenario();
 
         // Then
-        String expected = "Scenario: A title\n" 
-        		+ "Given I have a balance of $50\n" 
-        		+ "When I request $20\n"
+        String expected = "Scenario: A title\n"
+                + "Given I have a balance of $50\n"
+                + "When I request $20\n"
                 + "When I ask Liz for a loan of $100 (FAILED)\n"
                 + "(java.lang.RuntimeException: Leave my money alone!)\n"
                 + "Then I should have a balance of $30 (PENDING)\n"
-                + "Then I should have $20 (NOT PERFORMED)\n" 
+                + "Then I should have $20 (NOT PERFORMED)\n"
                 + "\n";
         String actual = dos2unix(out.toString());
         assertThat(actual, containsString(expected));
@@ -641,7 +641,7 @@ public class PrintStreamOutputBehaviour {
         assertThatOutputIs(out, expected);
 
     }
-    
+
     @Test
     public void shouldReportEventsToIdeOnlyConsoleOutput() {
         // When
@@ -667,8 +667,8 @@ public class PrintStreamOutputBehaviour {
         reporter.notPerformed("Allora dovrei avere $20");
 
         // Then
-        String expected = "Dato che ho un saldo di $50\n" 
-        		+ "Quando richiedo $20\n"
+        String expected = "Dato che ho un saldo di $50\n"
+                + "Quando richiedo $20\n"
                 + "Quando chiedo a Liz un prestito di $100 (FALLITO)\n"
                 + "(java.lang.RuntimeException: Lasciate in pace i miei soldi!)\n"
                 + "Allora dovrei avere un saldo di $30 (IN SOSPESO)\n"
@@ -687,7 +687,7 @@ public class PrintStreamOutputBehaviour {
         File file = factory.outputFile();
         file.delete();
         assertThat(file.exists(), is(false));
-        
+
         // When
         PrintStream printStream = factory.createPrintStream();
         file = factory.getOutputFile();
@@ -703,7 +703,7 @@ public class PrintStreamOutputBehaviour {
         final String storyPath = storyPath(MyStory.class);
         File outputDirectory = new File("target/output");
         StoryReporter reporter = new StoryReporterBuilder().withRelativeDirectory(outputDirectory.getName())
-        		.withFormats(HTML, TXT)
+                .withFormats(HTML, TXT)
                 .build(storyPath);
 
         // When
@@ -738,7 +738,7 @@ public class PrintStreamOutputBehaviour {
         ensureFileExists(new File(outputDirectory, "view/org.jbehave.core.reporters.my_story.txt"));
     }
 
-    
+
     @Test
     public void shouldBuildPrintStreamReportersAndOverrideDefaultForAGivenFormat() throws IOException {
         final String storyPath = storyPath(MyStory.class);
@@ -806,7 +806,7 @@ public class PrintStreamOutputBehaviour {
 
         // Then
         String expected = "some step (FAILED)\n"
-                + "(org.jbehave.core.model.OutcomesTable$OutcomesFailed)\n" 
+                + "(org.jbehave.core.model.OutcomesTable$OutcomesFailed)\n"
                 + "|Description|Value|Matcher|Verified|\n"
                 + "|A wrong date|01/01/2011|\"02/01/2011\"|No|\n";
         assertThatOutputIs(out, expected);

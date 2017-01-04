@@ -1,9 +1,9 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.model.StepPattern;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-
-import org.jbehave.core.model.StepPattern;
 
 /**
  * Interface to monitor step events
@@ -11,7 +11,7 @@ import org.jbehave.core.model.StepPattern;
 public interface StepMonitor {
 
     void stepMatchesType(String stepAsString, String previousAsString, boolean matchesType, StepType stepType,
-            Method method, Object stepsInstance);
+                         Method method, Object stepsInstance);
 
     void stepMatchesPattern(String step, boolean matches, StepPattern stepPattern, Method method, Object stepsInstance);
 

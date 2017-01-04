@@ -1,13 +1,13 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 import static java.util.regex.Pattern.DOTALL;
 import static java.util.regex.Pattern.compile;
@@ -55,10 +55,10 @@ public class GivenStory {
     }
 
     public Map<String, String> getAnchorParameters() {
-        Map<String,String> parameters = new HashMap<String, String>();
-        for ( String pair : anchor.trim().split(";") ){
+        Map<String, String> parameters = new HashMap<String, String>();
+        for (String pair : anchor.trim().split(";")) {
             String[] split = pair.split(":");
-            if ( split.length > 1 ){
+            if (split.length > 1) {
                 parameters.put(split[0], split[1]);
             }
         }

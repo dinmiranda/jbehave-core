@@ -1,5 +1,7 @@
 package org.jbehave.core.io;
 
+import org.junit.Test;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -7,12 +9,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import org.junit.Test;
-
 import static java.util.Arrays.asList;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -27,7 +25,7 @@ public class StoryFinderBehaviour {
 
     @Test
     public void shouldFindNoPaths() {
-        List<String> storyPaths = new ArrayList<String>(finder.findPaths("src/test/java", (String)null, (String)null));
+        List<String> storyPaths = new ArrayList<String>(finder.findPaths("src/test/java", (String) null, (String) null));
         assertThat(storyPaths.size(), equalTo(0));
     }
 
@@ -145,7 +143,7 @@ public class StoryFinderBehaviour {
 
     @Test
     public void shouldIgnoreNullFiltersWhenFindingPaths() {
-        assertThat(finder.findPaths("src/test/java", (List<String>)null, (List<String>)null).size(), greaterThan(0));
+        assertThat(finder.findPaths("src/test/java", (List<String>) null, (List<String>) null).size(), greaterThan(0));
     }
 
     @Test

@@ -28,66 +28,65 @@ public class PropertyBasedEmbedderControls extends EmbedderControls {
 
     @Override
     public boolean ignoreFailureInView() {
-        return propertyAs(IGNORE_FAILURE_IN_VIEW, Boolean.class, super.ignoreFailureInView()); 
+        return propertyAs(IGNORE_FAILURE_IN_VIEW, Boolean.class, super.ignoreFailureInView());
     }
 
     @Override
     public boolean ignoreFailureInStories() {
-        return propertyAs(IGNORE_FAILURE_IN_STORIES, Boolean.class, super.ignoreFailureInStories()); 
+        return propertyAs(IGNORE_FAILURE_IN_STORIES, Boolean.class, super.ignoreFailureInStories());
     }
 
     @Override
     public boolean generateViewAfterStories() {
-        return propertyAs(GENERATE_VIEW_AFTER_STORIES, Boolean.class, super.generateViewAfterStories()); 
+        return propertyAs(GENERATE_VIEW_AFTER_STORIES, Boolean.class, super.generateViewAfterStories());
     }
 
     @Override
     public boolean skip() {
-        return propertyAs(SKIP, Boolean.class, super.skip()); 
+        return propertyAs(SKIP, Boolean.class, super.skip());
     }
-    
+
     @Override
     public boolean verboseFailures() {
-        return propertyAs(VERBOSE_FAILURES, Boolean.class, super.verboseFailures()); 
+        return propertyAs(VERBOSE_FAILURES, Boolean.class, super.verboseFailures());
     }
 
     @Override
     public boolean verboseFiltering() {
-        return propertyAs(VERBOSE_FILTERING, Boolean.class, super.verboseFiltering()); 
+        return propertyAs(VERBOSE_FILTERING, Boolean.class, super.verboseFiltering());
     }
-    
+
     @Override
     public String storyTimeouts() {
-        return propertyAs(STORY_TIMEOUTS, String.class, super.storyTimeouts()); 
+        return propertyAs(STORY_TIMEOUTS, String.class, super.storyTimeouts());
     }
 
     @Override
     public long storyTimeoutInSecs() {
-        return propertyAs(STORY_TIMEOUT_IN_SECS, Long.class, super.storyTimeoutInSecs()); 
-    }
-    
-    @Override
-    public String storyTimeoutInSecsByPath() {
-        return propertyAs(STORY_TIMEOUT_IN_SECS_BY_PATH, String.class, super.storyTimeoutInSecsByPath()); 
+        return propertyAs(STORY_TIMEOUT_IN_SECS, Long.class, super.storyTimeoutInSecs());
     }
 
     @Override
-	public boolean failOnStoryTimeout() {
-        return propertyAs(FAIL_ON_STORY_TIMEOUT, Boolean.class, super.failOnStoryTimeout()); 
-	}
+    public String storyTimeoutInSecsByPath() {
+        return propertyAs(STORY_TIMEOUT_IN_SECS_BY_PATH, String.class, super.storyTimeoutInSecsByPath());
+    }
+
+    @Override
+    public boolean failOnStoryTimeout() {
+        return propertyAs(FAIL_ON_STORY_TIMEOUT, Boolean.class, super.failOnStoryTimeout());
+    }
 
     @Override
     public int threads() {
-        return propertyAs(THREADS, Integer.class, super.threads()); 
+        return propertyAs(THREADS, Integer.class, super.threads());
     }
-   
-    @SuppressWarnings("unchecked")
+
     private <T> T propertyAs(String name, Class<T> type, T defaultValue) {
         String property = System.getProperty(name);
-        if ( property == null ){
+        if (property == null) {
             return defaultValue;
         }
-        return (T) converters.convert(property, type);
+        return (T) this.converters.convert(property, type);
     }
 
     @Override
@@ -95,17 +94,17 @@ public class PropertyBasedEmbedderControls extends EmbedderControls {
         // Calling accessor methods to show the expected system based values
         // rather than the object values
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-        .append("batch", batch())
-        .append("skip", skip())
-        .append("generateViewAfterStories", generateViewAfterStories())
-        .append("ignoreFailureInStories", ignoreFailureInStories())
-        .append("ignoreFailureInView", ignoreFailureInView())
-        .append("verboseFailures", verboseFailures())
-        .append("verboseFiltering", verboseFiltering())
-        .append("storyTimeoutInSecs", storyTimeoutInSecs())
-        .append("storyTimeoutInSecsByPath", storyTimeoutInSecsByPath())
-        .append("threads", threads())
-        .toString();        
+                .append("batch", batch())
+                .append("skip", skip())
+                .append("generateViewAfterStories", generateViewAfterStories())
+                .append("ignoreFailureInStories", ignoreFailureInStories())
+                .append("ignoreFailureInView", ignoreFailureInView())
+                .append("verboseFailures", verboseFailures())
+                .append("verboseFiltering", verboseFiltering())
+                .append("storyTimeoutInSecs", storyTimeoutInSecs())
+                .append("storyTimeoutInSecsByPath", storyTimeoutInSecsByPath())
+                .append("threads", threads())
+                .toString();
     }
-    
+
 }

@@ -1,9 +1,9 @@
 package org.jbehave.core.reporters;
 
-import java.io.IOException;
-
 import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.junit.Test;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -101,7 +101,7 @@ public class StackTraceFormatterBehaviour {
         StackTraceFormatter formatter = new StackTraceFormatter(true);
 
         // When I format an Exception
-        String trace=formatter.stackTrace(new Exception("some cause"));
+        String trace = formatter.stackTrace(new Exception("some cause"));
 
         // Then it looks like
         assertEquals("java.lang.Exception: some cause\n"
@@ -113,8 +113,8 @@ public class StackTraceFormatterBehaviour {
 
     @Test
     public void UUIDExecptionShouldBeUnwrapped() {
-        Exception ex=new Exception();
-        Exception wrapEx=new UUIDExceptionWrapper(ex);
+        Exception ex = new Exception();
+        Exception wrapEx = new UUIDExceptionWrapper(ex);
 
         StackTraceFormatter formatter = new StackTraceFormatter(false);
         assertTrue("UUIDException is not unwrapped", formatter.stackTrace(wrapEx).equals(formatter.stackTrace(ex)));

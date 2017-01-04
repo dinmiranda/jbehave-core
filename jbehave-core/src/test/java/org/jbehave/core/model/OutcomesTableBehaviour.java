@@ -1,8 +1,8 @@
 package org.jbehave.core.model;
 
+import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.model.OutcomesTable.Outcome;
 import org.jbehave.core.model.OutcomesTable.OutcomesFailed;
-import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.junit.Test;
 
 import java.util.List;

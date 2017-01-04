@@ -5,6 +5,16 @@ import org.jbehave.core.reporters.StoryReporter;
 
 public interface StepResult {
 
+    String parametrisedStep();
+
+    StepResult withParameterValues(String parametrisedStep);
+
+    StepResult setTimings(Timer timer);
+
+    void describeTo(StoryReporter reporter);
+
+    UUIDExceptionWrapper getFailure();
+
     enum Type {
         FAILED,
         NOT_PERFORMED,
@@ -15,14 +25,4 @@ public interface StepResult {
         COMMENT,
         SKIPPED
     }
-
-    String parametrisedStep();
-
-    StepResult withParameterValues(String parametrisedStep);
-
-    StepResult setTimings(Timer timer);
-
-    void describeTo(StoryReporter reporter);
-
-    UUIDExceptionWrapper getFailure();
 }

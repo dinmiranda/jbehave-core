@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.is;
 
 public class RelativePathCalculatorBehaviour {
@@ -29,5 +28,5 @@ public class RelativePathCalculatorBehaviour {
         assertThat(calculator.calculate("a.txt", "file.story"), is("file.story"));
         assertThat(calculator.calculate("a/path/a.txt", "file.story"), is("a/path/file.story"));
     }
-    
+
 }

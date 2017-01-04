@@ -1,12 +1,12 @@
 package org.jbehave.core.steps;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * <p>
@@ -36,9 +36,8 @@ public class StepFinder {
 
     /**
      * Creates a StepFinder with a custom strategy
-     * 
-     * @param prioritisingStrategy
-     *            the PrioritisingStrategy
+     *
+     * @param prioritisingStrategy the PrioritisingStrategy
      */
     public StepFinder(PrioritisingStrategy prioritisingStrategy) {
         this.prioritisingStrategy = prioritisingStrategy;
@@ -47,9 +46,8 @@ public class StepFinder {
     /**
      * Returns the stepdocs for the candidates collected from the given
      * {@link CandidateSteps}.
-     * 
-     * @param candidateSteps
-     *            the List of CandidateSteps
+     *
+     * @param candidateSteps the List of CandidateSteps
      * @return The List of Stepdocs, one for each {@link StepCandidate}.
      */
     public List<Stepdoc> stepdocs(List<CandidateSteps> candidateSteps) {
@@ -63,11 +61,9 @@ public class StepFinder {
     /**
      * Finds matching steps, represented as {@link Stepdoc}s, for a given
      * textual step and a list of {@link CandidateSteps}.
-     * 
-     * @param stepAsText
-     *            the textual step
-     * @param candidateSteps
-     *            the List of CandidateSteps
+     *
+     * @param stepAsText     the textual step
+     * @param candidateSteps the List of CandidateSteps
      * @return The list of Stepdocs, one for each matched {@link StepCandidate}.
      */
     public List<Stepdoc> findMatching(String stepAsText, List<CandidateSteps> candidateSteps) {
@@ -82,9 +78,8 @@ public class StepFinder {
 
     /**
      * Returns the steps instances associated to CandidateSteps
-     * 
-     * @param candidateSteps
-     *            the List of CandidateSteps
+     *
+     * @param candidateSteps the List of CandidateSteps
      * @return The List of steps instances
      */
     public List<Object> stepsInstances(List<CandidateSteps> candidateSteps) {
@@ -99,9 +94,8 @@ public class StepFinder {
 
     /**
      * Collects a list of step candidates from {@link CandidateSteps} instances.
-     * 
-     * @param candidateSteps
-     *            the list {@link CandidateSteps} instances
+     *
+     * @param candidateSteps the list {@link CandidateSteps} instances
      * @return A List of {@link StepCandidate}
      */
     public List<StepCandidate> collectCandidates(List<CandidateSteps> candidateSteps) {
@@ -114,13 +108,11 @@ public class StepFinder {
 
     /**
      * Prioritises the list of step candidates that match a given step.
-     * 
-     * @param stepAsText
-     *            the textual step to match
-     * @param candidates
-     *            the List of StepCandidate
+     *
+     * @param stepAsText the textual step to match
+     * @param candidates the List of StepCandidate
      * @return The prioritised list according to the
-     *         {@link PrioritisingStrategy}.
+     * {@link PrioritisingStrategy}.
      */
     public List<StepCandidate> prioritise(String stepAsText, List<StepCandidate> candidates) {
         return prioritisingStrategy.prioritise(stepAsText, candidates);

@@ -1,16 +1,16 @@
 package org.jbehave.core;
 
-import static java.util.Arrays.asList;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.embedder.Embedder;
 import org.jbehave.core.junit.JUnitStories;
 import org.jbehave.core.junit.JUnitStory;
 import org.jbehave.core.steps.CandidateSteps;
 import org.jbehave.core.steps.InjectableStepsFactory;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 /**
  * <p>
@@ -29,7 +29,7 @@ import org.jbehave.core.steps.InjectableStepsFactory;
  * If overriding the {@link #configuration()} method and providing an
  * {@link InjectableStepsFactory} which requires a {@link Configuration}, then
  * care must be taken to avoid re-instantiating the {@link Configuration}. E.g.:
- * 
+ * <p>
  * <pre>
  * {@code
  * public Configuration configuration() {
@@ -39,7 +39,7 @@ import org.jbehave.core.steps.InjectableStepsFactory;
  *   return new MostUsefulConfiguration()...;
  * }
  * </pre>
- * 
+ * <p>
  * </p>
  * <p>
  * Note that no defaults are provided by this implementation. If no values are
@@ -56,77 +56,77 @@ import org.jbehave.core.steps.InjectableStepsFactory;
  */
 public abstract class ConfigurableEmbedder implements Embeddable {
 
-	private Embedder embedder = new Embedder();
-	private Configuration configuration;
-	private InjectableStepsFactory stepsFactory;
-	private List<CandidateSteps> candidateSteps;
+    private Embedder embedder = new Embedder();
+    private Configuration configuration;
+    private InjectableStepsFactory stepsFactory;
+    private List<CandidateSteps> candidateSteps;
 
-	public void useEmbedder(Embedder embedder) {
-		this.embedder = embedder;
-	}
+    public void useEmbedder(Embedder embedder) {
+        this.embedder = embedder;
+    }
 
-	public void useConfiguration(Configuration configuration) {
-		this.configuration = configuration;
-	}
+    public void useConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-	public Configuration configuration() {
-		return configuration;
-	}
+    public Configuration configuration() {
+        return this.configuration;
+    }
 
-	public boolean hasConfiguration() {
-		return configuration != null;
-	}
+    public boolean hasConfiguration() {
+        return this.configuration != null;
+    }
 
-	/**
-	 * @deprecated Use {@link #useStepsFactory(InjectableStepsFactory)}
-	 */
-	public void addSteps(CandidateSteps... steps) {
-		addSteps(asList(steps));
-	}
+    /**
+     * @deprecated Use {@link #useStepsFactory(InjectableStepsFactory)}
+     */
+    public void addSteps(CandidateSteps... steps) {
+        addSteps(asList(steps));
+    }
 
-	/**
-	 * @deprecated Use {@link #useStepsFactory(InjectableStepsFactory)}
-	 */
-	public void addSteps(List<CandidateSteps> steps) {
-		if ( candidateSteps == null ){
-			this.candidateSteps = new ArrayList<CandidateSteps>();
-		}
-		this.candidateSteps.addAll(steps);
-	}
+    /**
+     * @deprecated Use {@link #useStepsFactory(InjectableStepsFactory)}
+     */
+    public void addSteps(List<CandidateSteps> steps) {
+        if (this.candidateSteps == null) {
+            this.candidateSteps = new ArrayList<CandidateSteps>();
+        }
+        this.candidateSteps.addAll(steps);
+    }
 
-	/**
-	 * @deprecated Use {@link #stepsFactory()}
-	 */
-	public List<CandidateSteps> candidateSteps() {
-		return candidateSteps;
-	}
+    /**
+     * @deprecated Use {@link #stepsFactory()}
+     */
+    public List<CandidateSteps> candidateSteps() {
+        return this.candidateSteps;
+    }
 
-	public void useStepsFactory(InjectableStepsFactory stepsFactory) {
-		this.stepsFactory = stepsFactory;
-	}
+    public void useStepsFactory(InjectableStepsFactory stepsFactory) {
+        this.stepsFactory = stepsFactory;
+    }
 
-	public InjectableStepsFactory stepsFactory() {
-		return stepsFactory;
-	}
+    public InjectableStepsFactory stepsFactory() {
+        return this.stepsFactory;
+    }
 
-	public boolean hasStepsFactory() {
-		return stepsFactory != null;
-	}
+    public boolean hasStepsFactory() {
+        return this.stepsFactory != null;
+    }
 
-	public Embedder configuredEmbedder() {
-		if (configuration == null) {
-			configuration = configuration();
-		}
-		embedder.useConfiguration(configuration);
-		if (candidateSteps == null) {
-			candidateSteps = candidateSteps();
-		}
-		embedder.useCandidateSteps(candidateSteps);
-		if (stepsFactory == null) {
-			stepsFactory = stepsFactory();
-		}
-		embedder.useStepsFactory(stepsFactory);
-		return embedder;
-	}
+    public Embedder configuredEmbedder() {
+        if (this.configuration == null) {
+            this.configuration = configuration();
+        }
+        this.embedder.useConfiguration(this.configuration);
+        if (this.candidateSteps == null) {
+            this.candidateSteps = candidateSteps();
+        }
+        this.embedder.useCandidateSteps(this.candidateSteps);
+        if (this.stepsFactory == null) {
+            this.stepsFactory = stepsFactory();
+        }
+        this.embedder.useStepsFactory(this.stepsFactory);
+        return this.embedder;
+    }
 
 }

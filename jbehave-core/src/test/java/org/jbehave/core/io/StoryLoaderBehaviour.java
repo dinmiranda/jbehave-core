@@ -1,5 +1,15 @@
 package org.jbehave.core.io;
 
+import org.hamcrest.Matchers;
+import org.jbehave.core.io.LoadFromRelativeFile.StoryFilePath;
+import org.jbehave.core.io.stories.MyPendingStory;
+import org.junit.Test;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -7,16 +17,6 @@ import static org.jbehave.core.io.LoadFromRelativeFile.intellijProjectStoryFileP
 import static org.jbehave.core.io.LoadFromRelativeFile.intellijProjectTestStoryFilePath;
 import static org.jbehave.core.io.LoadFromRelativeFile.mavenModuleStoryFilePath;
 import static org.jbehave.core.io.LoadFromRelativeFile.mavenModuleTestStoryFilePath;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-
-import org.hamcrest.Matchers;
-import org.jbehave.core.io.LoadFromRelativeFile.StoryFilePath;
-import org.jbehave.core.io.stories.MyPendingStory;
-import org.junit.Test;
 
 public class StoryLoaderBehaviour {
 
@@ -29,9 +29,9 @@ public class StoryLoaderBehaviour {
         // When
         StoryLoader loader = new LoadFromClasspath();
         String loadedStoryAsText = loader.loadStoryAsText(storyPath);
-        
+
         // Then
-		assertThat(loadedStoryAsText, equalTo(storyAsText));
+        assertThat(loadedStoryAsText, equalTo(storyAsText));
 
     }
 
@@ -52,37 +52,17 @@ public class StoryLoaderBehaviour {
 
     }
 
-    static class InvalidClassLoader extends ClassLoader {
-
-        @Override
-        public InputStream getResourceAsStream(String name) {
-            return new InputStream() {
-
-                public int available() throws IOException {
-                    return 1;
-                }
-
-                @Override
-                public int read() throws IOException {
-                    throw new IOException("invalid");
-                }
-
-            };
-        }
-    }
-
-
     @Test
     public void shouldLoadStoryFromURL() {
         String storyPath = CodeLocations.codeLocationFromClass(this.getClass()) + "org/jbehave/core/io/stories/my_pending_story";
         String storyAsText = "Given my step";
- 
+
         // When
         StoryLoader loader = new LoadFromURL();
         String loadedStoryAsText = loader.loadStoryAsText(storyPath);
-        
+
         // Then
-		assertThat(loadedStoryAsText, equalTo(storyAsText));
+        assertThat(loadedStoryAsText, equalTo(storyAsText));
     }
 
     @Test(expected = InvalidStoryResource.class)
@@ -92,7 +72,7 @@ public class StoryLoaderBehaviour {
         // When
         StoryLoader loader = new LoadFromURL();
         loader.loadStoryAsText(storyPath);
-        
+
         // Then fail as expected
 
     }
@@ -109,7 +89,7 @@ public class StoryLoaderBehaviour {
                 mavenModuleTestStoryFilePath("src/test/java"),
                 intellijProjectStoryFilePath("src/main/java"),
                 intellijProjectTestStoryFilePath("src/test/java"));
-        
+
         // Then
         assertThat(loader.loadStoryAsText(storyPath), equalTo(storyAsText));
 
@@ -128,8 +108,8 @@ public class StoryLoaderBehaviour {
         assertThat(loader.loadStoryAsText(storyPath), equalTo(storyAsText));
 
     }
-    
-    @Test(expected=StoryResourceNotFound.class)
+
+    @Test(expected = StoryResourceNotFound.class)
     public void shouldNotLoadStoryFromRelativeFileWhenNoPathsAreProvided() {
         // Given
         String storyPath = "org/jbehave/core/io/stories/MyPendingStory.txt";
@@ -141,8 +121,8 @@ public class StoryLoaderBehaviour {
         loader.loadStoryAsText(storyPath);
 
     }
-    
-    @Test(expected=StoryResourceNotFound.class)
+
+    @Test(expected = StoryResourceNotFound.class)
     public void shouldNotLoadStoryFromRelativeFileWhenNotFound() {
         // Given
         String storyPath = "org/jbehave/core/io/stories/MyInexistentStory";
@@ -155,7 +135,7 @@ public class StoryLoaderBehaviour {
 
     }
 
-    @Test(expected=InvalidStoryResource.class)
+    @Test(expected = InvalidStoryResource.class)
     public void shouldNotLoadStoryFromRelativeFileWhenPathInvalid() {
         // Given
         String storyPath = null;
@@ -193,6 +173,25 @@ public class StoryLoaderBehaviour {
 
         // Then
         assertThat(loader.loadStoryAsText(storyPath), equalTo(storyAsText));
+    }
+
+    static class InvalidClassLoader extends ClassLoader {
+
+        @Override
+        public InputStream getResourceAsStream(String name) {
+            return new InputStream() {
+
+                public int available() throws IOException {
+                    return 1;
+                }
+
+                @Override
+                public int read() throws IOException {
+                    throw new IOException("invalid");
+                }
+
+            };
+        }
     }
 
 

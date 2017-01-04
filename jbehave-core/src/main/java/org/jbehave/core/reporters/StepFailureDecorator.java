@@ -1,8 +1,7 @@
 package org.jbehave.core.reporters;
 
-import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.failures.StepFailed;
-import org.jbehave.core.model.*;
+import org.jbehave.core.failures.UUIDExceptionWrapper;
 
 import java.util.List;
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
  * occurred. If such a failure occurs it will throw the {@link StepFailed}
  * after the story is finished.
  * </p>
- * 
+ *
  * @see StepFailed
  */
 public class StepFailureDecorator implements StoryReporter {
@@ -28,142 +27,142 @@ public class StepFailureDecorator implements StoryReporter {
 
     @Override
     public void afterScenario() {
-        delegate.afterScenario();
+        this.delegate.afterScenario();
     }
 
     @Override
     public void afterStory(boolean givenStory) {
-        delegate.afterStory(givenStory);
-        if (failure != null) {
-            throw failure;
+        this.delegate.afterStory(givenStory);
+        if (this.failure != null) {
+            throw this.failure;
         }
     }
 
     @Override
     public void beforeScenario(String scenarioTitle) {
-        delegate.beforeScenario(scenarioTitle);
+        this.delegate.beforeScenario(scenarioTitle);
     }
 
     @Override
     public void scenarioMeta(Meta meta) {
-        delegate.scenarioMeta(meta);
+        this.delegate.scenarioMeta(meta);
     }
 
     @Override
     public void beforeStory(Story story, boolean givenStory) {
-        failure = null;
-        delegate.beforeStory(story, givenStory);
+        this.failure = null;
+        this.delegate.beforeStory(story, givenStory);
     }
 
     @Override
     public void narrative(Narrative narrative) {
-        delegate.narrative(narrative);
+        this.delegate.narrative(narrative);
     }
 
     @Override
     public void lifecyle(Lifecycle lifecycle) {
-        delegate.lifecyle(lifecycle);
+        this.delegate.lifecyle(lifecycle);
     }
 
     @Override
     public void failed(String step, Throwable cause) {
-        failure = (UUIDExceptionWrapper) cause;
-        delegate.failed(step, failure);
+        this.failure = (UUIDExceptionWrapper) cause;
+        this.delegate.failed(step, this.failure);
     }
 
     @Override
     public void failedOutcomes(String step, OutcomesTable table) {
-        failure = new StepFailed(step, table);
-        delegate.failedOutcomes(step, table);
+        this.failure = new StepFailed(step, table);
+        this.delegate.failedOutcomes(step, table);
     }
-    
+
     @Override
     public void beforeStep(String step) {
-        delegate.beforeStep(step);
+        this.delegate.beforeStep(step);
     }
 
     @Override
     public void ignorable(String step) {
-        delegate.ignorable(step);
+        this.delegate.ignorable(step);
     }
 
     @Override
     public void comment(String step) {
-        delegate.comment(step);
+        this.delegate.comment(step);
     }
 
     @Override
     public void notPerformed(String step) {
-        delegate.notPerformed(step);
+        this.delegate.notPerformed(step);
     }
 
     @Override
     public void pending(String step) {
-        delegate.pending(step);
+        this.delegate.pending(step);
     }
 
     @Override
     public void successful(String step) {
-        delegate.successful(step);
+        this.delegate.successful(step);
     }
 
     @Override
     public void givenStories(GivenStories givenStories) {
-        delegate.givenStories(givenStories);
+        this.delegate.givenStories(givenStories);
     }
 
     @Override
     public void givenStories(List<String> storyPaths) {
-        delegate.givenStories(storyPaths);
+        this.delegate.givenStories(storyPaths);
     }
 
     @Override
     public void beforeExamples(List<String> steps, ExamplesTable table) {
-        delegate.beforeExamples(steps, table);
+        this.delegate.beforeExamples(steps, table);
     }
 
     @Override
     public void example(Map<String, String> tableRow) {
-        delegate.example(tableRow);
+        this.delegate.example(tableRow);
     }
 
     @Override
     public void afterExamples() {
-        delegate.afterExamples();
+        this.delegate.afterExamples();
     }
 
     @Override
     public void scenarioNotAllowed(Scenario scenario, String filter) {
-        delegate.scenarioNotAllowed(scenario, filter);
+        this.delegate.scenarioNotAllowed(scenario, filter);
     }
 
     @Override
     public void storyNotAllowed(Story story, String filter) {
-        delegate.storyNotAllowed(story, filter);
+        this.delegate.storyNotAllowed(story, filter);
     }
 
     @Override
     public void dryRun() {
-        delegate.dryRun();
+        this.delegate.dryRun();
     }
 
     @Override
     public void pendingMethods(List<String> methods) {
-        delegate.pendingMethods(methods);
+        this.delegate.pendingMethods(methods);
     }
 
     @Override
     public void restarted(String step, Throwable cause) {
-        delegate.restarted(step, cause);
+        this.delegate.restarted(step, cause);
     }
-    
+
     @Override
     public void restartedStory(Story story, Throwable cause) {
-        delegate.restartedStory(story, cause);
+        this.delegate.restartedStory(story, cause);
     }
 
     @Override
     public void storyCancelled(Story story, StoryDuration storyDuration) {
-        delegate.storyCancelled(story, storyDuration);
+        this.delegate.storyCancelled(story, storyDuration);
     }
 }

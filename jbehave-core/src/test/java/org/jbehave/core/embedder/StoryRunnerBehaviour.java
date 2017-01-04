@@ -1,29 +1,5 @@
 package org.jbehave.core.embedder;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.jbehave.core.steps.AbstractStepResult.failed;
-import static org.jbehave.core.steps.AbstractStepResult.notPerformed;
-import static org.jbehave.core.steps.AbstractStepResult.pending;
-import static org.jbehave.core.steps.AbstractStepResult.successful;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.annotations.ScenarioType;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -64,6 +40,30 @@ import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.jbehave.core.steps.AbstractStepResult.failed;
+import static org.jbehave.core.steps.AbstractStepResult.notPerformed;
+import static org.jbehave.core.steps.AbstractStepResult.pending;
+import static org.jbehave.core.steps.AbstractStepResult.successful;
+import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyObject;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.inOrder;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StoryRunnerBehaviour {
 
@@ -174,14 +174,14 @@ public class StoryRunnerBehaviour {
         inOrder.verify(reporter).afterStory(false);
         inOrder.verify(failureStrategy).handleFailure(failure);
     }
-    
+
     @Test
     public void shouldRunGivenStoriesAtStoryAndScenarioLevel() throws Throwable {
         // Given
         GivenStories storyGivenStories = new GivenStories("/path/to/given/story1");
         GivenStories scenarioGivenStories = new GivenStories("/path/to/given/story1");
         Scenario scenario1 = new Scenario("scenario 1", asList("successfulStep"));
-        Scenario scenario2 = new Scenario("scenario 2", Meta.EMPTY, scenarioGivenStories, ExamplesTable.EMPTY, 
+        Scenario scenario2 = new Scenario("scenario 2", Meta.EMPTY, scenarioGivenStories, ExamplesTable.EMPTY,
                 asList("anotherSuccessfulStep"));
         Story story1 = new Story(new Description("story 1"), Narrative.EMPTY, asList(scenario1));
         Story story2 = new Story("", new Description("story 2"), Meta.EMPTY, Narrative.EMPTY, storyGivenStories, asList(scenario2));
@@ -225,34 +225,34 @@ public class StoryRunnerBehaviour {
         verify(reporter, never()).beforeStory(story1, givenStory);
     }
 
-    
+
     @Test
-	public void shouldIgnoreMetaFilteringInGivenStoriesIfConfigured()
-			throws Throwable {
-		// Given
-		Scenario scenario = new Scenario("scenario", new Meta(
-				asList("run false")), new GivenStories("/path/to/given/story"),
-				ExamplesTable.EMPTY, asList("anotherSuccessfulStep"));
-		Story story = new Story("", new Description("story"), new Meta(
-				asList("run false")), Narrative.EMPTY, new GivenStories(
-				"/path/to/given/story"), asList(scenario));
+    public void shouldIgnoreMetaFilteringInGivenStoriesIfConfigured()
+            throws Throwable {
+        // Given
+        Scenario scenario = new Scenario("scenario", new Meta(
+                asList("run false")), new GivenStories("/path/to/given/story"),
+                ExamplesTable.EMPTY, asList("anotherSuccessfulStep"));
+        Story story = new Story("", new Description("story"), new Meta(
+                asList("run false")), Narrative.EMPTY, new GivenStories(
+                "/path/to/given/story"), asList(scenario));
 
-		// When
-		MetaFilter filter = new MetaFilter("+run true");
-		FilteredStory ignoreMeta = new FilteredStory(filter, story,
-				new StoryControls().doIgnoreMetaFiltersIfGivenStory(true), true);
+        // When
+        MetaFilter filter = new MetaFilter("+run true");
+        FilteredStory ignoreMeta = new FilteredStory(filter, story,
+                new StoryControls().doIgnoreMetaFiltersIfGivenStory(true), true);
 
-		// Then
-		assertThat(ignoreMeta.allowed(), is(true));
-		assertThat(ignoreMeta.allowed(scenario), is(true));
+        // Then
+        assertThat(ignoreMeta.allowed(), is(true));
+        assertThat(ignoreMeta.allowed(scenario), is(true));
 
-		// When
-		FilteredStory doNotIgnoreMeta = new FilteredStory(filter, story,
-				new StoryControls().doIgnoreMetaFiltersIfGivenStory(false), true);
+        // When
+        FilteredStory doNotIgnoreMeta = new FilteredStory(filter, story,
+                new StoryControls().doIgnoreMetaFiltersIfGivenStory(false), true);
 
-		// Then
-		assertThat(doNotIgnoreMeta.allowed(), is(false));
-		assertThat(doNotIgnoreMeta.allowed(scenario), is(false));
+        // Then
+        assertThat(doNotIgnoreMeta.allowed(), is(false));
+        assertThat(doNotIgnoreMeta.allowed(scenario), is(false));
 
     }
 
@@ -272,7 +272,7 @@ public class StoryRunnerBehaviour {
         when(secondStepPending.perform(null)).thenReturn(pending("When I am pending"));
         when(thirdStepNormal.doNotPerform(Matchers.<UUIDExceptionWrapper>any())).thenReturn(notPerformed("Then I should not be performed"));
         when(fourthStepAlsoPending.doNotPerform(Matchers.<UUIDExceptionWrapper>any())).thenReturn(
-        		notPerformed("Then I should not be performed either"));
+                notPerformed("Then I should not be performed either"));
         Story story = new Story(asList(scenario));
         givenStoryWithNoBeforeOrAfterSteps(story, false, collector, mySteps);
 
@@ -300,6 +300,7 @@ public class StoryRunnerBehaviour {
         final RestartingScenarioFailure hi = new RestartingScenarioFailure("hi");
         Step restartStep = new AbstractStep() {
             private int count = 0;
+
             public StepResult perform(UUIDExceptionWrapper storyFailureIfItHappened) {
                 if (count == 0) {
                     count++;
@@ -339,23 +340,23 @@ public class StoryRunnerBehaviour {
     }
 
     @Test
-    public void shouldReportStoryCancellation(){
+    public void shouldReportStoryCancellation() {
         // Given
-        Configuration configuration = mock(Configuration.class,Mockito.RETURNS_DEEP_STUBS);
+        Configuration configuration = mock(Configuration.class, Mockito.RETURNS_DEEP_STUBS);
         when(configuration.storyControls().dryRun()).thenReturn(false);
         StoryReporter reporter = mock(ConcurrentStoryReporter.class);
         when(configuration.storyReporter(Matchers.anyString())).thenReturn(reporter);
-        
+
         Story story = mock(Story.class);
         String storyPath = "story/path";
         when(story.getPath()).thenReturn(storyPath);
         RuntimeException expected = new RuntimeException();
         when(story.getMeta()).thenThrow(expected);
-        
+
         InjectableStepsFactory stepsFactory = mock(InjectableStepsFactory.class);
         MetaFilter metaFilter = mock(MetaFilter.class);
         State state = mock(State.class);
-    
+
         //When
         long durationInSecs = 2;
         long timeoutInSecs = 1;
@@ -366,9 +367,9 @@ public class StoryRunnerBehaviour {
             runner.run(configuration, stepsFactory, story, metaFilter, state);
             fail("A exception should be thrown");
         } catch (Throwable e) {
-        //Then
+            //Then
             assertThat(e.equals(expected), is(true));
-        }        
+        }
         verify(reporter).storyCancelled(story, storyDuration);
     }
 
@@ -549,8 +550,8 @@ public class StoryRunnerBehaviour {
         verify(pendingStep).perform(Matchers.<UUIDExceptionWrapper>any());
         verify(secondStep).doNotPerform(Matchers.<UUIDExceptionWrapper>any());
         verify(secondStep, never()).perform(Matchers.<UUIDExceptionWrapper>any());
-    }    
-    
+    }
+
     @Test
     public void shouldAllowToNotResetStateBeforeStory() throws Throwable {
         // Given
@@ -560,7 +561,7 @@ public class StoryRunnerBehaviour {
         Step pendingStep = mock(Step.class, "pendingStep");
         when(pendingStep.perform(null)).thenReturn(pending("pendingStep"));
         StepCollector collector = mock(StepCollector.class);
-        CandidateSteps mySteps = new Steps();        
+        CandidateSteps mySteps = new Steps();
         Scenario scenario1 = new Scenario();
         List<CandidateSteps> candidateSteps = asList(mySteps);
         when(collector.collectBeforeOrAfterStoriesSteps(candidateSteps, Stage.BEFORE)).thenReturn(asList(failedStep));
@@ -596,7 +597,7 @@ public class StoryRunnerBehaviour {
 
         // When
         StoryRunner runner = new StoryRunner();
-        runner.run(configurationWith(reporter, collector, strategy),asList(mySteps), story);
+        runner.run(configurationWith(reporter, collector, strategy), asList(mySteps), story);
 
         // Then
         verify(beforeStep).perform(null);
@@ -669,7 +670,7 @@ public class StoryRunnerBehaviour {
         CandidateSteps mySteps = new Steps(configuration);
         Step firstStep = mockSuccessfulStep("step <one>");
         Step secondStep = mockSuccessfulStep("step <two>");
-        when(collector.collectScenarioSteps(asList(mySteps), scenario1,tableRow)).thenReturn(
+        when(collector.collectScenarioSteps(asList(mySteps), scenario1, tableRow)).thenReturn(
                 asList(firstStep, secondStep));
         boolean givenStory = false;
         givenStoryWithNoBeforeOrAfterSteps(story, givenStory, collector, mySteps);
@@ -689,7 +690,7 @@ public class StoryRunnerBehaviour {
     }
 
     @Test
-    public void shouldRunScenarioAndLifecycleStepsInCorrectOrderWithExamplesTable() throws Throwable{
+    public void shouldRunScenarioAndLifecycleStepsInCorrectOrderWithExamplesTable() throws Throwable {
         // Given
         ExamplesTable examplesTable = new ExamplesTable("|one|two|\n|1|2|\n|3|4|\n");
         Map<String, String> tableRow1 = examplesTable.getRow(0);
@@ -705,9 +706,9 @@ public class StoryRunnerBehaviour {
         CandidateSteps mySteps = new Steps(configuration);
         Step firstStep = mockSuccessfulStep("step <one>");
         Step secondStep = mockSuccessfulStep("step <two>");
-        when(collector.collectScenarioSteps(asList(mySteps), scenario1,tableRow1)).thenReturn(
+        when(collector.collectScenarioSteps(asList(mySteps), scenario1, tableRow1)).thenReturn(
                 asList(firstStep, secondStep));
-        when(collector.collectScenarioSteps(asList(mySteps), scenario1,tableRow2)).thenReturn(
+        when(collector.collectScenarioSteps(asList(mySteps), scenario1, tableRow2)).thenReturn(
                 asList(firstStep, secondStep));
         boolean givenStory = false;
         givenStoryWithNoBeforeOrAfterSteps(story, givenStory, collector, mySteps);
@@ -749,7 +750,7 @@ public class StoryRunnerBehaviour {
     }
 
     @Test
-    public void shouldRunAfterAndBeforeScenarioSteps() throws Throwable{
+    public void shouldRunAfterAndBeforeScenarioSteps() throws Throwable {
         // Given
         Scenario scenario1 = new Scenario("my title 1", Meta.EMPTY, GivenStories.EMPTY, ExamplesTable.EMPTY, asList("step"));
         Story story = new Story(new Description("my blurb"), Narrative.EMPTY, asList(scenario1));
@@ -858,7 +859,7 @@ public class StoryRunnerBehaviour {
         givenStoryWithNoBeforeOrAfterSteps(story, givenStory, collector, mySteps);
         String filterAsString = "-some property";
         MetaFilter filter = new MetaFilter(filterAsString);
-        
+
         // When
         StoryRunner runner = new StoryRunner();
         runner.run(configurationWith(reporter, collector, strategy), asList(mySteps), story, filter);
@@ -868,7 +869,7 @@ public class StoryRunnerBehaviour {
         verify(reporter).storyNotAllowed(story, filterAsString);
         verify(reporter).afterStory(givenStory);
     }
-    
+
     @Test
     public void shouldNotRunStoriesNotAllowedByFilterOnStoryElement() throws Throwable {
         // Given
@@ -883,7 +884,7 @@ public class StoryRunnerBehaviour {
         givenStoryWithNoBeforeOrAfterSteps(story, givenStory, collector, mySteps);
         String filterAsString = "-story_path excluded_path";
         MetaFilter filter = new MetaFilter(filterAsString);
-        
+
         // When
         StoryRunner runner = new StoryRunner();
         Configuration configuration = configurationWith(reporter, collector, strategy);
@@ -895,7 +896,7 @@ public class StoryRunnerBehaviour {
         verify(reporter).storyNotAllowed(story, filterAsString);
         verify(reporter).afterStory(givenStory);
     }
-    
+
     @Test
     public void shouldNotRunScenariosNotAllowedByFilter() throws Throwable {
         // Given
@@ -987,7 +988,7 @@ public class StoryRunnerBehaviour {
     }
 
     private Configuration configurationWithPendingStrategy(StepCollector collector, StoryReporter reporter,
-                                                                PendingStepStrategy strategy) {
+                                                           PendingStepStrategy strategy) {
         return configurationWith(new RegexStoryParser(), new LoadFromClasspath(), reporter, collector,
                 new RethrowingFailure(), strategy);
     }
@@ -1001,12 +1002,12 @@ public class StoryRunnerBehaviour {
     }
 
     private Configuration configurationWith(StoryParser parser, final StoryLoader storyLoader, final StoryReporter reporter,
-                                                 final StepCollector collector, final FailureStrategy failureStrategy) {
+                                            final StepCollector collector, final FailureStrategy failureStrategy) {
         return configurationWith(parser, storyLoader, reporter, collector, failureStrategy, new PassingUponPendingStep());
     }
 
     private Configuration configurationWith(final StoryParser parser, final StoryLoader loader, final StoryReporter reporter,
-                                                 final StepCollector collector, final FailureStrategy failureStrategy, final PendingStepStrategy pendingStrategy) {
+                                            final StepCollector collector, final FailureStrategy failureStrategy, final PendingStepStrategy pendingStrategy) {
 
         return new MostUsefulConfiguration() {
             @Override
@@ -1021,10 +1022,10 @@ public class StoryRunnerBehaviour {
     }
 
     private Step mockSuccessfulStep(String result) {
-        Step step = mock(Step.class, result);        
+        Step step = mock(Step.class, result);
         when(step.perform(Matchers.<UUIDExceptionWrapper>any())).thenReturn(successful(result));
         when(step.doNotPerform(Matchers.<UUIDExceptionWrapper>any())).thenReturn(notPerformed("successfulStep"));
         return step;
     }
-    
+
 }

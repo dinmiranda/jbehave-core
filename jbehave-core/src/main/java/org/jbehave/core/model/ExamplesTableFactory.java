@@ -30,10 +30,10 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  */
 public class ExamplesTableFactory {
 
-    private Keywords keywords;
     private final ResourceLoader resourceLoader;
     private final ParameterConverters parameterConverters;
     private final TableTransformers tableTransformers;
+    private Keywords keywords;
 
     public ExamplesTableFactory() {
         this(new LocalizedKeywords());
@@ -56,23 +56,23 @@ public class ExamplesTableFactory {
     }
 
     public ExamplesTableFactory(Keywords keywords, ResourceLoader resourceLoader,
-            ParameterConverters parameterConverters) {
+                                ParameterConverters parameterConverters) {
         this(keywords, resourceLoader, parameterConverters, new TableTransformers());
     }
 
     public ExamplesTableFactory(Keywords keywords, ResourceLoader resourceLoader,
-            ParameterConverters parameterConverters, TableTransformers tableTranformers) {
+                                ParameterConverters parameterConverters, TableTransformers tableTranformers) {
         this.keywords = keywords;
         this.resourceLoader = resourceLoader;
         this.parameterConverters = parameterConverters;
         this.tableTransformers = tableTranformers;
     }
-    
+
     public ExamplesTableFactory(Configuration configuration) {
-    	this.keywords = configuration.keywords();
-    	this.resourceLoader = configuration.storyLoader();
-    	this.parameterConverters = configuration.parameterConverters();
-    	this.tableTransformers = new TableTransformers();
+        this.keywords = configuration.keywords();
+        this.resourceLoader = configuration.storyLoader();
+        this.parameterConverters = configuration.parameterConverters();
+        this.tableTransformers = new TableTransformers();
     }
 
     public ExamplesTable createExamplesTable(String input) {
@@ -91,11 +91,11 @@ public class ExamplesTableFactory {
         return input.contains(keywords.examplesTableHeaderSeparator());
     }
 
-    public void useKeywords(Keywords keywords){
-    	this.keywords = keywords;
+    public void useKeywords(Keywords keywords) {
+        this.keywords = keywords;
     }
 
-	public Keywords keywords() {
-		return this.keywords;
-	}
+    public Keywords keywords() {
+        return this.keywords;
+    }
 }

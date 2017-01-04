@@ -1,5 +1,14 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.annotations.AsParameters;
+import org.jbehave.core.annotations.BeforeScenario;
+import org.jbehave.core.annotations.FromContext;
+import org.jbehave.core.annotations.Named;
+import org.jbehave.core.annotations.ToContext;
+import org.jbehave.core.failures.PendingStepFound;
+import org.jbehave.core.failures.UUIDExceptionWrapper;
+import org.jbehave.core.model.ExamplesTable;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -10,21 +19,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.jbehave.core.annotations.AsParameters;
-import org.jbehave.core.annotations.BeforeScenario;
-import org.jbehave.core.annotations.ToContext;
-import org.jbehave.core.annotations.FromContext;
-import org.jbehave.core.annotations.Named;
-import org.jbehave.core.failures.PendingStepFound;
-import org.jbehave.core.failures.UUIDExceptionWrapper;
-import org.jbehave.core.model.ExamplesTable;
+enum SomeEnum {
+    ONE,
+    TWO,
+    THREE,
+    MULTIPLE_WORDS_AND_1_NUMBER,;
+}
 
 public class SomeSteps extends Steps {
+
+    public Object args;
 
     public SomeSteps() {
     }
 
-    public Object args;
+    public static Method methodFor(String methodName) throws IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(SomeSteps.class);
+        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
+            if (md.getMethod().getName().equals(methodName)) {
+                return md.getMethod();
+            }
+        }
+        return null;
+    }
 
     public void aMethod() {
     }
@@ -81,11 +98,11 @@ public class SomeSteps extends Steps {
     public void aMethodWithListOfFloats(List<Float> args) {
         this.args = args;
     }
-    
+
     public void aMethodWithListOfNumbers(List<Number> args) {
         this.args = args;
     }
-    
+
     public void aMethodWithSetOfStrings(Set<String> args) {
         this.args = args;
     }
@@ -102,8 +119,8 @@ public class SomeSteps extends Steps {
         this.args = args;
     }
 
-    public ExamplesTable aMethodReturningExamplesTable(String value){
-    	return new ExamplesTable(value);
+    public ExamplesTable aMethodReturningExamplesTable(String value) {
+        return new ExamplesTable(value);
     }
 
     public void aMethodWithExamplesTableParameter(MyParameters args) {
@@ -114,17 +131,10 @@ public class SomeSteps extends Steps {
         this.args = args;
     }
 
-    @AsParameters
-    public static class MyParameters {
-        String col1;
-        String col2;
-        
-    }
-
-    public ExamplesTable aFailingMethodReturningExamplesTable(String value){
+    public ExamplesTable aFailingMethodReturningExamplesTable(String value) {
         throw new RuntimeException(value);
     }
-    
+
     public void aMethodWithEnum(SomeEnum value) {
         this.args = value;
     }
@@ -160,13 +170,13 @@ public class SomeSteps extends Steps {
     public String aMethodStoringAString() {
         return "someValue";
     }
-    
-    @ToContext(value = "someKey", retentionLevel= ToContext.RetentionLevel.SCENARIO)
+
+    @ToContext(value = "someKey", retentionLevel = ToContext.RetentionLevel.SCENARIO)
     public String aMethodStoringAStringInScenario() {
         return "someValue";
     }
-    
-    @ToContext(value = "someKey", retentionLevel= ToContext.RetentionLevel.STORY)
+
+    @ToContext(value = "someKey", retentionLevel = ToContext.RetentionLevel.STORY)
     public String aMethodStoringAStringInStory() {
         return "someValue";
     }
@@ -175,22 +185,11 @@ public class SomeSteps extends Steps {
         this.args = value;
     }
 
-    public static Method methodFor(String methodName) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(SomeSteps.class);
-        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
-            if (md.getMethod().getName().equals(methodName)) {
-                return md.getMethod();
-            }
-        }
-        return null;
+    @AsParameters
+    public static class MyParameters {
+        String col1;
+        String col2;
+
     }
 
-}
-
-enum SomeEnum {
-    ONE,
-    TWO,
-    THREE,
-    MULTIPLE_WORDS_AND_1_NUMBER,
-    ;
 }

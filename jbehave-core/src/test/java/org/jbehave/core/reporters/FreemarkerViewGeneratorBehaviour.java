@@ -1,10 +1,10 @@
 package org.jbehave.core.reporters;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.jbehave.core.reporters.TemplateableViewGenerator.Report;
+import org.jbehave.core.reporters.TemplateableViewGenerator.ReportCreationFailed;
+import org.jbehave.core.reporters.TemplateableViewGenerator.Reports;
+import org.jbehave.core.reporters.TemplateableViewGenerator.TimeFormatter;
+import org.junit.Test;
 
 import java.io.File;
 import java.util.HashMap;
@@ -13,16 +13,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.SortedMap;
 
-import org.jbehave.core.reporters.TemplateableViewGenerator.Report;
-import org.jbehave.core.reporters.TemplateableViewGenerator.ReportCreationFailed;
-import org.jbehave.core.reporters.TemplateableViewGenerator.Reports;
-import org.jbehave.core.reporters.TemplateableViewGenerator.TimeFormatter;
-import org.junit.Test;
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class FreemarkerViewGeneratorBehaviour {
 
     @Test
-    public void shouldCountEvents(){
+    public void shouldCountEvents() {
         // Given
         FreemarkerViewGenerator generator = new FreemarkerViewGenerator();
 
@@ -37,11 +37,11 @@ public class FreemarkerViewGeneratorBehaviour {
         // Then
         assertThat(generator.count("found", reports), equalTo(1));
         assertThat(generator.count("notFound", reports), equalTo(0));
-        
+
     }
 
     @Test
-    public void shouldFindIndexedReportFiles(){
+    public void shouldFindIndexedReportFiles() {
         // Given
         FreemarkerViewGenerator generator = new FreemarkerViewGenerator();
 
@@ -56,7 +56,7 @@ public class FreemarkerViewGeneratorBehaviour {
     }
 
     @Test
-    public void shouldHandleMissingOutputDirectory(){
+    public void shouldHandleMissingOutputDirectory() {
         // Given
         FreemarkerViewGenerator generator = new FreemarkerViewGenerator();
 
@@ -64,10 +64,10 @@ public class FreemarkerViewGeneratorBehaviour {
         assertThat(generator.readReportFiles(null, "index.html", asList("html", "txt")).size(), equalTo(0));
         assertThat(generator.readReportFiles(new File("inexistent"), "index.html", asList("html", "txt")).size(), equalTo(0));
     }
-    
-    
+
+
     @Test
-    public void shouldHandleInvalidReportFile(){
+    public void shouldHandleInvalidReportFile() {
         // Given
         Map<String, File> filesByFormat = new HashMap<String, File>();
         filesByFormat.put("format", null);
@@ -78,26 +78,26 @@ public class FreemarkerViewGeneratorBehaviour {
 
         // Then 
         assertThat(properties.size(), equalTo(0));
-        
+
     }
 
-    
+
     @Test(expected = ReportCreationFailed.class)
-    public void shouldFailToCreateReportsFromInvalidFiles(){
+    public void shouldFailToCreateReportsFromInvalidFiles() {
         // Given
         FreemarkerViewGenerator generator = new FreemarkerViewGenerator();
 
         // When
         Map<String, List<File>> files = new HashMap<String, List<File>>();
-        files.put("name", asList((File)null));
+        files.put("name", asList((File) null));
         generator.createReports(files);
 
         // Then .. fail as expected
-        
+
     }
-    
+
     @Test
-    public void shouldFormatTimeDurantionInMillis(){
+    public void shouldFormatTimeDurantionInMillis() {
         long s = 1000;
         long m = 60 * s;
         long h = 60 * m;
@@ -106,9 +106,9 @@ public class FreemarkerViewGeneratorBehaviour {
         assertThat(timeFormatter.formatMillis(1), equalTo("00:00:00.001"));
         assertThat(timeFormatter.formatMillis(10), equalTo("00:00:00.010"));
         assertThat(timeFormatter.formatMillis(100), equalTo("00:00:00.100"));
-        assertThat(timeFormatter.formatMillis(2*s+1), equalTo("00:00:02.001"));
-        assertThat(timeFormatter.formatMillis(3*m+20*s+1), equalTo("00:03:20.001"));
-        assertThat(timeFormatter.formatMillis(44*h+33*m+22*s+1), equalTo("44:33:22.001"));
+        assertThat(timeFormatter.formatMillis(2 * s + 1), equalTo("00:00:02.001"));
+        assertThat(timeFormatter.formatMillis(3 * m + 20 * s + 1), equalTo("00:03:20.001"));
+        assertThat(timeFormatter.formatMillis(44 * h + 33 * m + 22 * s + 1), equalTo("44:33:22.001"));
     }
-    
+
 }

@@ -1,33 +1,5 @@
 package org.jbehave.core.embedder;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.sameInstance;
-import static org.mockito.Matchers.isA;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.TimeUnit;
-
 import org.jbehave.core.Embeddable;
 import org.jbehave.core.InjectableEmbedder;
 import org.jbehave.core.annotations.Configure;
@@ -68,6 +40,34 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.sameInstance;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class EmbedderBehaviour {
 
@@ -441,7 +441,7 @@ public class EmbedderBehaviour {
             when(story.getPath()).thenReturn(storyPath);
             assertThat(configuration.storyReporter(storyPath), sameInstance(storyReporter));
         }
-		RunContext runContext = new RunContext(configuration, stepsFactory, embedderMonitor, filter, new BatchFailures());
+        RunContext runContext = new RunContext(configuration, stepsFactory, embedderMonitor, filter, new BatchFailures());
         when(
                 performableTree.newRunContext(isA(Configuration.class), isA(InjectableStepsFactory.class), isA(EmbedderMonitor.class),
                         isA(MetaFilter.class), isA(BatchFailures.class))).thenReturn(runContext);
@@ -667,7 +667,7 @@ public class EmbedderBehaviour {
         for (String storyPath : storyPaths) {
             doNothing().when(performableTree).perform(runContext, stories.get(storyPath));
         }
-        
+
         // When
         embedder.runStoriesAsPaths(storyPaths);
 
@@ -1039,14 +1039,14 @@ public class EmbedderBehaviour {
     }
 
     private Embedder embedderWith(PerformableTree performableTree, EmbedderControls embedderControls,
-            EmbedderMonitor monitor) {
+                                  EmbedderMonitor monitor) {
         Embedder embedder = new Embedder(new StoryMapper(), performableTree, monitor);
         embedder.useEmbedderControls(embedderControls);
         return embedder;
     }
 
     private Embedder embedderWith(StoryMapper mapper, PerformableTree performableTree,
-            EmbedderControls embedderControls, EmbedderMonitor monitor) {
+                                  EmbedderControls embedderControls, EmbedderMonitor monitor) {
         Embedder embedder = new Embedder(mapper, performableTree, monitor);
         embedder.useEmbedderControls(embedderControls);
         return embedder;
@@ -1089,7 +1089,7 @@ public class EmbedderBehaviour {
     public void shouldReportNoMatchingStepdocsFoundWhenNoStepsProvided() {
         // Given
         Embedder embedder = new Embedder();
-        embedder.useCandidateSteps(asList(new CandidateSteps[] {}));
+        embedder.useCandidateSteps(asList(new CandidateSteps[]{}));
         embedder.configuration().useStepFinder(new StepFinder());
         OutputStream out = new ByteArrayOutputStream();
         embedder.configuration().useStepdocReporter(new PrintStreamStepdocReporter(new PrintStream(out)));
@@ -1128,7 +1128,7 @@ public class EmbedderBehaviour {
         // Given
         Embedder embedder = new Embedder();
         assertThat(embedder.configuration(), instanceOf(MostUsefulConfiguration.class));
-        
+
         // When
         String embedderAsString = embedder.toString();
 
@@ -1162,6 +1162,14 @@ public class EmbedderBehaviour {
         return string.replace("\r\n", "\n");
     }
 
+    private Story mockStory(Meta meta) {
+        Story story = mock(Story.class);
+        when(story.getPath()).thenReturn("/a/path");
+        when(story.getMeta()).thenReturn(meta);
+        when(story.asMeta(Mockito.anyString())).thenReturn(meta);
+        return story;
+    }
+
     private static class MyStoryMaps extends JUnitStoryMaps {
 
         static boolean run = false;
@@ -1181,46 +1189,6 @@ public class EmbedderBehaviour {
             return asList("**/*.story");
         }
 
-    }
-
-    private Story mockStory(Meta meta) {
-        Story story = mock(Story.class);
-        when(story.getPath()).thenReturn("/a/path");
-        when(story.getMeta()).thenReturn(meta);
-        when(story.asMeta(Mockito.anyString())).thenReturn(meta);
-        return story;
-    }
-
-    private class MyEmbeddable implements Embeddable {
-
-        public void useEmbedder(Embedder embedder) {
-        }
-
-        public void run() throws Throwable {
-        }
-    }
-
-    private class MyOtherEmbeddable implements Embeddable {
-
-        public void useEmbedder(Embedder embedder) {
-        }
-
-        public void run() throws Throwable {
-        }
-    }
-
-    private abstract class MyAbstractEmbeddable implements Embeddable {
-    }
-
-    private class MyStory extends JUnitStory {
-    }
-
-    private class MyFailingEmbeddable extends JUnitStory {
-
-        @Override
-        public void run() throws Throwable {
-            throw new RuntimeException("Failed");
-        }
     }
 
     @RunWith(AnnotatedEmbedderRunner.class)
@@ -1274,5 +1242,37 @@ public class EmbedderBehaviour {
         public void then() {
         }
 
+    }
+
+    private class MyEmbeddable implements Embeddable {
+
+        public void useEmbedder(Embedder embedder) {
+        }
+
+        public void run() throws Throwable {
+        }
+    }
+
+    private class MyOtherEmbeddable implements Embeddable {
+
+        public void useEmbedder(Embedder embedder) {
+        }
+
+        public void run() throws Throwable {
+        }
+    }
+
+    private abstract class MyAbstractEmbeddable implements Embeddable {
+    }
+
+    private class MyStory extends JUnitStory {
+    }
+
+    private class MyFailingEmbeddable extends JUnitStory {
+
+        @Override
+        public void run() throws Throwable {
+            throw new RuntimeException("Failed");
+        }
     }
 }

@@ -1,20 +1,5 @@
 package org.jbehave.core.configuration;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.fail;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-import java.lang.reflect.Type;
-import java.util.List;
-
 import org.hamcrest.Matchers;
 import org.jbehave.core.ConfigurableEmbedder;
 import org.jbehave.core.InjectableEmbedder;
@@ -33,6 +18,21 @@ import org.jbehave.core.steps.scan.GivenOnly;
 import org.jbehave.core.steps.scan.GivenWhen;
 import org.jbehave.core.steps.scan.GivenWhenThen;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+import java.lang.reflect.Type;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.junit.Assert.fail;
 
 public class AnnotationBuilderBehaviour {
 
@@ -201,12 +201,12 @@ public class AnnotationBuilderBehaviour {
     public void shouldBuildCandidateStepsFromPackages() {
         AnnotationBuilder annotatedWithPackages = new AnnotationBuilder(AnnotatedWithPackages.class);
         List<CandidateSteps> candidateSteps = annotatedWithPackages.buildCandidateSteps();
-		assertThatStepsInstancesAre(candidateSteps, GivenOnly.class, GivenWhen.class, GivenWhenThen.class);
+        assertThatStepsInstancesAre(candidateSteps, GivenOnly.class, GivenWhen.class, GivenWhenThen.class);
     }
 
-    
-    @Configure(parameterConverters = { MyParameterConverter.class })
-    @UsingSteps(instances = { MySteps.class, MyOtherSteps.class })
+
+    @Configure(parameterConverters = {MyParameterConverter.class})
+    @UsingSteps(instances = {MySteps.class, MyOtherSteps.class})
     static class Annotated {
 
     }
@@ -223,17 +223,17 @@ public class AnnotationBuilderBehaviour {
 
     }
 
-    @UsingSteps(instances = { MyOtherOtherSteps.class })
+    @UsingSteps(instances = {MyOtherOtherSteps.class})
     static class AnnotatedInheriting extends Annotated {
 
     }
 
-    @UsingSteps(instances = { MyOtherOtherSteps.class }, inheritInstances = false)
+    @UsingSteps(instances = {MyOtherOtherSteps.class}, inheritInstances = false)
     static class AnnotatedNotInheriting extends Annotated {
 
     }
 
-    @UsingSteps(instances = { MySteps.class, MyFailingSteps.class })
+    @UsingSteps(instances = {MySteps.class, MyFailingSteps.class})
     static class AnnotatedFailing {
 
     }
@@ -242,9 +242,9 @@ public class AnnotationBuilderBehaviour {
     static class AnnotatedWithoutSteps {
 
     }
-    
+
     @Configure
-    @UsingSteps(packages = { "org.jbehave.core.steps.scan" })
+    @UsingSteps(packages = {"org.jbehave.core.steps.scan"})
     static class AnnotatedWithPackages {
 
     }
@@ -283,19 +283,19 @@ public class AnnotationBuilderBehaviour {
 
     }
 
-	@UsingEmbedder(batch = true, generateViewAfterStories = true, ignoreFailureInStories = true, ignoreFailureInView = true, skip = true, verboseFailures = true, verboseFiltering = true, 
-			storyTimeouts = "**/longs/*.story:60,**/shorts/*.story:10", failOnStoryTimeout = true, threads = 2)
-	@UsingSteps(instances = { MySteps.class })
-	static class AnnotedEmbedderControls extends InjectableEmbedder {
+    @UsingEmbedder(batch = true, generateViewAfterStories = true, ignoreFailureInStories = true, ignoreFailureInView = true, skip = true, verboseFailures = true, verboseFiltering = true,
+            storyTimeouts = "**/longs/*.story:60,**/shorts/*.story:10", failOnStoryTimeout = true, threads = 2)
+    @UsingSteps(instances = {MySteps.class})
+    static class AnnotedEmbedderControls extends InjectableEmbedder {
 
-		public void run() throws Throwable {
-		}
+        public void run() throws Throwable {
+        }
 
-	}
+    }
 
     @Configure(keywords = MyKeywords.class)
     @UsingEmbedder(metaFilters = "+embedder injectable", systemProperties = "one=One,two=Two")
-    @UsingSteps(instances = { MySteps.class })
+    @UsingSteps(instances = {MySteps.class})
     static class AnnotedInjectable extends InjectableEmbedder {
 
         public void run() throws Throwable {
@@ -305,7 +305,7 @@ public class AnnotationBuilderBehaviour {
 
     @Configure(keywords = MyKeywords.class)
     @UsingEmbedder(metaFilters = "+embedder injectable", stepsFactory = false)
-    @UsingSteps(instances = { MySteps.class })
+    @UsingSteps(instances = {MySteps.class})
     static class AnnotedInjectableWithoutStepsFactory extends InjectableEmbedder {
 
         public void run() throws Throwable {
@@ -315,7 +315,7 @@ public class AnnotationBuilderBehaviour {
 
     @Configure(keywords = MyKeywords.class)
     @UsingEmbedder(metaFilters = "+embedder configurable")
-    @UsingSteps(instances = { MySteps.class })
+    @UsingSteps(instances = {MySteps.class})
     static class AnnotedConfigurable extends ConfigurableEmbedder {
 
         public void run() throws Throwable {
@@ -325,7 +325,7 @@ public class AnnotationBuilderBehaviour {
 
     @Configure(keywords = MyKeywords.class)
     @UsingEmbedder(metaFilters = "+embedder configurable", stepsFactory = false)
-    @UsingSteps(instances = { MySteps.class })
+    @UsingSteps(instances = {MySteps.class})
     static class AnnotedConfigurableWithoutStepsFactory extends ConfigurableEmbedder {
 
         public void run() throws Throwable {
@@ -339,7 +339,7 @@ public class AnnotationBuilderBehaviour {
 
     @Configure()
     @UsingEmbedder()
-    @UsingSteps(instances = { MySteps.class })
+    @UsingSteps(instances = {MySteps.class})
     private static class AnnotatedPrivate extends ConfigurableEmbedder {
 
         public void run() throws Throwable {
@@ -347,7 +347,7 @@ public class AnnotationBuilderBehaviour {
 
     }
 
-    @UsingPaths(searchIn = "src/test/java", includes = { "**/stories/*story" })
+    @UsingPaths(searchIn = "src/test/java", includes = {"**/stories/*story"})
     private static class AnnotatedWithPaths {
 
     }

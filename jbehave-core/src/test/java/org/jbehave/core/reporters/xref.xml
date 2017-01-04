@@ -14,12 +14,12 @@
         </narrative>
         <meta>
           <properties>
-            <property name="+author" value="Mauro"/>
-            <property name="+theme" value="testing"/>
+            <property name="+author" value="Mauro" />
+            <property name="+theme" value="testing" />
           </properties>
         </meta>
         <givenStories>
-          <givenStories/>
+          <givenStories />
           <givenStoriesAsString></givenStoriesAsString>
           <examplesTable>
             <tableAsString></tableAsString>
@@ -30,54 +30,55 @@
               <transformers>
                 <entry>
                   <string>FORMATTING</string>
-                  <formatting/>
+                  <formatting />
                 </entry>
                 <entry>
                   <string>REPLACING</string>
-                  <replacing/>
+                  <replacing />
                 </entry>
                 <entry>
                   <string>FROM_LANDSCAPE</string>
-                  <fromLandscape/>
+                  <fromLandscape />
                 </entry>
               </transformers>
             </tableTransformers>
-            <headers/>
-            <data/>
+            <headers />
+            <data />
             <properties>
-              <property name="headerSeparator" value="|"/>
-              <property name="valueSeparator" value="|"/>
-              <property name="ignorableSeparator" value="|--"/>
+              <property name="headerSeparator" value="|" />
+              <property name="valueSeparator" value="|" />
+              <property name="ignorableSeparator" value="|--" />
             </properties>
             <propertiesAsString></propertiesAsString>
-            <namedParameters/>
+            <namedParameters />
             <trim>true</trim>
           </examplesTable>
         </givenStories>
         <lifecycle>
           <before>
             <steps class="java.util.Arrays$ArrayList">
-              <a class="string-array"/>
+              <a class="string-array" />
             </steps>
           </before>
-          <after/>
+          <after />
         </lifecycle>
-        <scenarios/>
+        <scenarios />
       </story>
       <localizedNarrative>In order to renovate my house
-As a customer
-I want to get a loan</localizedNarrative>
+        As a customer
+        I want to get a loan
+      </localizedNarrative>
       <allowed>false</allowed>
-      <givenStories/>
+      <givenStories />
       <scenarios>
         <performableScenario>
           <scenario>
             <title></title>
             <meta>
-              <properties/>
+              <properties />
             </meta>
             <givenStories>
-              <givenStories/>
+              <givenStories />
               <givenStoriesAsString></givenStoriesAsString>
               <examplesTable>
                 <tableAsString></tableAsString>
@@ -88,27 +89,27 @@ I want to get a loan</localizedNarrative>
                   <transformers>
                     <entry>
                       <string>FORMATTING</string>
-                      <formatting/>
+                      <formatting />
                     </entry>
                     <entry>
                       <string>REPLACING</string>
-                      <replacing/>
+                      <replacing />
                     </entry>
                     <entry>
                       <string>FROM_LANDSCAPE</string>
-                      <fromLandscape/>
+                      <fromLandscape />
                     </entry>
                   </transformers>
                 </tableTransformers>
-                <headers/>
-                <data/>
+                <headers />
+                <data />
                 <properties>
-                  <property name="headerSeparator" value="|"/>
-                  <property name="valueSeparator" value="|"/>
-                  <property name="ignorableSeparator" value="|--"/>
+                  <property name="headerSeparator" value="|" />
+                  <property name="valueSeparator" value="|" />
+                  <property name="ignorableSeparator" value="|--" />
                 </properties>
                 <propertiesAsString></propertiesAsString>
-                <namedParameters/>
+                <namedParameters />
                 <trim>true</trim>
               </examplesTable>
             </givenStories>
@@ -121,27 +122,27 @@ I want to get a loan</localizedNarrative>
                 <transformers>
                   <entry>
                     <string>FORMATTING</string>
-                    <formatting/>
+                    <formatting />
                   </entry>
                   <entry>
                     <string>REPLACING</string>
-                    <replacing/>
+                    <replacing />
                   </entry>
                   <entry>
                     <string>FROM_LANDSCAPE</string>
-                    <fromLandscape/>
+                    <fromLandscape />
                   </entry>
                 </transformers>
               </tableTransformers>
-              <headers/>
-              <data/>
+              <headers />
+              <data />
               <properties>
-                <property name="headerSeparator" value="|"/>
-                <property name="valueSeparator" value="|"/>
-                <property name="ignorableSeparator" value="|--"/>
+                <property name="headerSeparator" value="|" />
+                <property name="valueSeparator" value="|" />
+                <property name="ignorableSeparator" value="|--" />
               </properties>
               <propertiesAsString></propertiesAsString>
-              <namedParameters/>
+              <namedParameters />
               <trim>true</trim>
             </examplesTable>
             <steps class="java.util.Arrays$ArrayList">
@@ -153,9 +154,9 @@ I want to get a loan</localizedNarrative>
           <storyPath>/path/to/story</storyPath>
           <allowed>false</allowed>
           <normalPerformableScenario>
-            <parameters/>
-            <givenStories/>
-            <beforeSteps/>
+            <parameters />
+            <givenStories />
+            <beforeSteps />
             <steps>
               <matches>
                 <stepMatch>
@@ -165,17 +166,17 @@ I want to get a loan</localizedNarrative>
                 </stepMatch>
               </matches>
             </steps>
-            <afterSteps/>
+            <afterSteps />
             <storyAndScenarioMeta>
-              <properties/>
+              <properties />
             </storyAndScenarioMeta>
             <scenario>
               <title></title>
               <meta>
-                <properties/>
+                <properties />
               </meta>
               <givenStories>
-                <givenStories/>
+                <givenStories />
                 <givenStoriesAsString></givenStoriesAsString>
                 <examplesTable>
                   <tableAsString></tableAsString>
@@ -186,27 +187,27 @@ I want to get a loan</localizedNarrative>
                     <transformers>
                       <entry>
                         <string>FORMATTING</string>
-                        <formatting/>
+                        <formatting />
                       </entry>
                       <entry>
                         <string>REPLACING</string>
-                        <replacing/>
+                        <replacing />
                       </entry>
                       <entry>
                         <string>FROM_LANDSCAPE</string>
-                        <fromLandscape/>
+                        <fromLandscape />
                       </entry>
                     </transformers>
                   </tableTransformers>
-                  <headers/>
-                  <data/>
+                  <headers />
+                  <data />
                   <properties>
-                    <property name="headerSeparator" value="|"/>
-                    <property name="valueSeparator" value="|"/>
-                    <property name="ignorableSeparator" value="|--"/>
+                    <property name="headerSeparator" value="|" />
+                    <property name="valueSeparator" value="|" />
+                    <property name="ignorableSeparator" value="|--" />
                   </properties>
                   <propertiesAsString></propertiesAsString>
-                  <namedParameters/>
+                  <namedParameters />
                   <trim>true</trim>
                 </examplesTable>
               </givenStories>
@@ -219,27 +220,27 @@ I want to get a loan</localizedNarrative>
                   <transformers>
                     <entry>
                       <string>FORMATTING</string>
-                      <formatting/>
+                      <formatting />
                     </entry>
                     <entry>
                       <string>REPLACING</string>
-                      <replacing/>
+                      <replacing />
                     </entry>
                     <entry>
                       <string>FROM_LANDSCAPE</string>
-                      <fromLandscape/>
+                      <fromLandscape />
                     </entry>
                   </transformers>
                 </tableTransformers>
-                <headers/>
-                <data/>
+                <headers />
+                <data />
                 <properties>
-                  <property name="headerSeparator" value="|"/>
-                  <property name="valueSeparator" value="|"/>
-                  <property name="ignorableSeparator" value="|--"/>
+                  <property name="headerSeparator" value="|" />
+                  <property name="valueSeparator" value="|" />
+                  <property name="ignorableSeparator" value="|--" />
                 </properties>
                 <propertiesAsString></propertiesAsString>
-                <namedParameters/>
+                <namedParameters />
                 <trim>true</trim>
               </examplesTable>
               <steps class="java.util.Arrays$ArrayList">
@@ -249,11 +250,11 @@ I want to get a loan</localizedNarrative>
               </steps>
             </scenario>
           </normalPerformableScenario>
-          <examplePerformableScenarios/>
+          <examplePerformableScenarios />
         </performableScenario>
       </scenarios>
-      <beforeSteps/>
-      <afterSteps/>
+      <beforeSteps />
+      <afterSteps />
       <timing>
         <durationInMillis>0</durationInMillis>
         <start>0</start>
@@ -267,10 +268,10 @@ I want to get a loan</localizedNarrative>
       <scenario>
         <title></title>
         <meta>
-          <properties/>
+          <properties />
         </meta>
         <givenStories>
-          <givenStories/>
+          <givenStories />
           <givenStoriesAsString></givenStoriesAsString>
           <examplesTable>
             <tableAsString></tableAsString>
@@ -281,27 +282,27 @@ I want to get a loan</localizedNarrative>
               <transformers>
                 <entry>
                   <string>FORMATTING</string>
-                  <formatting/>
+                  <formatting />
                 </entry>
                 <entry>
                   <string>REPLACING</string>
-                  <replacing/>
+                  <replacing />
                 </entry>
                 <entry>
                   <string>FROM_LANDSCAPE</string>
-                  <fromLandscape/>
+                  <fromLandscape />
                 </entry>
               </transformers>
             </tableTransformers>
-            <headers/>
-            <data/>
+            <headers />
+            <data />
             <properties>
-              <property name="headerSeparator" value="|"/>
-              <property name="valueSeparator" value="|"/>
-              <property name="ignorableSeparator" value="|--"/>
+              <property name="headerSeparator" value="|" />
+              <property name="valueSeparator" value="|" />
+              <property name="ignorableSeparator" value="|--" />
             </properties>
             <propertiesAsString></propertiesAsString>
-            <namedParameters/>
+            <namedParameters />
             <trim>true</trim>
           </examplesTable>
         </givenStories>
@@ -314,27 +315,27 @@ I want to get a loan</localizedNarrative>
             <transformers>
               <entry>
                 <string>FORMATTING</string>
-                <formatting/>
+                <formatting />
               </entry>
               <entry>
                 <string>REPLACING</string>
-                <replacing/>
+                <replacing />
               </entry>
               <entry>
                 <string>FROM_LANDSCAPE</string>
-                <fromLandscape/>
+                <fromLandscape />
               </entry>
             </transformers>
           </tableTransformers>
-          <headers/>
-          <data/>
+          <headers />
+          <data />
           <properties>
-            <property name="headerSeparator" value="|"/>
-            <property name="valueSeparator" value="|"/>
-            <property name="ignorableSeparator" value="|--"/>
+            <property name="headerSeparator" value="|" />
+            <property name="valueSeparator" value="|" />
+            <property name="ignorableSeparator" value="|--" />
           </properties>
           <propertiesAsString></propertiesAsString>
-          <namedParameters/>
+          <namedParameters />
           <trim>true</trim>
         </examplesTable>
         <steps class="java.util.Arrays$ArrayList">
@@ -346,9 +347,9 @@ I want to get a loan</localizedNarrative>
       <storyPath>/path/to/story</storyPath>
       <allowed>false</allowed>
       <normalPerformableScenario>
-        <parameters/>
-        <givenStories/>
-        <beforeSteps/>
+        <parameters />
+        <givenStories />
+        <beforeSteps />
         <steps>
           <matches>
             <stepMatch>
@@ -358,17 +359,17 @@ I want to get a loan</localizedNarrative>
             </stepMatch>
           </matches>
         </steps>
-        <afterSteps/>
+        <afterSteps />
         <storyAndScenarioMeta>
-          <properties/>
+          <properties />
         </storyAndScenarioMeta>
         <scenario>
           <title></title>
           <meta>
-            <properties/>
+            <properties />
           </meta>
           <givenStories>
-            <givenStories/>
+            <givenStories />
             <givenStoriesAsString></givenStoriesAsString>
             <examplesTable>
               <tableAsString></tableAsString>
@@ -379,27 +380,27 @@ I want to get a loan</localizedNarrative>
                 <transformers>
                   <entry>
                     <string>FORMATTING</string>
-                    <formatting/>
+                    <formatting />
                   </entry>
                   <entry>
                     <string>REPLACING</string>
-                    <replacing/>
+                    <replacing />
                   </entry>
                   <entry>
                     <string>FROM_LANDSCAPE</string>
-                    <fromLandscape/>
+                    <fromLandscape />
                   </entry>
                 </transformers>
               </tableTransformers>
-              <headers/>
-              <data/>
+              <headers />
+              <data />
               <properties>
-                <property name="headerSeparator" value="|"/>
-                <property name="valueSeparator" value="|"/>
-                <property name="ignorableSeparator" value="|--"/>
+                <property name="headerSeparator" value="|" />
+                <property name="valueSeparator" value="|" />
+                <property name="ignorableSeparator" value="|--" />
               </properties>
               <propertiesAsString></propertiesAsString>
-              <namedParameters/>
+              <namedParameters />
               <trim>true</trim>
             </examplesTable>
           </givenStories>
@@ -412,27 +413,27 @@ I want to get a loan</localizedNarrative>
               <transformers>
                 <entry>
                   <string>FORMATTING</string>
-                  <formatting/>
+                  <formatting />
                 </entry>
                 <entry>
                   <string>REPLACING</string>
-                  <replacing/>
+                  <replacing />
                 </entry>
                 <entry>
                   <string>FROM_LANDSCAPE</string>
-                  <fromLandscape/>
+                  <fromLandscape />
                 </entry>
               </transformers>
             </tableTransformers>
-            <headers/>
-            <data/>
+            <headers />
+            <data />
             <properties>
-              <property name="headerSeparator" value="|"/>
-              <property name="valueSeparator" value="|"/>
-              <property name="ignorableSeparator" value="|--"/>
+              <property name="headerSeparator" value="|" />
+              <property name="valueSeparator" value="|" />
+              <property name="ignorableSeparator" value="|--" />
             </properties>
             <propertiesAsString></propertiesAsString>
-            <namedParameters/>
+            <namedParameters />
             <trim>true</trim>
           </examplesTable>
           <steps class="java.util.Arrays$ArrayList">
@@ -442,7 +443,7 @@ I want to get a loan</localizedNarrative>
           </steps>
         </scenario>
       </normalPerformableScenario>
-      <examplePerformableScenarios/>
+      <examplePerformableScenarios />
     </performableScenario>
   </scenarios>
 </xref>

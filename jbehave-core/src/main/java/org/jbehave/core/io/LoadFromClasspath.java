@@ -1,41 +1,43 @@
 package org.jbehave.core.io;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
-
 import org.apache.commons.io.Charsets;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * Loads story resources from classpath
  */
 public class LoadFromClasspath implements StoryLoader {
-	
-	private final Charset charset;
 
     protected final ClassLoader classLoader;
+    private final Charset charset;
 
     /**
      * Uses default enconding UTF-8.
+     *
      * @see {@link #LoadFromClasspath(Charset)}.
      */
     public LoadFromClasspath() {
         this(Charsets.UTF_8);
     }
-    
+
     /**
      * Uses enconding provided.
+     *
      * @param charset the Charset
-     * @see {@link #LoadFromClasspath(ClassLoader,Charset)}.
+     * @see {@link #LoadFromClasspath(ClassLoader, Charset)}.
      */
     public LoadFromClasspath(Charset charset) {
-    	this(Thread.currentThread().getContextClassLoader(), charset);
+        this(Thread.currentThread().getContextClassLoader(), charset);
     }
 
     /**
      * Uses a class to get the ClassLoader
+     *
      * @param loadFromClass the Class to get the ClassLoader from
      * @see {@link #LoadFromClasspath(ClassLoader)}.
      */
@@ -45,16 +47,18 @@ public class LoadFromClasspath implements StoryLoader {
 
     /**
      * Uses default enconding UTF-8
+     *
      * @param classLoader the ClassLoader
      */
     public LoadFromClasspath(ClassLoader classLoader) {
         this(classLoader, Charsets.UTF_8);
     }
-    
+
     /**
      * Uses classloader and enconding provided.
+     *
      * @param classLoader the ClassLoader
-     * @param charset the Charset
+     * @param charset     the Charset
      */
     public LoadFromClasspath(ClassLoader classLoader, Charset charset) {
         this.classLoader = classLoader;

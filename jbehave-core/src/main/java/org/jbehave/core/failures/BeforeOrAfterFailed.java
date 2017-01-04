@@ -1,11 +1,11 @@
 package org.jbehave.core.failures;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.lang3.StringUtils;
 
 import static java.text.MessageFormat.format;
 
@@ -20,15 +20,15 @@ public class BeforeOrAfterFailed extends RuntimeException {
         super(format("Method {0} (annotated with {1} in class {2}) failed: {3}", method.getName(), toAnnotationNames(method.getAnnotations()), method.getDeclaringClass().getName(), cause), cause);
     }
 
+    public BeforeOrAfterFailed(Throwable cause) {
+        super(cause);
+    }
+
     private static String toAnnotationNames(Annotation[] annotations) {
         List<String> names = new ArrayList<String>();
         for (Annotation annotation : annotations) {
-            names.add("@"+annotation.annotationType().getSimpleName());
+            names.add("@" + annotation.annotationType().getSimpleName());
         }
         return StringUtils.join(names, ",");
-    }
-
-    public BeforeOrAfterFailed(Throwable cause) {
-        super(cause);
     }
 }

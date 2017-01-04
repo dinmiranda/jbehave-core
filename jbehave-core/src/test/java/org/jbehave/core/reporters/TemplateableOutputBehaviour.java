@@ -1,17 +1,16 @@
 package org.jbehave.core.reporters;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import org.custommonkey.xmlunit.XMLUnit;
 import org.jbehave.core.i18n.LocalizedKeywords;
 import org.jbehave.core.io.IOUtils;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
 
 public class TemplateableOutputBehaviour {
 

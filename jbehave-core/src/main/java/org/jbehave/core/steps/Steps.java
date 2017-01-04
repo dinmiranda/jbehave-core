@@ -1,18 +1,5 @@
 package org.jbehave.core.steps;
 
-import static java.util.Arrays.asList;
-import static org.jbehave.core.annotations.AfterScenario.Outcome.ANY;
-import static org.jbehave.core.annotations.AfterScenario.Outcome.FAILURE;
-import static org.jbehave.core.annotations.AfterScenario.Outcome.SUCCESS;
-import static org.jbehave.core.steps.StepType.GIVEN;
-import static org.jbehave.core.steps.StepType.THEN;
-import static org.jbehave.core.steps.StepType.WHEN;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.annotations.AfterScenario;
@@ -34,6 +21,19 @@ import org.jbehave.core.configuration.MostUsefulConfiguration;
 import org.jbehave.core.parsers.RegexPrefixCapturingPatternParser;
 import org.jbehave.core.parsers.StepPatternParser;
 import org.jbehave.core.steps.StepCollector.Stage;
+
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.ANY;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.FAILURE;
+import static org.jbehave.core.annotations.AfterScenario.Outcome.SUCCESS;
+import static org.jbehave.core.steps.StepType.GIVEN;
+import static org.jbehave.core.steps.StepType.THEN;
+import static org.jbehave.core.steps.StepType.WHEN;
 
 /**
  * <p>
@@ -64,24 +64,24 @@ import org.jbehave.core.steps.StepCollector.Stage;
  * </p>
  * <p>
  * For instance, you could define a method as:
- * 
+ * <p>
  * <pre>
  * @When("I log in as $username with password: $password")
  * public void logIn(String username, String password) { //... }
  * </pre>
- * 
+ * <p>
  * and this would match the step:
- * 
+ * <p>
  * <pre>
  * When I log in as Liz with password: Pa55word
  * </pre>
- * 
+ * <p>
  * </p>
  * <p>
  * When the step is performed, the parameters matched will be passed to the
  * method, so in this case the effect will be to invoke:
  * </p>
- * 
+ * <p>
  * <pre>
  * logIn(&quot;Liz&quot;, &quot;Pa55word&quot;);
  * </pre>
@@ -108,7 +108,7 @@ public class Steps implements CandidateSteps {
     /**
      * Creates Steps with given custom configuration for a class extending this
      * instance and containing the candidate step methods
-     * 
+     *
      * @param configuration the Configuration
      */
     public Steps(Configuration configuration) {
@@ -120,9 +120,9 @@ public class Steps implements CandidateSteps {
     /**
      * Creates Steps with given custom configuration and a steps instance
      * containing the candidate step methods
-     * 
+     *
      * @param configuration the Configuration
-     * @param instance the steps instance
+     * @param instance      the steps instance
      */
     public Steps(Configuration configuration, Object instance) {
         this.configuration = configuration;
@@ -134,10 +134,10 @@ public class Steps implements CandidateSteps {
      * Creates Steps with given custom configuration and a steps instance type
      * containing the candidate step methods. The steps instance is created
      * using the steps instance factory provided.
-     * 
+     *
      * @param configuration the Configuration
-     * @param type the steps instance type
-     * @param stepsFactory the {@link InjectableStepsFactory}
+     * @param type          the steps instance type
+     * @param stepsFactory  the {@link InjectableStepsFactory}
      */
     public Steps(Configuration configuration, Class<?> type, InjectableStepsFactory stepsFactory) {
         this.configuration = configuration;
@@ -191,7 +191,7 @@ public class Steps implements CandidateSteps {
             addCandidate(candidates, method, stepType, variant, priority);
         }
     }
-    
+
     private void addCandidatesFromAliases(List<StepCandidate> candidates, Method method, StepType stepType, int priority) {
         if (method.isAnnotationPresent(Aliases.class)) {
             String[] aliases = method.getAnnotation(Aliases.class).values();
@@ -206,7 +206,7 @@ public class Steps implements CandidateSteps {
     }
 
     private void addCandidate(List<StepCandidate> candidates, Method method, StepType stepType,
-            String stepPatternAsString, int priority) {
+                              String stepPatternAsString, int priority) {
         checkForDuplicateCandidates(candidates, stepType, stepPatternAsString);
         StepCandidate candidate = createCandidate(method, stepType, stepPatternAsString, priority, configuration);
         candidate.useStepMonitor(configuration.stepMonitor());
@@ -227,7 +227,7 @@ public class Steps implements CandidateSteps {
     }
 
     private StepCandidate createCandidate(Method method, StepType stepType, String stepPatternAsString, int priority,
-            Configuration configuration) {
+                                          Configuration configuration) {
         return new StepCandidate(stepPatternAsString, priority, stepType, method, type, stepsFactory,
                 configuration.stepsContext(), configuration.keywords(), configuration.stepPatternParser(), configuration.parameterConverters(), configuration.parameterControls());
     }
@@ -276,7 +276,7 @@ public class Steps implements CandidateSteps {
     }
 
     private List<BeforeOrAfterStep> stepsHaving(Stage stage, Class<? extends Annotation> annotationClass,
-            boolean givenStory) {
+                                                boolean givenStory) {
         List<BeforeOrAfterStep> steps = new ArrayList<BeforeOrAfterStep>();
         for (final Method method : methodsAnnotatedWith(annotationClass)) {
             if (runnableStoryStep(method.getAnnotation(annotationClass), givenStory)) {
@@ -287,7 +287,7 @@ public class Steps implements CandidateSteps {
     }
 
     private List<BeforeOrAfterStep> scenarioStepsHaving(ScenarioType type, Stage stage,
-            Class<? extends Annotation> annotationClass, Outcome... outcomes) {
+                                                        Class<? extends Annotation> annotationClass, Outcome... outcomes) {
         List<BeforeOrAfterStep> steps = new ArrayList<BeforeOrAfterStep>();
         for (Method method : methodsAnnotatedWith(annotationClass)) {
             ScenarioType scenarioType = scenarioType(method, annotationClass);
@@ -348,6 +348,11 @@ public class Steps implements CandidateSteps {
         return annotated;
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(instance()).toString();
+    }
+
     @SuppressWarnings("serial")
     public static class DuplicateCandidateFound extends RuntimeException {
 
@@ -355,11 +360,6 @@ public class Steps implements CandidateSteps {
             super(stepType + " " + patternAsString);
         }
 
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append(instance()).toString();
     }
 
 }

@@ -1,11 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.io.File;
-import java.io.PrintStream;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.ConfigurableEmbedder;
@@ -17,6 +11,12 @@ import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.model.StoryMaps;
 import org.jbehave.core.reporters.Format;
 import org.jbehave.core.reporters.ReportsCount;
+
+import java.io.File;
+import java.io.PrintStream;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 /**
  * Monitor that reports to a {@link PrintStream}, defaulting to
@@ -86,13 +86,13 @@ public class PrintStreamEmbedderMonitor extends NullEmbedderMonitor {
         print(sb.toString());
     }
 
-	public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
+    public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
         StringBuffer sb = new StringBuffer();
-        sb.append("Scenario '"+scenario.getTitle()+"' excluded by filter: " + filter.asString() + "\n");
+        sb.append("Scenario '" + scenario.getTitle() + "' excluded by filter: " + filter.asString() + "\n");
         print(sb.toString());
-	}
+    }
 
-	public void runningWithAnnotatedEmbedderRunner(String className) {
+    public void runningWithAnnotatedEmbedderRunner(String className) {
         print("Running with AnnotatedEmbedderRunner '" + className + "'");
     }
 
@@ -106,7 +106,7 @@ public class PrintStreamEmbedderMonitor extends NullEmbedderMonitor {
     }
 
     public void reportsViewGenerationFailed(File outputDirectory, List<String> formats, Properties viewProperties,
-            Throwable cause) {
+                                            Throwable cause) {
         print("Failed to generate reports view to '" + outputDirectory + "' using formats '" + formats
                 + "' and view properties '" + viewProperties + "'");
     }
@@ -138,7 +138,7 @@ public class PrintStreamEmbedderMonitor extends NullEmbedderMonitor {
     }
 
     public void mapsViewGenerationFailed(File outputDirectory, StoryMaps storyMaps, Properties viewProperties,
-            Throwable cause) {
+                                         Throwable cause) {
         print("Failed to generating maps view to '" + outputDirectory + "' using story maps '" + storyMaps + "'"
                 + " and view properties '" + viewProperties + "'");
         printStackTrace(cause);
@@ -182,28 +182,28 @@ public class PrintStreamEmbedderMonitor extends NullEmbedderMonitor {
     public void usingControls(EmbedderControls embedderControls) {
         print("Using controls " + embedderControls);
     }
-    
-    
+
+
     public void invalidTimeoutFormat(String path) {
-    	print("Failed to set specific story timeout for story " + path + " because 'storyTimeoutInSecsByPath' has incorrect format");
-    	print("'storyTimeoutInSecsByPath' must be a CSV of regex expressions matching story paths. E.g. \"*/long/*.story:5000,*/short/*.story:200\"");
+        print("Failed to set specific story timeout for story " + path + " because 'storyTimeoutInSecsByPath' has incorrect format");
+        print("'storyTimeoutInSecsByPath' must be a CSV of regex expressions matching story paths. E.g. \"*/long/*.story:5000,*/short/*.story:200\"");
     }
 
     public void usingTimeout(String path, long timeout) {
-    	print("Using timeout for story " + path + " of "+timeout+" secs.");
+        print("Using timeout for story " + path + " of " + timeout + " secs.");
     }
 
-     @Override
+    @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 
     protected void print(String message) {
-        Format.println(output, message);
+        Format.println(this.output, message);
     }
 
     protected void printStackTrace(Throwable e) {
-        e.printStackTrace(output);
+        e.printStackTrace(this.output);
     }
 
 }

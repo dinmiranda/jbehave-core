@@ -1,11 +1,11 @@
 package org.jbehave.core.model;
 
+import org.jbehave.core.io.StoryNameResolver;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import org.jbehave.core.io.StoryNameResolver;
 
 /**
  * Represents a <a href="http://en.wikipedia.org/wiki/Swim_lane">Swim Lane</a>
@@ -55,7 +55,7 @@ public class StoryLanes {
                 stories.addAll(map.getStories());
             }
         } else {
-            stories.addAll(storyMap.getStories());            
+            stories.addAll(storyMap.getStories());
         }
         nameStories(stories);
         return stories;
@@ -65,7 +65,7 @@ public class StoryLanes {
         for (Story story : stories) {
             story.namedAs(nameResolver.resolveName(story.getPath()));
         }
-        
+
     }
 
 }

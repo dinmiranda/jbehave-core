@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 public @interface BeforeStory {
 
     boolean uponGivenStory() default false;
-    
+
 }

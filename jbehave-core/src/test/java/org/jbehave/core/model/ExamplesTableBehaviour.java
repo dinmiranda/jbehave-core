@@ -1,5 +1,18 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.jbehave.core.annotations.AsParameters;
+import org.jbehave.core.annotations.Parameter;
+import org.jbehave.core.model.ExamplesTable.RowNotFound;
+import org.jbehave.core.model.TableTransformers.TableTransformer;
+import org.jbehave.core.steps.ConvertedParameters.ValueNotFound;
+import org.jbehave.core.steps.ParameterConverters;
+import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
+import org.jbehave.core.steps.Parameters;
+import org.junit.Test;
+
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -16,24 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.jbehave.core.annotations.AsParameters;
-import org.jbehave.core.annotations.Parameter;
-import org.jbehave.core.model.ExamplesTable.RowNotFound;
-import org.jbehave.core.model.TableTransformers.TableTransformer;
-import org.jbehave.core.steps.ConvertedParameters.ValueNotFound;
-import org.jbehave.core.steps.ParameterConverters;
-import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
-import org.jbehave.core.steps.Parameters;
-import org.junit.Test;
-
 import static java.util.Arrays.asList;
 import static org.codehaus.plexus.util.StringUtils.isBlank;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -52,6 +50,16 @@ public class ExamplesTableBehaviour {
 
     private String tableWithCommentsAsString = "|---------|\n" + "|one|two|\n" + "|-- A comment --|\n" + "|11|12|\n"
             + "|-- Another comment --|\n" + "|21|22|\n";
+
+    public static Method methodFor(String methodName) throws IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(ExamplesTableBehaviour.class);
+        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
+            if (md.getMethod().getName().equals(methodName)) {
+                return md.getMethod();
+            }
+        }
+        return null;
+    }
 
     @Test
     public void shouldParseTableWithDefaultSeparators() {
@@ -539,16 +547,6 @@ public class ExamplesTableBehaviour {
 
     public Date convertDate(String value) throws ParseException {
         return new SimpleDateFormat("dd/MM/yyyy").parse(value);
-    }
-
-    public static Method methodFor(String methodName) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(ExamplesTableBehaviour.class);
-        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
-            if (md.getMethod().getName().equals(methodName)) {
-                return md.getMethod();
-            }
-        }
-        return null;
     }
 
     @AsParameters

@@ -1,11 +1,11 @@
 package org.jbehave.core.embedder;
 
+import org.jbehave.core.reporters.ReportsCount;
+
 import java.io.File;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.Properties;
-
-import org.jbehave.core.reporters.ReportsCount;
 
 /**
  * Monitor that reports to {@link PrintStream} only failure events

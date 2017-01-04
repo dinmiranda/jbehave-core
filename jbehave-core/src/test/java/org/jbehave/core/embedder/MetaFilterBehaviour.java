@@ -1,5 +1,15 @@
 package org.jbehave.core.embedder;
 
+import org.hamcrest.Matchers;
+import org.jbehave.core.embedder.MetaFilter.DefaultMetaMatcher;
+import org.jbehave.core.embedder.MetaFilter.MetaMatcher;
+import org.jbehave.core.model.Meta;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,19 +18,9 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-
-import org.hamcrest.Matchers;
-import org.jbehave.core.embedder.MetaFilter.DefaultMetaMatcher;
-import org.jbehave.core.embedder.MetaFilter.MetaMatcher;
-import org.jbehave.core.model.Meta;
-import org.junit.Test;
-
 public class MetaFilterBehaviour {
 
-	MetaBuilder metaBuilder = new MetaBuilder();
+    MetaBuilder metaBuilder = new MetaBuilder();
 
     @Test
     public void shouldParseIncludesAndExcludesUsingDefaultMetaMatcher() {
@@ -29,7 +29,7 @@ public class MetaFilterBehaviour {
         assertThat(filter.asString(), equalTo(filterAsString));
         MetaMatcher metaMatcher = filter.metaMatcher();
         assertThat(metaMatcher, Matchers.instanceOf(DefaultMetaMatcher.class));
-        DefaultMetaMatcher defaultMetaMatcher = (DefaultMetaMatcher)metaMatcher;
+        DefaultMetaMatcher defaultMetaMatcher = (DefaultMetaMatcher) metaMatcher;
         assertThat(defaultMetaMatcher.include().toString(), equalTo("{defect-4321=, author=Mauro, map=*API}"));
         assertThat(defaultMetaMatcher.exclude().toString(), equalTo("{defect-1234=, skip=, theme=smoke testing}"));
     }
@@ -44,7 +44,7 @@ public class MetaFilterBehaviour {
     public void shouldFilterByNameOnly() {
         assertFilterAllowsProperty("-skip", "skip", false);
     }
-    
+
     @Test
     public void shouldFilterWithBothIncludeAndExclude() {
         assertFilterAllowsProperty("+theme smoke testing -skip", "theme smoke testing", true);
@@ -77,7 +77,7 @@ public class MetaFilterBehaviour {
     private void assertFilterAllowsProperty(String filter, String property, boolean allowed) {
         assertThat(filter(filter).allow(new Meta(asList(property))), equalTo(allowed));
     }
-    
+
     @Test
     public void shouldFilterByAdditiveBooleanExpressionsUsingGroovy() {
         MetaFilter filter = filter("groovy: (a == '11' | a == '22') && b == '33'");
@@ -125,16 +125,16 @@ public class MetaFilterBehaviour {
         long start = System.currentTimeMillis();
         for (int i = 0; i < 1000; i++) {
             boolean allow = filter.allow(metaBuilder.clear().a(11).b(33).build());
-            if ( allow ){
+            if (allow) {
                 continue;
             } else {
                 break;
             }
         }
         long delta = System.currentTimeMillis() - start;
-        assertThat("1000 matches should take less than a second, but took "+delta+" ms.", delta, lessThan(1000L));
+        assertThat("1000 matches should take less than a second, but took " + delta + " ms.", delta, lessThan(1000L));
     }
-        
+
     private MetaFilter filter(String filterAsString) {
         return new MetaFilter(filterAsString, new SilentEmbedderMonitor(System.out));
     }
@@ -142,23 +142,12 @@ public class MetaFilterBehaviour {
     @Test
     public void shouldFilterUsingCustomMetaMatcher() {
         String filterAsString = "custom: anything goes";
-		Map<String, MetaMatcher> metaMatchers = new HashMap<String, MetaMatcher>();
-		metaMatchers.put("custom:", new AnythingGoesMetaMatcher());
-		MetaFilter filter = new MetaFilter(filterAsString, new SilentEmbedderMonitor(System.out), metaMatchers);
-		assertThat(filter.metaMatcher(), instanceOf(AnythingGoesMetaMatcher.class));
-		assertTrue(filter.allow(metaBuilder.clear().d("anything").build()));		
+        Map<String, MetaMatcher> metaMatchers = new HashMap<String, MetaMatcher>();
+        metaMatchers.put("custom:", new AnythingGoesMetaMatcher());
+        MetaFilter filter = new MetaFilter(filterAsString, new SilentEmbedderMonitor(System.out), metaMatchers);
+        assertThat(filter.metaMatcher(), instanceOf(AnythingGoesMetaMatcher.class));
+        assertTrue(filter.allow(metaBuilder.clear().d("anything").build()));
     }
-
-    public class AnythingGoesMetaMatcher implements MetaMatcher {
-
-		public void parse(String filterAsString) {
-		}
-
-		public boolean match(Meta meta) {
-			return true;
-		}
-
-	}
 
     public static class MetaBuilder {
 
@@ -168,10 +157,12 @@ public class MetaFilterBehaviour {
             meta.setProperty("a", "" + i);
             return this;
         }
+
         public MetaBuilder b(int i) {
             meta.setProperty("b", "" + i);
             return this;
         }
+
         public MetaBuilder c(int i) {
             meta.setProperty("c", "" + i);
             return this;
@@ -189,6 +180,17 @@ public class MetaFilterBehaviour {
         public MetaBuilder clear() {
             meta.clear();
             return this;
+        }
+
+    }
+
+    public class AnythingGoesMetaMatcher implements MetaMatcher {
+
+        public void parse(String filterAsString) {
+        }
+
+        public boolean match(Meta meta) {
+            return true;
         }
 
     }

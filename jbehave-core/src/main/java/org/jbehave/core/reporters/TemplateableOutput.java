@@ -1,22 +1,8 @@
 package org.jbehave.core.reporters;
 
-import static org.jbehave.core.steps.StepCreator.PARAMETER_TABLE_END;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_TABLE_START;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
-
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
+import freemarker.ext.beans.BeansWrapper;
+import freemarker.template.TemplateHashModel;
+import freemarker.template.TemplateModelException;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.annotations.AfterScenario.Outcome;
@@ -32,9 +18,22 @@ import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.TemplateHashModel;
-import freemarker.template.TemplateModelException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.jbehave.core.steps.StepCreator.PARAMETER_TABLE_END;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_TABLE_START;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
 
 /**
  * <p>
@@ -84,8 +83,8 @@ public class TemplateableOutput implements StoryReporter {
 
     @Override
     public void lifecyle(Lifecycle lifecycle) {
-        if(!lifecycle.isEmpty()){
-            this.outputStory.lifecycle = new OutputLifecycle(lifecycle);            
+        if (!lifecycle.isEmpty()) {
+            this.outputStory.lifecycle = new OutputLifecycle(lifecycle);
         }
     }
 
@@ -201,10 +200,10 @@ public class TemplateableOutput implements StoryReporter {
     public void restarted(String step, Throwable cause) {
         this.outputScenario.addStep(new OutputRestart(step, cause.getMessage()));
     }
-    
+
     @Override
     public void restartedStory(Story story, Throwable cause) {
-    	this.outputScenario.addStep(new OutputRestart(story.getName(), cause.getMessage()));
+        this.outputScenario.addStep(new OutputRestart(story.getName(), cause.getMessage()));
     }
 
     @Override
@@ -226,10 +225,10 @@ public class TemplateableOutput implements StoryReporter {
             try {
                 String escapeModeEnum = EscapeMode.class.getCanonicalName();
                 escapeEnums = (TemplateHashModel) enumModels.get(escapeModeEnum);
-                model.put("EscapeMode", escapeEnums);  
+                model.put("EscapeMode", escapeEnums);
             } catch (TemplateModelException e) {
                 throw new IllegalArgumentException(e);
-            }  
+            }
 
             write(file, templatePath, model);
         }
@@ -259,15 +258,15 @@ public class TemplateableOutput implements StoryReporter {
             this.keywords = keywords;
         }
 
-        public String getLifecycle(){
+        public String getLifecycle() {
             return keywords.lifecycle();
         }
 
-        public String getBefore(){
+        public String getBefore() {
             return keywords.before();
         }
 
-        public String getAfter(){
+        public String getAfter() {
             return keywords.after();
         }
 
@@ -371,14 +370,14 @@ public class TemplateableOutput implements StoryReporter {
             return keywords.duration();
         }
 
-        public String getOutcome(){
-        	return keywords.outcome();
+        public String getOutcome() {
+            return keywords.outcome();
         }
-        
-        public String getMetaFilter(){
-        	return keywords.metaFilter();
+
+        public String getMetaFilter() {
+            return keywords.metaFilter();
         }
-        
+
         public String getYes() {
             return keywords.yes();
         }
@@ -477,12 +476,12 @@ public class TemplateableOutput implements StoryReporter {
         public String getiWantTo() {
             return narrative.iWantTo();
         }
-        
-        public String getSoThat(){
+
+        public String getSoThat() {
             return narrative.soThat();
         }
-        
-        public boolean isAlternative(){
+
+        public boolean isAlternative() {
             return narrative.isAlternative();
         }
 
@@ -495,27 +494,27 @@ public class TemplateableOutput implements StoryReporter {
             this.lifecycle = lifecycle;
         }
 
-        public List<String> getBeforeSteps(){
+        public List<String> getBeforeSteps() {
             return lifecycle.getBeforeSteps();
         }
 
-        public List<String> getAfterSteps(){
+        public List<String> getAfterSteps() {
             return lifecycle.getAfterSteps();
         }
 
-        public Set<Outcome> getOutcomes(){
+        public Set<Outcome> getOutcomes() {
             return lifecycle.getOutcomes();
         }
 
-        public MetaFilter getMetaFilter(Outcome outcome){
-        	return lifecycle.getMetaFilter(outcome);
+        public MetaFilter getMetaFilter(Outcome outcome) {
+            return lifecycle.getMetaFilter(outcome);
         }
-        
-        public List<String> getAfterSteps(Outcome outcome){
+
+        public List<String> getAfterSteps(Outcome outcome) {
             return lifecycle.getAfterSteps(outcome);
         }
 
-        public List<String> getAfterSteps(Outcome outcome, Meta meta){
+        public List<String> getAfterSteps(Outcome outcome, Meta meta) {
             return lifecycle.getAfterSteps(outcome, meta);
         }
 
@@ -680,9 +679,9 @@ public class TemplateableOutput implements StoryReporter {
         }
 
         private String escapeString(EscapeMode outputFormat, String string) {
-            if(outputFormat==EscapeMode.HTML) {
+            if (outputFormat == EscapeMode.HTML) {
                 return StringEscapeUtils.escapeHtml4(string);
-            } else if(outputFormat==EscapeMode.XML) {
+            } else if (outputFormat == EscapeMode.XML) {
                 return StringEscapeUtils.escapeXml(string);
             } else {
                 return string;
@@ -740,7 +739,7 @@ public class TemplateableOutput implements StoryReporter {
         public static class StepFormattingFailed extends RuntimeException {
 
             public StepFormattingFailed(String stepPattern, String parameterPattern, List<OutputParameter> parameters,
-                    RuntimeException cause) {
+                                        RuntimeException cause) {
                 super("Failed to format step '" + stepPattern + "' with parameter pattern '" + parameterPattern
                         + "' and parameters: " + parameters, cause);
             }

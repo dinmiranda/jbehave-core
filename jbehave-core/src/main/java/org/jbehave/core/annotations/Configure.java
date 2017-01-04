@@ -1,12 +1,7 @@
 package org.jbehave.core.annotations;
 
-import java.lang.annotation.Documented;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Inherited;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
+import com.thoughtworks.paranamer.NullParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -35,18 +30,22 @@ import org.jbehave.core.reporters.StoryReporter;
 import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.reporters.ViewGenerator;
 import org.jbehave.core.steps.MarkUnmatchedStepsAsPending;
-import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 import org.jbehave.core.steps.ParameterControls;
+import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 import org.jbehave.core.steps.SilentStepMonitor;
 import org.jbehave.core.steps.StepCollector;
 import org.jbehave.core.steps.StepFinder;
 import org.jbehave.core.steps.StepMonitor;
 
-import com.thoughtworks.paranamer.NullParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Inherited
 @Documented
 public @interface Configure {

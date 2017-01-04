@@ -1,5 +1,6 @@
 package org.jbehave.core.configuration;
 
+import com.thoughtworks.paranamer.Paranamer;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.embedder.StoryControls;
@@ -16,8 +17,6 @@ import org.jbehave.core.steps.ParameterControls;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.StepCollector;
 import org.jbehave.core.steps.StepMonitor;
-
-import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * Decorator of Configuration that disables modification of configuration
@@ -62,10 +61,10 @@ public class UnmodifiableConfiguration extends Configuration {
         return delegate.parameterConverters();
     }
 
-    public ParameterControls parameterControls(){
+    public ParameterControls parameterControls() {
         return delegate.parameterControls();
     }
-    
+
     public Paranamer paranamer() {
         return delegate.paranamer();
     }
@@ -150,11 +149,11 @@ public class UnmodifiableConfiguration extends Configuration {
     public Configuration useParameterConverters(ParameterConverters parameterConverters) {
         throw notAllowed();
     }
-    
+
     @Override
     public Configuration useParameterControls(ParameterControls parameterControls) {
         throw notAllowed();
-    }    
+    }
 
     @Override
     public Configuration useParanamer(Paranamer paranamer) {
@@ -202,7 +201,7 @@ public class UnmodifiableConfiguration extends Configuration {
 
     @SuppressWarnings("serial")
     public static class ModificationNotAllowed extends RuntimeException {
-        public ModificationNotAllowed(){
+        public ModificationNotAllowed() {
             super("Configuration elements are unmodifiable");
         }
     }

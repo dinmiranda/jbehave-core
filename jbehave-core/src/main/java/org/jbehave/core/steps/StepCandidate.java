@@ -1,9 +1,6 @@
 package org.jbehave.core.steps;
 
-import java.lang.reflect.Method;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.paranamer.Paranamer;
 import org.apache.commons.lang3.StringUtils;
 import org.jbehave.core.annotations.AfterScenario.Outcome;
 import org.jbehave.core.annotations.Given;
@@ -16,7 +13,9 @@ import org.jbehave.core.parsers.StepMatcher;
 import org.jbehave.core.parsers.StepPatternParser;
 import org.jbehave.core.steps.context.StepsContext;
 
-import com.thoughtworks.paranamer.Paranamer;
+import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 
 /**
  * A StepCandidate is associated to a Java method annotated with {@link Given},
@@ -40,8 +39,8 @@ public class StepCandidate {
     private StepMonitor stepMonitor = new SilentStepMonitor();
 
     public StepCandidate(String patternAsString, int priority, StepType stepType, Method method, Class<?> stepsType,
-            InjectableStepsFactory stepsFactory, StepsContext stepsContext, Keywords keywords,
-            StepPatternParser stepPatternParser, ParameterConverters parameterConverters, ParameterControls parameterControls) {
+                         InjectableStepsFactory stepsFactory, StepsContext stepsContext, Keywords keywords,
+                         StepPatternParser stepPatternParser, ParameterConverters parameterConverters, ParameterControls parameterControls) {
         this.patternAsString = patternAsString;
         this.priority = priority;
         this.stepType = stepType;
@@ -73,7 +72,7 @@ public class StepCandidate {
     public Class<?> getStepsType() {
         return stepsType;
     }
-    
+
     public StepType getStepType() {
         return stepType;
     }
@@ -177,12 +176,12 @@ public class StepCandidate {
     }
 
     public void addComposedSteps(List<Step> steps, String stepAsString, Map<String, String> namedParameters,
-            List<StepCandidate> allCandidates) {
+                                 List<StepCandidate> allCandidates) {
         addComposedStepsRecursively(steps, stepAsString, namedParameters, allCandidates, composedSteps);
     }
 
     private void addComposedStepsRecursively(List<Step> steps, String stepAsString,
-            Map<String, String> namedParameters, List<StepCandidate> allCandidates, String[] composedSteps) {
+                                             Map<String, String> namedParameters, List<StepCandidate> allCandidates, String[] composedSteps) {
         Map<String, String> matchedParameters = stepCreator.matchedParameters(method, stepAsString,
                 stripStartingWord(stepAsString), namedParameters);
         matchedParameters.putAll(namedParameters);
@@ -192,7 +191,7 @@ public class StepCandidate {
     }
 
     private void addComposedStep(List<Step> steps, String composedStep, Map<String, String> matchedParameters,
-            List<StepCandidate> allCandidates) {
+                                 List<StepCandidate> allCandidates) {
         StepCandidate candidate = findComposedCandidate(composedStep, allCandidates);
         if (candidate != null) {
             steps.add(candidate.createMatchedStep(composedStep, matchedParameters));
@@ -210,7 +209,7 @@ public class StepCandidate {
         for (StepCandidate candidate : allCandidates) {
             if (StringUtils.startsWith(composedStep, candidate.getStartingWord())
                     && (StringUtils.endsWith(composedStep, candidate.getPatternAsString()) || candidate
-                            .matches(composedStep))) {
+                    .matches(composedStep))) {
                 return candidate;
             }
         }

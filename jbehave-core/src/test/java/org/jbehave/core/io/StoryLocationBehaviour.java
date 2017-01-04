@@ -1,13 +1,13 @@
 package org.jbehave.core.io;
 
+import org.junit.Test;
+
+import java.net.URL;
+
 import static org.apache.commons.lang3.StringUtils.removeStart;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
-
-import java.net.URL;
-
-import org.junit.Test;
 
 public class StoryLocationBehaviour {
 
@@ -15,8 +15,8 @@ public class StoryLocationBehaviour {
     public void shouldAllowClasspathResources() {
         URL codeLocation = CodeLocations.codeLocationFromClass(this.getClass());
         String storyPath = "org/jbehave/core/io/stories/my_pending_story";
-		StoryLocation storyLocation = new StoryLocation(codeLocation, storyPath);
-		assertThat(storyLocation.getCodeLocation(), equalTo(codeLocation));
+        StoryLocation storyLocation = new StoryLocation(codeLocation, storyPath);
+        assertThat(storyLocation.getCodeLocation(), equalTo(codeLocation));
         assertThat(storyLocation.getStoryPath(), equalTo(storyPath));
         assertThat(storyLocation.getURL(), equalTo(codeLocation.toExternalForm() + storyPath));
         assertThat(storyLocation.getPath(), equalTo(storyPath));

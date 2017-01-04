@@ -1,11 +1,11 @@
 package org.jbehave.core.steps.context;
 
+import org.jbehave.core.annotations.ToContext;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import org.jbehave.core.annotations.ToContext;
 
 /**
  * Holds runtime context-related objects.
@@ -15,7 +15,7 @@ public class StepsContext {
     private static final String OBJECT_ALREADY_STORED_MESSAGE = "Object key '%s' has been already stored before.";
     private static final String OBJECT_NOT_STORED_MESSAGE = "Object key '%s' has not been stored";
 
-	private static final ThreadLocal<Map<String, Object>> exampleObjects = new ThreadLocal<Map<String, Object>>();
+    private static final ThreadLocal<Map<String, Object>> exampleObjects = new ThreadLocal<Map<String, Object>>();
     private static final ThreadLocal<Map<String, Object>> scenarioObjects = new ThreadLocal<Map<String, Object>>();
     private static final ThreadLocal<Map<String, Object>> storyObjects = new ThreadLocal<Map<String, Object>>();
     private static final ThreadLocal<Set<String>> keysStored = new ThreadLocal<Set<String>>();
@@ -112,7 +112,7 @@ public class StepsContext {
     }
 
     @SuppressWarnings("serial")
-	public static class ObjectNotStoredException extends RuntimeException {
+    public static class ObjectNotStoredException extends RuntimeException {
 
         public ObjectNotStoredException(String message) {
             super(message);
@@ -120,7 +120,7 @@ public class StepsContext {
     }
 
     @SuppressWarnings("serial")
-	public static class ObjectAlreadyStoredException extends RuntimeException {
+    public static class ObjectAlreadyStoredException extends RuntimeException {
 
         public ObjectAlreadyStoredException(String message) {
             super(message);

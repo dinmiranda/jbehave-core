@@ -1,9 +1,9 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.model.StepPattern;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-
-import org.jbehave.core.model.StepPattern;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Null Object Pattern</a> implementation of {@link StepMonitor}.
@@ -11,11 +11,11 @@ import org.jbehave.core.model.StepPattern;
  */
 public class NullStepMonitor implements StepMonitor {
     public void stepMatchesType(String stepAsString, String previousAsString, boolean matchesType, StepType stepType,
-            Method method, Object stepsInstance) {
+                                Method method, Object stepsInstance) {
     }
 
     public void stepMatchesPattern(String step, boolean matches, StepPattern pattern, Method method,
-            Object stepsInstance) {
+                                   Object stepsInstance) {
     }
 
     public void convertedValueOfType(String value, Type type, Object converted, Class<?> converterClass) {

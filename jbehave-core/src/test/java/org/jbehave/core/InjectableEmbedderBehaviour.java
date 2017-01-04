@@ -1,15 +1,15 @@
 package org.jbehave.core;
 
+import org.jbehave.core.embedder.Embedder;
+import org.junit.Test;
+
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
-import org.jbehave.core.embedder.Embedder;
-import org.junit.Test;
-
 public class InjectableEmbedderBehaviour {
 
-	@Test
+    @Test
     public void shouldRunStoriesAsPathsUsingInjected() throws Throwable {
         // Given
         Embedder embedder = mock(Embedder.class);
@@ -29,9 +29,8 @@ public class InjectableEmbedderBehaviour {
             injectedEmbedder().runStoriesAsPaths(asList("org/jbehave/core/story1", "org/jbehave/core/story2"));
         }
 
-        
-    }
 
+    }
 
 
 }

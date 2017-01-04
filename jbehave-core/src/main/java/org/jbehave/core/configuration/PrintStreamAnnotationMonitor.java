@@ -1,9 +1,9 @@
 package org.jbehave.core.configuration;
 
+import org.jbehave.core.reporters.Format;
+
 import java.io.PrintStream;
 import java.lang.annotation.Annotation;
-
-import org.jbehave.core.reporters.Format;
 
 public class PrintStreamAnnotationMonitor extends NullAnnotationMonitor {
 

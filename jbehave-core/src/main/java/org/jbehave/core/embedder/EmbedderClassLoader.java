@@ -1,5 +1,8 @@
 package org.jbehave.core.embedder;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.io.File;
 import java.lang.reflect.Modifier;
 import java.net.URL;
@@ -7,9 +10,6 @@ import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * EmbedderClassLoader is a URLClassLoader with a specified list of classpath
@@ -30,7 +30,32 @@ public class EmbedderClassLoader extends URLClassLoader {
         super(classpathURLs(classpathElements), parent);
     }
 
-    @SuppressWarnings("unchecked")
+    private static String shortPath(String path) {
+        return path.substring(path.lastIndexOf("/") + 1);
+    }
+
+    private static boolean isJar(String path) {
+        return path.endsWith(".jar");
+    }
+
+    private static URL[] classpathURLs(List<String> elements) {
+        List<URL> urls = new ArrayList<URL>();
+        if (elements != null) {
+            for (String element : elements) {
+                urls.add(toURL(element));
+            }
+        }
+        return urls.toArray(new URL[urls.size()]);
+    }
+
+    private static URL toURL(String element) {
+        try {
+            return new File(element).toURI().toURL();
+        } catch (Exception e) {
+            throw new InvalidClasspathElement(element, e);
+        }
+    }
+
     public <T> T newInstance(Class<T> type, String className) {
         try {
             Thread.currentThread().setContextClassLoader(this);
@@ -61,48 +86,20 @@ public class EmbedderClassLoader extends URLClassLoader {
         return names;
     }
 
-    private static String shortPath(String path) {
-        return path.substring(path.lastIndexOf("/") + 1);
-    }
-
-    private static boolean isJar(String path) {
-        return path.endsWith(".jar");
-    }
-
-    private static URL[] classpathURLs(List<String> elements) {
-        List<URL> urls = new ArrayList<URL>();
-        if (elements != null) {
-            for (String element : elements) {
-                urls.add(toURL(element));
-            }
-        }
-        return urls.toArray(new URL[urls.size()]);
-    }
-
-    private static URL toURL(String element) {
-        try {
-            return new File(element).toURI().toURL();
-        } catch ( Exception e ){
-            throw new InvalidClasspathElement(element, e);
-        }
-    }
-
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE).append("urls", asShortPaths(getURLs()))
                 .append("parent", getParent()).toString();
     }
 
-    @SuppressWarnings("serial")
     public static class InstantiationFailed extends RuntimeException {
 
         public InstantiationFailed(String className, Class<?> type, ClassLoader classLoader, Throwable cause) {
-            super("Instantiation failed for" + className + " of type " + type + " using class loader "+classLoader, cause);
+            super("Instantiation failed for" + className + " of type " + type + " using class loader " + classLoader, cause);
         }
 
     }
 
-    @SuppressWarnings("serial")
     public static class InvalidClasspathElement extends RuntimeException {
 
         public InvalidClasspathElement(String element, Throwable cause) {

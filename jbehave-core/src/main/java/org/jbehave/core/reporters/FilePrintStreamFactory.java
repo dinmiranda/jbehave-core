@@ -1,15 +1,15 @@
 package org.jbehave.core.reporters;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.io.CodeLocations;
 import org.jbehave.core.io.StoryLocation;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 
 /**
  * Creates {@link PrintStream} instances that write to a file identified by the
@@ -61,7 +61,7 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
     /**
      * Return the file output directory, using the configured
      * {@link FilePathResolver}
-     * 
+     *
      * @return The File representing the output directory
      */
     protected File outputDirectory() {
@@ -72,7 +72,7 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
     /**
      * Return the file output name, using the configured
      * {@link FilePathResolver}
-     * 
+     *
      * @return The file output name
      */
     protected String outputName() {
@@ -121,7 +121,7 @@ public class FilePrintStreamFactory implements PrintStreamFactory {
 
         public String resolveName(StoryLocation storyLocation, String extension) {
             String name = storyLocation.getPath();
-            if ( StringUtils.contains(name, '/') ){
+            if (StringUtils.contains(name, '/')) {
                 name = StringUtils.substringAfterLast(name, "/");
             }
             return StringUtils.substringBeforeLast(name, ".") + "." + extension;

@@ -1,12 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.io.File;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Properties;
-
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.jbehave.core.failures.BatchFailures;
 import org.jbehave.core.model.Meta;
@@ -17,14 +10,18 @@ import org.jbehave.core.reporters.PrintStreamOutput.Format;
 import org.jbehave.core.reporters.ReportsCount;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
 import static java.util.Arrays.asList;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
-
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -51,13 +48,13 @@ public class EmbedderMonitorBehaviour {
         monitor.batchFailed(new BatchFailures());
         monitor.storyFailed("/path", new RuntimeException());
         assertThat(out.toString(), is(not("")));
-   }
+    }
 
     @Test
     public void shouldDelegateOutput() throws Throwable {
         EmbedderMonitor monitor = new ReportingFailuresEmbedderMonitor();
-        assertThat(monitor.toString(), containsString(ReportingFailuresEmbedderMonitor.class.getSimpleName()+"[output="));
-   }
+        assertThat(monitor.toString(), containsString(ReportingFailuresEmbedderMonitor.class.getSimpleName() + "[output="));
+    }
 
 
     @Test
@@ -65,7 +62,7 @@ public class EmbedderMonitorBehaviour {
         // Given
         EmbedderMonitor delegate = mock(EmbedderMonitor.class);
         EmbedderMonitor monitor = new EmbedderMonitorDecorator(delegate);
-        
+
         // When
         Object annotatedInstance = new Object();
         monitor.annotatedInstanceNotOfType(annotatedInstance, annotatedInstance.getClass());
@@ -116,7 +113,7 @@ public class EmbedderMonitorBehaviour {
         monitor.systemPropertySet(name, value);
         int threads = 2;
         monitor.usingThreads(threads);
-        
+
         // Then        
         verify(delegate).annotatedInstanceNotOfType(annotatedInstance, annotatedInstance.getClass());
         verify(delegate).batchFailed(failures);
@@ -141,6 +138,6 @@ public class EmbedderMonitorBehaviour {
         verify(delegate).storyTimeout(story, storyDuration);
         verify(delegate).systemPropertySet(name, value);
         verify(delegate).usingThreads(threads);
-   }
+    }
 
 }

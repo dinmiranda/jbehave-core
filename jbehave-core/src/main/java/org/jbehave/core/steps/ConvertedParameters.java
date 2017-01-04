@@ -15,8 +15,8 @@ public class ConvertedParameters implements Parameters {
     /**
      * Creates an instance of ConvertedParameters from a Row which provides the
      * values
-     * 
-     * @param row the Row to get the values from
+     *
+     * @param row                 the Row to get the values from
      * @param parameterConverters the ParameterConverters used for conversion
      */
     public ConvertedParameters(Row row, ParameterConverters parameterConverters) {
@@ -25,8 +25,8 @@ public class ConvertedParameters implements Parameters {
 
     /**
      * Creates an instance of ConvertedParameters with given values
-     * 
-     * @param values the Map<String,String> of values
+     *
+     * @param values              the Map<String,String> of values
      * @param parameterConverters the ParameterConverters used for conversion
      */
     public ConvertedParameters(Map<String, String> values, ParameterConverters parameterConverters) {
@@ -51,7 +51,7 @@ public class ConvertedParameters implements Parameters {
     }
 
     private String valueFor(String name) {
-        if ( !values.containsKey(name) ){
+        if (!values.containsKey(name)) {
             throw new ValueNotFound(name);
         }
         return values.get(name);

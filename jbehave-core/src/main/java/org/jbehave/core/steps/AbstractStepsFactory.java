@@ -1,15 +1,15 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.annotations.AsParameterConverter;
+import org.jbehave.core.configuration.Configuration;
+import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
+import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
+
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.jbehave.core.annotations.AsParameterConverter;
-import org.jbehave.core.configuration.Configuration;
-import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
-import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 
 /**
  * <p>
@@ -26,65 +26,65 @@ public abstract class AbstractStepsFactory implements InjectableStepsFactory {
 
     private final Configuration configuration;
 
-	public AbstractStepsFactory(Configuration configuration) {
-		this.configuration = configuration;
-	}
-	
-	public List<CandidateSteps> createCandidateSteps() {
-		List<Class<?>> types = stepsTypes();
-		List<CandidateSteps> steps = new ArrayList<CandidateSteps>();
-		for (Class<?> type : types) {
-			configuration.parameterConverters().addConverters(
-					methodReturningConverters(type));
-			steps.add(new Steps(configuration, type, this));
-		}
-		return steps;
-	}
+    public AbstractStepsFactory(Configuration configuration) {
+        this.configuration = configuration;
+    }
 
-	protected abstract List<Class<?>> stepsTypes();
+    public List<CandidateSteps> createCandidateSteps() {
+        List<Class<?>> types = stepsTypes();
+        List<CandidateSteps> steps = new ArrayList<CandidateSteps>();
+        for (Class<?> type : types) {
+            configuration.parameterConverters().addConverters(
+                    methodReturningConverters(type));
+            steps.add(new Steps(configuration, type, this));
+        }
+        return steps;
+    }
 
-	/**
-	 * Create parameter converters from methods annotated with @AsParameterConverter
-	 */
-	private List<ParameterConverter> methodReturningConverters(Class<?> type) {
-		List<ParameterConverter> converters = new ArrayList<ParameterConverter>();
+    protected abstract List<Class<?>> stepsTypes();
 
-		for (Method method : type.getMethods()) {
-			if (method.isAnnotationPresent(AsParameterConverter.class)) {
-				converters.add(new MethodReturningConverter(method, type, this));
-			}
-		}
+    /**
+     * Create parameter converters from methods annotated with @AsParameterConverter
+     */
+    private List<ParameterConverter> methodReturningConverters(Class<?> type) {
+        List<ParameterConverter> converters = new ArrayList<ParameterConverter>();
 
-		return converters;
-	}
+        for (Method method : type.getMethods()) {
+            if (method.isAnnotationPresent(AsParameterConverter.class)) {
+                converters.add(new MethodReturningConverter(method, type, this));
+            }
+        }
 
-	/**
-	 * Determines if the given type is a {@link Class} containing at least one method 
+        return converters;
+    }
+
+    /**
+     * Determines if the given type is a {@link Class} containing at least one method
      * annotated with annotations from package "org.jbehave.core.annotations".
-	 * 
-	 * @param type the Type of the steps instance
-	 * @return A boolean, <code>true</code> if at least one annotated method is found.
-	 */
+     *
+     * @param type the Type of the steps instance
+     * @return A boolean, <code>true</code> if at least one annotated method is found.
+     */
     protected boolean hasAnnotatedMethods(Type type) {
-		if (type instanceof Class<?>) {
-			for (Method method : ((Class<?>) type).getMethods()) {
-				for (Annotation annotation : method.getAnnotations()) {
-					if (annotation.annotationType().getName().startsWith(
-							"org.jbehave.core.annotations")) {
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
+        if (type instanceof Class<?>) {
+            for (Method method : ((Class<?>) type).getMethods()) {
+                for (Annotation annotation : method.getAnnotations()) {
+                    if (annotation.annotationType().getName().startsWith(
+                            "org.jbehave.core.annotations")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
     @SuppressWarnings("serial")
     public static class StepsInstanceNotFound extends RuntimeException {
 
         public StepsInstanceNotFound(Class<?> type, InjectableStepsFactory stepsFactory) {
-            super("Steps instance not found for type "+type+" in factory "+stepsFactory);
+            super("Steps instance not found for type " + type + " in factory " + stepsFactory);
         }
-        
+
     }
 }

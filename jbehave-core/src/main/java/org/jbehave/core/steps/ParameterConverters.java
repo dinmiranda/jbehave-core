@@ -1,5 +1,13 @@
 package org.jbehave.core.steps;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.jbehave.core.annotations.AsJson;
+import org.jbehave.core.annotations.AsParameters;
+import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.jbehave.core.model.ExamplesTable;
+import org.jbehave.core.model.ExamplesTableFactory;
+import org.jbehave.core.model.JsonFactory;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -18,14 +26,6 @@ import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.apache.commons.lang3.BooleanUtils;
-import org.jbehave.core.annotations.AsJson;
-import org.jbehave.core.annotations.AsParameters;
-import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.jbehave.core.model.ExamplesTable;
-import org.jbehave.core.model.ExamplesTableFactory;
-import org.jbehave.core.model.JsonFactory;
 
 import static java.util.Arrays.asList;
 
@@ -78,7 +78,7 @@ public class ParameterConverters {
 
     /**
      * Creates a ParameterConverters using given StepMonitor
-     * 
+     *
      * @param monitor the StepMonitor to use
      */
     public ParameterConverters(StepMonitor monitor) {
@@ -87,9 +87,9 @@ public class ParameterConverters {
 
     /**
      * Create a ParameterConverters with given thread-safety
-     * 
+     *
      * @param threadSafe the boolean flag to determine if access to
-     *            {@link ParameterConverter} should be thread-safe
+     *                   {@link ParameterConverter} should be thread-safe
      */
     public ParameterConverters(boolean threadSafe) {
         this(DEFAULT_STEP_MONITOR, DEFAULT_NUMBER_FORMAT_LOCAL, DEFAULT_LIST_SEPARATOR, threadSafe);
@@ -100,12 +100,12 @@ public class ParameterConverters {
      * separator and thread-safety. When selecting a listSeparator, please make
      * sure that this character doesn't have a special meaning in your Locale
      * (for instance "," is used as decimal separator in some Locale)
-     * 
-     * @param monitor the StepMonitor reporting the conversions
-     * @param locale the Locale to use when reading numbers
+     *
+     * @param monitor       the StepMonitor reporting the conversions
+     * @param locale        the Locale to use when reading numbers
      * @param listSeparator the String to use as list separator
-     * @param threadSafe the boolean flag to determine if modification of
-     *            {@link ParameterConverter} should be thread-safe
+     * @param threadSafe    the boolean flag to determine if modification of
+     *                      {@link ParameterConverter} should be thread-safe
      */
     public ParameterConverters(StepMonitor monitor, Locale locale, String listSeparator, boolean threadSafe) {
         this(monitor, new ArrayList<ParameterConverter>(), threadSafe);
@@ -119,11 +119,19 @@ public class ParameterConverters {
                 : new ArrayList<ParameterConverter>(converters));
     }
 
+    public static List<String> trim(List<String> values) {
+        List<String> trimmed = new ArrayList<String>();
+        for (String value : values) {
+            trimmed.add(value.trim());
+        }
+        return trimmed;
+    }
+
     protected ParameterConverter[] defaultConverters(Locale locale, String listSeparator) {
         String escapedListSeparator = escapeRegexPunctuation(listSeparator);
         ExamplesTableFactory tableFactory = new ExamplesTableFactory(this);
         JsonFactory jsonFactory = new JsonFactory(this);
-        ParameterConverter[] defaultConverters = { new BooleanConverter(),
+        ParameterConverter[] defaultConverters = {new BooleanConverter(),
                 new NumberConverter(NumberFormat.getInstance(locale)),
                 new NumberListConverter(NumberFormat.getInstance(locale), escapedListSeparator),
                 new StringListConverter(escapedListSeparator), new DateConverter(),
@@ -219,8 +227,8 @@ public class ParameterConverters {
      * </p>
      */
     public static class NumberConverter implements ParameterConverter {
-        private static List<Class<?>> primitiveTypes = asList(new Class<?>[] { byte.class, short.class, int.class,
-                float.class, long.class, double.class });
+        private static List<Class<?>> primitiveTypes = asList(new Class<?>[]{byte.class, short.class, int.class,
+                float.class, long.class, double.class});
 
         private final NumberFormat numberFormat;
         private ThreadLocal<NumberFormat> threadLocalNumberFormat = new ThreadLocal<NumberFormat>();
@@ -278,7 +286,7 @@ public class ParameterConverters {
 
         /**
          * Return NumberFormat instance with preferred locale threadsafe
-         * 
+         *
          * @return A threadlocal version of original NumberFormat instance
          */
         private NumberFormat numberFormat() {
@@ -294,10 +302,10 @@ public class ParameterConverters {
          * Canonicalize a number representation to a format suitable for the
          * {@link BigDecimal(String)} constructor, taking into account the
          * settings of the currently configured DecimalFormat.
-         * 
+         *
          * @param value a localized number value
          * @return A canonicalized string value suitable for consumption by
-         *         BigDecimal
+         * BigDecimal
          */
         private String canonicalize(String value) {
             char decimalPointSeparator = '.'; // default
@@ -358,7 +366,7 @@ public class ParameterConverters {
         }
 
         /**
-         * @param numberFormat Specific NumberFormat to use.
+         * @param numberFormat   Specific NumberFormat to use.
          * @param valueSeparator A regexp to use as list separate
          */
         public NumberListConverter(NumberFormat numberFormat, String valueSeparator) {
@@ -436,14 +444,6 @@ public class ParameterConverters {
 
     }
 
-    public static List<String> trim(List<String> values) {
-        List<String> trimmed = new ArrayList<String>();
-        for (String value : values) {
-            trimmed.add(value.trim());
-        }
-        return trimmed;
-    }
-
     /**
      * Parses value to a {@link Date} using an injectable {@link DateFormat}
      * (defaults to <b>new SimpleDateFormat("dd/MM/yyyy")</b>)
@@ -477,7 +477,7 @@ public class ParameterConverters {
                         + value
                         + " with date format "
                         + (dateFormat instanceof SimpleDateFormat ? ((SimpleDateFormat) dateFormat).toPattern()
-                                : dateFormat), e);
+                        : dateFormat), e);
             }
         }
 
@@ -505,10 +505,10 @@ public class ParameterConverters {
 
         public Object convertValue(String value, Type type) {
             try {
-				return BooleanUtils.toBoolean(value, trueValue, falseValue);
-			} catch (IllegalArgumentException e) {
-				return false;
-			}
+                return BooleanUtils.toBoolean(value, trueValue, falseValue);
+            } catch (IllegalArgumentException e) {
+                return false;
+            }
         }
     }
 
@@ -575,9 +575,9 @@ public class ParameterConverters {
             Class<?> enumClass = (Class<?>) type;
             Method valueOfMethod = null;
             try {
-                valueOfMethod = enumClass.getMethod("valueOf", new Class[] { String.class });
+                valueOfMethod = enumClass.getMethod("valueOf", new Class[]{String.class});
                 valueOfMethod.setAccessible(true);
-                return valueOfMethod.invoke(enumClass, new Object[] { value });
+                return valueOfMethod.invoke(enumClass, new Object[]{value});
             } catch (Exception e) {
                 throw new ParameterConvertionFailed("Failed to convert " + value + " for Enum " + typeClass, e);
             }

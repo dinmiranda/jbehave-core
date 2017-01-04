@@ -1,18 +1,18 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
  * Provides an view of a list of {@link StoryMap}s, indexed by meta filters.
  */
 public class StoryMaps {
-    
+
     private Map<String, StoryMap> indexed = new LinkedHashMap<String, StoryMap>();
 
     public StoryMaps(List<StoryMap> maps) {

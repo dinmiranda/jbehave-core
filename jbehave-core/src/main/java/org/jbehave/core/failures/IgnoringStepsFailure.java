@@ -5,7 +5,7 @@ package org.jbehave.core.failures;
  */
 @SuppressWarnings("serial")
 public class IgnoringStepsFailure extends RuntimeException {
-    
+
     public IgnoringStepsFailure(String message) {
         super(message);
     }

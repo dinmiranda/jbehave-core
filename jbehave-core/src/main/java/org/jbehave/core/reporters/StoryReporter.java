@@ -1,8 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Lifecycle;
@@ -13,9 +10,12 @@ import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Allows the runner to report the state of running stories
- * 
+ *
  * @author Elizabeth Keogh
  * @author Mauro Talevi
  */
@@ -36,7 +36,7 @@ public interface StoryReporter {
     void scenarioNotAllowed(Scenario scenario, String filter);
 
     void beforeScenario(String scenarioTitle);
-    
+
     void scenarioMeta(Meta meta);
 
     void afterScenario();
@@ -52,7 +52,7 @@ public interface StoryReporter {
     void afterExamples();
 
     void beforeStep(String step);
-    
+
     void successful(String step);
 
     void ignorable(String step);
@@ -68,7 +68,7 @@ public interface StoryReporter {
     void failedOutcomes(String step, OutcomesTable table);
 
     void restarted(String step, Throwable cause);
-    
+
     void restartedStory(Story story, Throwable cause);
 
     void dryRun();

@@ -1,10 +1,11 @@
 package org.jbehave.core.reporters;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 import org.hamcrest.Matchers;
 import org.jbehave.core.model.Story;
 import org.junit.Test;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -16,7 +17,7 @@ public class NullStoryReporterBehaviour {
     public void shouldOnlyReportOverriddenMethods() {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         final PrintStream printStream = new PrintStream(out);
-        StoryReporter reporter = new NullStoryReporter(){
+        StoryReporter reporter = new NullStoryReporter() {
 
             @Override
             public void beforeStory(Story story, boolean givenStory) {

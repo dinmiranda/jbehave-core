@@ -1,14 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -35,6 +26,15 @@ import org.jbehave.core.steps.ProvidedStepsFactory;
 import org.jbehave.core.steps.StepFinder;
 import org.jbehave.core.steps.Stepdoc;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+
 /**
  * The Embedder is a facade allowing all functionality to be embedded into other
  * run contexts, such as IDEs (e.g. via JUnit support) or CLIs (via Ant or
@@ -42,16 +42,16 @@ import org.jbehave.core.steps.Stepdoc;
  */
 public class Embedder {
 
-	protected StoryMapper storyMapper;
-	protected EmbedderMonitor embedderMonitor;
-	protected EmbedderClassLoader classLoader;
-	protected EmbedderControls embedderControls;
-	protected EmbedderFailureStrategy embedderFailureStrategy;
+    protected StoryMapper storyMapper;
+    protected EmbedderMonitor embedderMonitor;
+    protected EmbedderClassLoader classLoader;
+    protected EmbedderControls embedderControls;
+    protected EmbedderFailureStrategy embedderFailureStrategy;
     protected Configuration configuration;
     protected List<CandidateSteps> candidateSteps;
     protected InjectableStepsFactory stepsFactory;
     protected List<String> metaFilters;
-    protected Map<String,MetaMatcher> metaMatchers;
+    protected Map<String, MetaMatcher> metaMatchers;
     protected Properties systemProperties;
     protected ExecutorService executorService;
     protected boolean executorServiceCreated;
@@ -302,8 +302,8 @@ public class Embedder {
         for (Embeddable embeddable : embeddables(classNames, classLoader())) {
             if (embeddable instanceof ConfigurableEmbedder) {
                 ConfigurableEmbedder configurableEmbedder = (ConfigurableEmbedder) embeddable;
-				Embedder configuredEmbedder = configurableEmbedder.configuredEmbedder();
-				List<CandidateSteps> steps = configuredEmbedder.candidateSteps();
+                Embedder configuredEmbedder = configurableEmbedder.configuredEmbedder();
+                List<CandidateSteps> steps = configuredEmbedder.candidateSteps();
                 if (steps.isEmpty()) {
                     steps = configuredEmbedder.stepsFactory().createCandidateSteps();
                 }
@@ -406,7 +406,7 @@ public class Embedder {
     /**
      * Creates a {@link ThreadPoolExecutor} using the number of threads defined
      * in the {@link EmbedderControls#threads()}
-     * 
+     *
      * @return An ExecutorService
      */
     private ExecutorService createExecutorService() {
@@ -452,13 +452,13 @@ public class Embedder {
         return metaFilters;
     }
 
-    public Map<String,MetaMatcher> metaMatchers(){
-    	if (metaMatchers == null){
-    		metaMatchers = new HashMap<String, MetaMatcher>();
-    	}
-    	return metaMatchers;
+    public Map<String, MetaMatcher> metaMatchers() {
+        if (metaMatchers == null) {
+            metaMatchers = new HashMap<String, MetaMatcher>();
+        }
+        return metaMatchers;
     }
-    
+
     public MetaFilter metaFilter() {
         return new MetaFilter(StringUtils.join(metaFilters(), " "), embedderMonitor, metaMatchers());
     }
@@ -473,12 +473,12 @@ public class Embedder {
         }
         return systemProperties;
     }
-    
-    public TimeoutParser[] timeoutParsers(){
-    	if (timeoutParsers == null){
-    		timeoutParsers = new TimeoutParser[]{};
-    	}
-    	return timeoutParsers;
+
+    public TimeoutParser[] timeoutParsers() {
+        if (timeoutParsers == null) {
+            timeoutParsers = new TimeoutParser[]{};
+        }
+        return timeoutParsers;
     }
 
     public void useClassLoader(EmbedderClassLoader classLoader) {
@@ -494,7 +494,7 @@ public class Embedder {
     }
 
     public void useStepsFactory(InjectableStepsFactory stepsFactory) {
-		this.stepsFactory = stepsFactory;
+        this.stepsFactory = stepsFactory;
     }
 
     public void useEmbedderControls(EmbedderControls embedderControls) {
@@ -518,7 +518,7 @@ public class Embedder {
         this.metaFilters = metaFilters;
     }
 
-    public void useMetaMatchers(Map<String,MetaMatcher> metaMatchers) {
+    public void useMetaMatchers(Map<String, MetaMatcher> metaMatchers) {
         this.metaMatchers = metaMatchers;
     }
 
@@ -530,10 +530,10 @@ public class Embedder {
         this.systemProperties = systemProperties;
     }
 
-    public void useTimeoutParsers(TimeoutParser... timeoutParsers){
-		this.timeoutParsers = timeoutParsers;    	
+    public void useTimeoutParsers(TimeoutParser... timeoutParsers) {
+        this.timeoutParsers = timeoutParsers;
     }
-    
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
@@ -597,13 +597,13 @@ public class Embedder {
     @SuppressWarnings("serial")
     public static class ViewGenerationFailed extends RuntimeException {
         public ViewGenerationFailed(File outputDirectory, List<String> formats, Properties viewResources,
-                RuntimeException cause) {
+                                    RuntimeException cause) {
             super("View generation failed to " + outputDirectory + " for formats " + formats + " and resources "
                     + viewResources, cause);
         }
 
         public ViewGenerationFailed(File outputDirectory, StoryMaps storyMaps, Properties viewResources,
-                RuntimeException cause) {
+                                    RuntimeException cause) {
             super("View generation failed to " + outputDirectory + " for story maps " + storyMaps + " for resources "
                     + viewResources, cause);
         }

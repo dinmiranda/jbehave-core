@@ -1,11 +1,10 @@
 package org.jbehave.core.model;
 
-import java.util.List;
-
 import com.google.gson.Gson;
-
 import org.jbehave.core.io.ResourceLoader;
 import org.junit.Test;
+
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;

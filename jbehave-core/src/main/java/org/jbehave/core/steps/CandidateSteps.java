@@ -1,9 +1,9 @@
 package org.jbehave.core.steps;
 
-import java.util.List;
-
 import org.jbehave.core.annotations.ScenarioType;
 import org.jbehave.core.configuration.Configuration;
+
+import java.util.List;
 
 /**
  * Interface providing the list of step candidates, representing methods
@@ -18,38 +18,37 @@ public interface CandidateSteps {
 
     /**
      * Returns the step candidates that can be matched
-     * 
+     *
      * @return The list of step candidates
      */
     List<StepCandidate> listCandidates();
 
     /**
      * Returns the before or after stories steps
-     * 
+     *
      * @return The list of before or after steps
      */
     List<BeforeOrAfterStep> listBeforeOrAfterStories();
 
     /**
      * Returns the before or after story steps, based on the given story status
-     * 
-     * @param givenStory
-     *            the boolean flag denoting if it's a given story
+     *
+     * @param givenStory the boolean flag denoting if it's a given story
      * @return The list of before or after steps
      */
     List<BeforeOrAfterStep> listBeforeOrAfterStory(boolean givenStory);
 
     /**
      * Returns the before or after scenario steps
+     *
      * @param type the ScenarioType
-     * 
      * @return The list of before or after steps
      */
     List<BeforeOrAfterStep> listBeforeOrAfterScenario(ScenarioType type);
 
     /**
      * Returns the configuration
-     * 
+     *
      * @return The Configuration
      */
     Configuration configuration();

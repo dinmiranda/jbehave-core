@@ -1,17 +1,15 @@
 package org.jbehave.core.model;
 
+import org.jbehave.core.io.UnderscoredToCapitalized;
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.jbehave.core.io.UnderscoredToCapitalized;
-import org.junit.Test;
-
 import static java.util.Arrays.asList;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
@@ -20,20 +18,20 @@ public class StoryMapsBehaviour {
     @Test
     public void shouldMapStoriesByFilterInLanes() throws Throwable {
         // Given
-        String storyPath1 = "/path/to/story_one.story"; 
+        String storyPath1 = "/path/to/story_one.story";
         String storyPath2 = "/path/to/story_two.story";
         String storyPath3 = "/path/to/story_three.story";
         // story paths in non-natural order to verify ordering
         List<String> storyPaths = asList(storyPath2, storyPath1);
         Map<String, Story> storiesByPath = new HashMap<String, Story>();
-        for (String storyPath : storyPaths ) {
+        for (String storyPath : storyPaths) {
             storiesByPath.put(storyPath, new Story(storyPath));
         }
-        
+
         // When
         StoryMaps storyMaps = new StoryMaps(asList(new StoryMap("filter", new HashSet<Story>(storiesByPath.values()))));
         StoryLanes storyLanes = new StoryLanes(storyMaps, new UnderscoredToCapitalized());
-        
+
         // Then
         assertThat(storyMaps.toString(), containsString("filter"));
         assertThat(storyMaps.getMaps().toString(), containsString("filter"));

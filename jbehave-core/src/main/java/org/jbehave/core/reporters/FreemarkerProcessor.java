@@ -1,14 +1,14 @@
 package org.jbehave.core.reporters;
 
-import java.io.Writer;
-import java.util.Map;
-
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
+import java.io.Writer;
+import java.util.Map;
+
 public class FreemarkerProcessor implements TemplateProcessor {
     private Class<?> templateLoadingFrom;
-        
+
     public FreemarkerProcessor() {
         this(FreemarkerProcessor.class);
     }
@@ -37,9 +37,9 @@ public class FreemarkerProcessor implements TemplateProcessor {
     public static class FreemarkerProcessingFailed extends RuntimeException {
 
         public FreemarkerProcessingFailed(Configuration configuration, String resource, Map<String, Object> dataModel, Exception cause) {
-            super("Freemarker failed to process template " + resource + " using configuration "+configuration + " and data model "+dataModel, cause);
+            super("Freemarker failed to process template " + resource + " using configuration " + configuration + " and data model " + dataModel, cause);
         }
-        
+
     }
 
 }

@@ -1,7 +1,7 @@
 package org.jbehave.core.failures;
 
 /**
- * Runtime exception thrown to indicate the occurrence of a known failure.  
+ * Runtime exception thrown to indicate the occurrence of a known failure.
  * A known failure will typically be handled with less verbose reporting.
  */
 @SuppressWarnings("serial")

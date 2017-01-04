@@ -1,16 +1,16 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+import org.jbehave.core.configuration.Keywords;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-import org.jbehave.core.configuration.Keywords;
 
 public class Meta {
 
@@ -34,6 +34,19 @@ public class Meta {
         parse(properties);
     }
 
+    public static Meta createMeta(String meta, Keywords keywords) {
+        List<String> properties = new ArrayList<String>();
+        for (String property : meta.split(keywords.metaProperty())) {
+            if (StringUtils.isNotBlank(property)) {
+                String beforeIgnorable = StringUtils.substringBefore(property, keywords.ignorable());
+                if (StringUtils.isNotBlank(beforeIgnorable)) {
+                    properties.add(beforeIgnorable);
+                }
+            }
+        }
+        return new Meta(properties);
+    }
+
     private void parse(List<String> propertiesAsString) {
         for (String propertyAsString : new HashSet<String>(propertiesAsString)) {
             Property property = new Property(propertyAsString);
@@ -43,25 +56,25 @@ public class Meta {
 
     public Set<String> getPropertyNames() {
         Set<String> names = new TreeSet<String>();
-        for (Object key : properties.keySet()) {
+        for (Object key : this.properties.keySet()) {
             names.add((String) key);
         }
         return names;
     }
 
     public boolean hasProperty(String name) {
-        return properties.containsKey(name);
+        return this.properties.containsKey(name);
     }
 
     public String getProperty(String name) {
-        String value = properties.getProperty(name);
+        String value = this.properties.getProperty(name);
         if (value == null) {
             return BLANK;
         }
         return value;
     }
 
-    public Meta inheritFrom(Meta meta) {       
+    public Meta inheritFrom(Meta meta) {
         return inherit(this, meta);
     }
 
@@ -81,17 +94,17 @@ public class Meta {
     }
 
     public boolean isEmpty() {
-        return properties.isEmpty();
+        return this.properties.isEmpty();
     }
-    
-	public String asString(Keywords keywords) {
-		StringBuffer sb = new StringBuffer();
-		for (String name : getPropertyNames()) {
-			sb.append(keywords.metaProperty()).append(name).append(SPACE)
-					.append(getProperty(name)).append(SPACE);
-		}
-		return sb.toString().trim();
-	}
+
+    public String asString(Keywords keywords) {
+        StringBuffer sb = new StringBuffer();
+        for (String name : getPropertyNames()) {
+            sb.append(keywords.metaProperty()).append(name).append(SPACE)
+                    .append(getProperty(name)).append(SPACE);
+        }
+        return sb.toString().trim();
+    }
 
     @Override
     public String toString() {
@@ -110,31 +123,18 @@ public class Meta {
         }
 
         private void parse() {
-            name = StringUtils.substringBefore(propertyAsString, SPACE).trim();
-            value = StringUtils.substringAfter(propertyAsString, SPACE).trim();
+            this.name = StringUtils.substringBefore(this.propertyAsString, SPACE).trim();
+            this.value = StringUtils.substringAfter(this.propertyAsString, SPACE).trim();
         }
 
         public String getName() {
-            return name;
+            return this.name;
         }
 
         public String getValue() {
-            return value;
+            return this.value;
         }
 
-    }
-
-    public static Meta createMeta(String meta, Keywords keywords) {
-        List<String> properties = new ArrayList<String>();
-        for (String property : meta.split(keywords.metaProperty())) {
-            if (StringUtils.isNotBlank(property)) {
-                String beforeIgnorable = StringUtils.substringBefore(property,keywords.ignorable());
-                if ( StringUtils.isNotBlank(beforeIgnorable)){
-                    properties.add(beforeIgnorable);
-                }
-            }
-        }
-        return new Meta(properties);
     }
 
 }

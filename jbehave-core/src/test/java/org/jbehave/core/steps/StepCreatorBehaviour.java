@@ -1,26 +1,7 @@
 package org.jbehave.core.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.beans.IntrospectionException;
-import java.lang.reflect.Method;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
-import java.util.regex.Pattern;
-
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
 import org.jbehave.core.annotations.AfterScenario;
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -37,17 +18,35 @@ import org.jbehave.core.steps.AbstractStepResult.Pending;
 import org.jbehave.core.steps.AbstractStepResult.Silent;
 import org.jbehave.core.steps.AbstractStepResult.Skipped;
 import org.jbehave.core.steps.AbstractStepResult.Successful;
+import org.jbehave.core.steps.StepCreator.ParameterNotFound;
+import org.jbehave.core.steps.StepCreator.ParametrisedStep;
 import org.jbehave.core.steps.context.StepsContext;
 import org.jbehave.core.steps.context.StepsContext.ObjectAlreadyStoredException;
 import org.jbehave.core.steps.context.StepsContext.ObjectNotStoredException;
-import org.jbehave.core.steps.StepCreator.ParameterNotFound;
-import org.jbehave.core.steps.StepCreator.ParametrisedStep;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Matchers;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
+import java.beans.IntrospectionException;
+import java.lang.reflect.Method;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.regex.Pattern;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StepCreatorBehaviour {
 
@@ -59,7 +58,7 @@ public class StepCreatorBehaviour {
     public void setUp() throws Exception {
         when(parameterConverters.convert("shopping cart", String.class)).thenReturn("shopping cart");
         when(parameterConverters.convert("book", String.class)).thenReturn("book");
-        when(parameterConverters.newInstanceAdding(Matchers.<ParameterConverters.ParameterConverter> anyObject()))
+        when(parameterConverters.newInstanceAdding(Matchers.<ParameterConverters.ParameterConverter>anyObject()))
                 .thenReturn(parameterConverters);
     }
 
@@ -146,7 +145,7 @@ public class StepCreatorBehaviour {
                 new ParameterConverters(), new ParameterControls(), stepMatcher, new SilentStepMonitor());
 
         // When
-        when(stepMatcher.parameterNames()).thenReturn(new String[] {});
+        when(stepMatcher.parameterNames()).thenReturn(new String[]{});
         stepCreator.matchedParameter("unknown");
 
         // Then .. fail as expected
@@ -196,7 +195,7 @@ public class StepCreatorBehaviour {
     }
 
     private void assertThatParametrisedStepHasMarkedParsedParametersValues(String firstParameterValue,
-            String secondParameterValue) throws IntrospectionException {
+                                                                           String secondParameterValue) throws IntrospectionException {
         // Given
         SomeSteps stepsInstance = new SomeSteps();
         StepMatcher stepMatcher = new RegexStepMatcher(StepType.WHEN, "I use parameters $theme and $variant", Pattern.compile("When I use parameters (.*) and (.*)"), new String[]{"theme", "variant"});
@@ -205,7 +204,7 @@ public class StepCreatorBehaviour {
 
         // When
         StepResult stepResult = stepCreator.createParametrisedStep(SomeSteps.methodFor("aMethodWithANamedParameter"),
-                "When I use parameters "+firstParameterValue+" and " + secondParameterValue, "When I use parameters "+firstParameterValue+" and " + secondParameterValue, parameters)
+                "When I use parameters " + firstParameterValue + " and " + secondParameterValue, "When I use parameters " + firstParameterValue + " and " + secondParameterValue, parameters)
                 .perform(null);
 
         // Then
@@ -223,7 +222,7 @@ public class StepCreatorBehaviour {
     }
 
     private void assertThatParametrisedStepHasMarkedNamedParameterValues(String firstParameterValue,
-            String secondParameterValue) throws IntrospectionException {
+                                                                         String secondParameterValue) throws IntrospectionException {
         // Given
         SomeSteps stepsInstance = new SomeSteps();
         StepMatcher stepMatcher = mock(StepMatcher.class);
@@ -570,7 +569,7 @@ public class StepCreatorBehaviour {
         SomeSteps stepsInstance = new SomeSteps();
         InjectableStepsFactory stepsFactory = new InstanceStepsFactory(new MostUsefulConfiguration(), stepsInstance);
         StepMatcher stepMatcher = new RegexStepMatcher(StepType.WHEN, "I read from context",
-                Pattern.compile("I read from context"), new String[] {});
+                Pattern.compile("I read from context"), new String[]{});
         StepCreator stepCreator = new StepCreator(stepsInstance.getClass(), stepsFactory, stepsContext, null,
                 new ParameterControls(), stepMatcher, new SilentStepMonitor());
 
@@ -595,7 +594,7 @@ public class StepCreatorBehaviour {
         SomeSteps stepsInstance = new SomeSteps();
         InjectableStepsFactory stepsFactory = new InstanceStepsFactory(new MostUsefulConfiguration(), stepsInstance);
         StepMatcher stepMatcher = new RegexStepMatcher(StepType.WHEN, "I read from context",
-                Pattern.compile("I read from context"), new String[] {});
+                Pattern.compile("I read from context"), new String[]{});
         StepCreator stepCreator = new StepCreator(stepsInstance.getClass(), stepsFactory, stepsContext, null,
                 new ParameterControls(), stepMatcher, new SilentStepMonitor());
 

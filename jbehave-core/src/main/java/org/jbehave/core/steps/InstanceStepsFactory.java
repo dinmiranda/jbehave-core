@@ -1,11 +1,11 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.configuration.Configuration;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.jbehave.core.configuration.Configuration;
 
 import static java.util.Arrays.asList;
 
@@ -14,7 +14,7 @@ import static java.util.Arrays.asList;
  */
 public class InstanceStepsFactory extends AbstractStepsFactory {
 
-    private final Map<Class<?>,Object> stepsInstances = new LinkedHashMap<Class<?>, Object>();
+    private final Map<Class<?>, Object> stepsInstances = new LinkedHashMap<Class<?>, Object>();
 
     public InstanceStepsFactory(Configuration configuration, Object... stepsInstances) {
         this(configuration, asList(stepsInstances));
@@ -34,7 +34,7 @@ public class InstanceStepsFactory extends AbstractStepsFactory {
 
     public Object createInstanceOfType(Class<?> type) {
         Object instance = stepsInstances.get(type);
-        if ( instance == null ){
+        if (instance == null) {
             throw new StepsInstanceNotFound(type, this);
         }
         return instance;

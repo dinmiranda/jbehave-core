@@ -1,5 +1,14 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.annotations.Given;
+import org.jbehave.core.annotations.Then;
+import org.jbehave.core.annotations.When;
+import org.jbehave.core.configuration.MostUsefulConfiguration;
+import org.junit.Test;
+
+import java.util.Collections;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
@@ -7,19 +16,10 @@ import static org.jbehave.core.steps.StepType.GIVEN;
 import static org.jbehave.core.steps.StepType.THEN;
 import static org.jbehave.core.steps.StepType.WHEN;
 
-import java.util.Collections;
-import java.util.List;
-
-import org.jbehave.core.annotations.Given;
-import org.jbehave.core.annotations.Then;
-import org.jbehave.core.annotations.When;
-import org.jbehave.core.configuration.MostUsefulConfiguration;
-import org.junit.Test;
-
 public class StepFinderBehaviour {
 
     private StepFinder finder = new StepFinder();
-    
+
     @Test
     public void shouldFindStepdocs() throws Exception {
         MySteps mySteps = new MySteps();
@@ -28,9 +28,9 @@ public class StepFinderBehaviour {
         assertThat(stepdocs.size(), equalTo(3));
         assertThatStepdocIs(stepdocs.get(0), "givenFoo", "givenFoo(java.lang.String)", "foo named $name", "Given", GIVEN, mySteps);
         assertThatStepdocIs(stepdocs.get(1), "whenFoo", "whenFoo(java.lang.String)", "foo named $name", "When", WHEN, mySteps);
-        assertThatStepdocIs(stepdocs.get(2), "thenFoo", "thenFoo(java.lang.String)", "foo named $name", "Then", THEN, mySteps);        
+        assertThatStepdocIs(stepdocs.get(2), "thenFoo", "thenFoo(java.lang.String)", "foo named $name", "Then", THEN, mySteps);
     }
-    
+
     private void assertThatStepdocIs(Stepdoc stepdoc, String methodName, String methodSignature, String pattern, String startingWord, StepType stepType, Object stepsInstance) {
         assertThat(stepdoc.getMethod().getName(), equalTo(methodName));
         assertThat(stepdoc.toString(), containsString(methodName));
@@ -45,7 +45,7 @@ public class StepFinderBehaviour {
         assertThat(stepdoc.toString(), containsString(stepsInstance.getClass().getName()));
     }
 
-    static class MySteps  {
+    static class MySteps {
 
         @Given("foo named $name")
         public void givenFoo(String name) {
@@ -60,6 +60,6 @@ public class StepFinderBehaviour {
         }
 
     }
-    
+
 
 }

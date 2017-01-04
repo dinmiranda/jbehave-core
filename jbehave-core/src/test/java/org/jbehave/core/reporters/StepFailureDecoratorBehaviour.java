@@ -1,8 +1,5 @@
 package org.jbehave.core.reporters;
 
-import java.util.List;
-import java.util.Map;
-
 import org.hamcrest.MatcherAssert;
 import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.model.ExamplesTable;
@@ -10,7 +7,6 @@ import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.OutcomesTable;
 import org.jbehave.core.model.Story;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -19,12 +15,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+import java.util.Map;
+
 import static java.util.Arrays.asList;
-
 import static org.hamcrest.Matchers.equalTo;
-
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)

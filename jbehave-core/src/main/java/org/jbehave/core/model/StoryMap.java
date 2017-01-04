@@ -1,33 +1,33 @@
 package org.jbehave.core.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
-
 /**
- *  Groups a set of {@link Story}s by meta filter. 
+ * Groups a set of {@link Story}s by meta filter.
  */
 public class StoryMap {
 
     private final String metaFilter;
     private final Set<Story> stories;
-    
+
     public StoryMap(String metaFilter, Set<Story> stories) {
         this.metaFilter = metaFilter;
-        this.stories = stories;        
+        this.stories = stories;
     }
 
-    public String getMetaFilter(){
+    public String getMetaFilter() {
         return metaFilter;
     }
-    
-    public List<Story> getStories(){
+
+    public List<Story> getStories() {
         return new ArrayList<Story>(stories);
     }
-    
+
     public List<String> getStoryPaths() {
         List<String> paths = new ArrayList<String>();
         for (Story story : stories) {

@@ -1,139 +1,33 @@
-{"xref": {
-  "stories": [
-    {
-      "story": {
-        "path": "/path/to/story",
-        "description": {
-          "descriptionAsString": "An interesting story"
-        },
-        "narrative": {
-          "inOrderTo": "renovate my house",
-          "asA": "customer",
-          "iWantTo": "get a loan",
-          "soThat": ""
-        },
-        "meta": {
-          "properties": [
-            {
-              "@name": "+author",
-              "@value": "Mauro"
-            },
-            {
-              "@name": "+theme",
-              "@value": "testing"
-            }
-          ]
-        },
-        "givenStories": {
-          "givenStories": [],
-          "givenStoriesAsString": "",
-          "examplesTable": {
-            "tableAsString": "",
-            "headerSeparator": "|",
-            "valueSeparator": "|",
-            "ignorableSeparator": "|--",
-            "tableTransformers": {
-              "transformers": [
-                [
-                  "FORMATTING",
-                  {}
-                ],
-                [
-                  "REPLACING",
-                  {}
-                ],
-                [
-                  "FROM_LANDSCAPE",
-                  {}
-                ]
-              ]
-            },
-            "headers": [],
-            "data": [],
+{
+  "xref": {
+    "stories": [
+      {
+        "story": {
+          "path": "/path/to/story",
+          "description": {
+            "descriptionAsString": "An interesting story"
+          },
+          "narrative": {
+            "inOrderTo": "renovate my house",
+            "asA": "customer",
+            "iWantTo": "get a loan",
+            "soThat": ""
+          },
+          "meta": {
             "properties": [
               {
-                "@name": "headerSeparator",
-                "@value": "|"
+                "@name": "+author",
+                "@value": "Mauro"
               },
               {
-                "@name": "valueSeparator",
-                "@value": "|"
-              },
-              {
-                "@name": "ignorableSeparator",
-                "@value": "|--"
+                "@name": "+theme",
+                "@value": "testing"
               }
-            ],
-            "propertiesAsString": "",
-            "namedParameters": [],
-            "trim": true
-          }
-        },
-        "lifecycle": {
-          "before": {
-            "steps": [
-              []
             ]
           },
-          "after": []
-        },
-        "scenarios": []
-      },
-      "localizedNarrative": "In order to renovate my house\nAs a customer\nI want to get a loan",
-      "allowed": false,
-      "givenStories": [],
-      "scenarios": [
-        {
-          "scenario": {
-            "title": "",
-            "meta": {
-              "properties": []
-            },
-            "givenStories": {
-              "givenStories": [],
-              "givenStoriesAsString": "",
-              "examplesTable": {
-                "tableAsString": "",
-                "headerSeparator": "|",
-                "valueSeparator": "|",
-                "ignorableSeparator": "|--",
-                "tableTransformers": {
-                  "transformers": [
-                    [
-                      "FORMATTING",
-                      {}
-                    ],
-                    [
-                      "REPLACING",
-                      {}
-                    ],
-                    [
-                      "FROM_LANDSCAPE",
-                      {}
-                    ]
-                  ]
-                },
-                "headers": [],
-                "data": [],
-                "properties": [
-                  {
-                    "@name": "headerSeparator",
-                    "@value": "|"
-                  },
-                  {
-                    "@name": "valueSeparator",
-                    "@value": "|"
-                  },
-                  {
-                    "@name": "ignorableSeparator",
-                    "@value": "|--"
-                  }
-                ],
-                "propertiesAsString": "",
-                "namedParameters": [],
-                "trim": true
-              }
-            },
+          "givenStories": {
+            "givenStories": [],
+            "givenStoriesAsString": "",
             "examplesTable": {
               "tableAsString": "",
               "headerSeparator": "|",
@@ -174,32 +68,23 @@
               "propertiesAsString": "",
               "namedParameters": [],
               "trim": true
-            },
-            "steps": [
-              [
-                ""
-              ]
-            ]
+            }
           },
-          "storyPath": "/path/to/story",
-          "allowed": false,
-          "normalPerformableScenario": {
-            "parameters": [],
-            "givenStories": [],
-            "beforeSteps": {},
-            "steps": {
-              "matches": [
-                {
-                  "type": "GIVEN",
-                  "annotatedPattern": "(def)",
-                  "resolvedPattern": "[abc]"
-                }
+          "lifecycle": {
+            "before": {
+              "steps": [
+                []
               ]
             },
-            "afterSteps": {},
-            "storyAndScenarioMeta": {
-              "properties": []
-            },
+            "after": []
+          },
+          "scenarios": []
+        },
+        "localizedNarrative": "In order to renovate my house\nAs a customer\nI want to get a loan",
+        "allowed": false,
+        "givenStories": [],
+        "scenarios": [
+          {
             "scenario": {
               "title": "",
               "meta": {
@@ -296,139 +181,139 @@
                   ""
                 ]
               ]
-            }
-          },
-          "examplePerformableScenarios": []
-        }
-      ],
-      "beforeSteps": {},
-      "afterSteps": {},
-      "timing": {
-        "durationInMillis": 0,
-        "start": 0,
-        "end": 0
-      },
-      "givenStory": false
-    }
-  ],
-  "scenarios": [
-    {
-      "scenario": {
-        "title": "",
-        "meta": {
-          "properties": []
-        },
-        "givenStories": {
-          "givenStories": [],
-          "givenStoriesAsString": "",
-          "examplesTable": {
-            "tableAsString": "",
-            "headerSeparator": "|",
-            "valueSeparator": "|",
-            "ignorableSeparator": "|--",
-            "tableTransformers": {
-              "transformers": [
-                [
-                  "FORMATTING",
-                  {}
-                ],
-                [
-                  "REPLACING",
-                  {}
-                ],
-                [
-                  "FROM_LANDSCAPE",
-                  {}
+            },
+            "storyPath": "/path/to/story",
+            "allowed": false,
+            "normalPerformableScenario": {
+              "parameters": [],
+              "givenStories": [],
+              "beforeSteps": {},
+              "steps": {
+                "matches": [
+                  {
+                    "type": "GIVEN",
+                    "annotatedPattern": "(def)",
+                    "resolvedPattern": "[abc]"
+                  }
                 ]
-              ]
-            },
-            "headers": [],
-            "data": [],
-            "properties": [
-              {
-                "@name": "headerSeparator",
-                "@value": "|"
               },
-              {
-                "@name": "valueSeparator",
-                "@value": "|"
+              "afterSteps": {},
+              "storyAndScenarioMeta": {
+                "properties": []
               },
-              {
-                "@name": "ignorableSeparator",
-                "@value": "|--"
+              "scenario": {
+                "title": "",
+                "meta": {
+                  "properties": []
+                },
+                "givenStories": {
+                  "givenStories": [],
+                  "givenStoriesAsString": "",
+                  "examplesTable": {
+                    "tableAsString": "",
+                    "headerSeparator": "|",
+                    "valueSeparator": "|",
+                    "ignorableSeparator": "|--",
+                    "tableTransformers": {
+                      "transformers": [
+                        [
+                          "FORMATTING",
+                          {}
+                        ],
+                        [
+                          "REPLACING",
+                          {}
+                        ],
+                        [
+                          "FROM_LANDSCAPE",
+                          {}
+                        ]
+                      ]
+                    },
+                    "headers": [],
+                    "data": [],
+                    "properties": [
+                      {
+                        "@name": "headerSeparator",
+                        "@value": "|"
+                      },
+                      {
+                        "@name": "valueSeparator",
+                        "@value": "|"
+                      },
+                      {
+                        "@name": "ignorableSeparator",
+                        "@value": "|--"
+                      }
+                    ],
+                    "propertiesAsString": "",
+                    "namedParameters": [],
+                    "trim": true
+                  }
+                },
+                "examplesTable": {
+                  "tableAsString": "",
+                  "headerSeparator": "|",
+                  "valueSeparator": "|",
+                  "ignorableSeparator": "|--",
+                  "tableTransformers": {
+                    "transformers": [
+                      [
+                        "FORMATTING",
+                        {}
+                      ],
+                      [
+                        "REPLACING",
+                        {}
+                      ],
+                      [
+                        "FROM_LANDSCAPE",
+                        {}
+                      ]
+                    ]
+                  },
+                  "headers": [],
+                  "data": [],
+                  "properties": [
+                    {
+                      "@name": "headerSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "valueSeparator",
+                      "@value": "|"
+                    },
+                    {
+                      "@name": "ignorableSeparator",
+                      "@value": "|--"
+                    }
+                  ],
+                  "propertiesAsString": "",
+                  "namedParameters": [],
+                  "trim": true
+                },
+                "steps": [
+                  [
+                    ""
+                  ]
+                ]
               }
-            ],
-            "propertiesAsString": "",
-            "namedParameters": [],
-            "trim": true
+            },
+            "examplePerformableScenarios": []
           }
-        },
-        "examplesTable": {
-          "tableAsString": "",
-          "headerSeparator": "|",
-          "valueSeparator": "|",
-          "ignorableSeparator": "|--",
-          "tableTransformers": {
-            "transformers": [
-              [
-                "FORMATTING",
-                {}
-              ],
-              [
-                "REPLACING",
-                {}
-              ],
-              [
-                "FROM_LANDSCAPE",
-                {}
-              ]
-            ]
-          },
-          "headers": [],
-          "data": [],
-          "properties": [
-            {
-              "@name": "headerSeparator",
-              "@value": "|"
-            },
-            {
-              "@name": "valueSeparator",
-              "@value": "|"
-            },
-            {
-              "@name": "ignorableSeparator",
-              "@value": "|--"
-            }
-          ],
-          "propertiesAsString": "",
-          "namedParameters": [],
-          "trim": true
-        },
-        "steps": [
-          [
-            ""
-          ]
-        ]
-      },
-      "storyPath": "/path/to/story",
-      "allowed": false,
-      "normalPerformableScenario": {
-        "parameters": [],
-        "givenStories": [],
+        ],
         "beforeSteps": {},
-        "steps": {
-          "matches": [
-            {
-              "type": "GIVEN",
-              "annotatedPattern": "(def)",
-              "resolvedPattern": "[abc]"
-            }
-          ]
-        },
         "afterSteps": {},
-        "storyAndScenarioMeta": {
-          "properties": []
+        "timing": {
+          "durationInMillis": 0,
+          "start": 0,
+          "end": 0
         },
+        "givenStory": false
+      }
+    ],
+    "scenarios": [
+      {
         "scenario": {
           "title": "",
           "meta": {
@@ -525,9 +410,126 @@
               ""
             ]
           ]
-        }
-      },
-      "examplePerformableScenarios": []
-    }
-  ]
-}}
+        },
+        "storyPath": "/path/to/story",
+        "allowed": false,
+        "normalPerformableScenario": {
+          "parameters": [],
+          "givenStories": [],
+          "beforeSteps": {},
+          "steps": {
+            "matches": [
+              {
+                "type": "GIVEN",
+                "annotatedPattern": "(def)",
+                "resolvedPattern": "[abc]"
+              }
+            ]
+          },
+          "afterSteps": {},
+          "storyAndScenarioMeta": {
+            "properties": []
+          },
+          "scenario": {
+            "title": "",
+            "meta": {
+              "properties": []
+            },
+            "givenStories": {
+              "givenStories": [],
+              "givenStoriesAsString": "",
+              "examplesTable": {
+                "tableAsString": "",
+                "headerSeparator": "|",
+                "valueSeparator": "|",
+                "ignorableSeparator": "|--",
+                "tableTransformers": {
+                  "transformers": [
+                    [
+                      "FORMATTING",
+                      {}
+                    ],
+                    [
+                      "REPLACING",
+                      {}
+                    ],
+                    [
+                      "FROM_LANDSCAPE",
+                      {}
+                    ]
+                  ]
+                },
+                "headers": [],
+                "data": [],
+                "properties": [
+                  {
+                    "@name": "headerSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "valueSeparator",
+                    "@value": "|"
+                  },
+                  {
+                    "@name": "ignorableSeparator",
+                    "@value": "|--"
+                  }
+                ],
+                "propertiesAsString": "",
+                "namedParameters": [],
+                "trim": true
+              }
+            },
+            "examplesTable": {
+              "tableAsString": "",
+              "headerSeparator": "|",
+              "valueSeparator": "|",
+              "ignorableSeparator": "|--",
+              "tableTransformers": {
+                "transformers": [
+                  [
+                    "FORMATTING",
+                    {}
+                  ],
+                  [
+                    "REPLACING",
+                    {}
+                  ],
+                  [
+                    "FROM_LANDSCAPE",
+                    {}
+                  ]
+                ]
+              },
+              "headers": [],
+              "data": [],
+              "properties": [
+                {
+                  "@name": "headerSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "valueSeparator",
+                  "@value": "|"
+                },
+                {
+                  "@name": "ignorableSeparator",
+                  "@value": "|--"
+                }
+              ],
+              "propertiesAsString": "",
+              "namedParameters": [],
+              "trim": true
+            },
+            "steps": [
+              [
+                ""
+              ]
+            ]
+          }
+        },
+        "examplePerformableScenarios": []
+      }
+    ]
+  }
+}

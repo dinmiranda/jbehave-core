@@ -13,8 +13,8 @@ public class StoryControls {
     private boolean resetStateBeforeScenario = true;
     private boolean skipScenariosAfterFailure = false;
     private boolean skipBeforeAndAfterScenarioStepsIfGivenStory = false;
-	private boolean ignoreMetaFiltersIfGivenStory = false;
-	private boolean metaByRow = false;
+    private boolean ignoreMetaFiltersIfGivenStory = false;
+    private boolean metaByRow = false;
     private String storyMetaPrefix = "";
     private String scenarioMetaPrefix = "";
 
@@ -42,8 +42,8 @@ public class StoryControls {
     }
 
     public boolean ignoreMetaFiltersIfGivenStory() {
-		return ignoreMetaFiltersIfGivenStory;
-	}
+        return ignoreMetaFiltersIfGivenStory;
+    }
 
     public boolean metaByRow() {
         return metaByRow;
@@ -62,16 +62,16 @@ public class StoryControls {
         return this;
     }
 
-	public StoryControls doResetStateBeforeScenario(boolean resetStateBeforeScenario) {
+    public StoryControls doResetStateBeforeScenario(boolean resetStateBeforeScenario) {
         this.resetStateBeforeScenario = resetStateBeforeScenario;
         return this;
     }
-    
+
     public StoryControls doResetStateBeforeStory(boolean resetStateBeforeStory) {
         this.resetStateBeforeStory = resetStateBeforeStory;
         return this;
     }
-    
+
     public StoryControls doSkipScenariosAfterFailure(boolean skipScenariosAfterFailure) {
         this.skipScenariosAfterFailure = skipScenariosAfterFailure;
         return this;
@@ -82,27 +82,27 @@ public class StoryControls {
         return this;
     }
 
-	public StoryControls doIgnoreMetaFiltersIfGivenStory(
-			boolean ignoreMetaFiltersIfGivenStory) {
-		this.ignoreMetaFiltersIfGivenStory = ignoreMetaFiltersIfGivenStory;
-		return this;
-	}
+    public StoryControls doIgnoreMetaFiltersIfGivenStory(
+            boolean ignoreMetaFiltersIfGivenStory) {
+        this.ignoreMetaFiltersIfGivenStory = ignoreMetaFiltersIfGivenStory;
+        return this;
+    }
 
-	public StoryControls doMetaByRow(boolean metaByRow) {
-	    this.metaByRow = metaByRow;
-	    return this;
-	}
+    public StoryControls doMetaByRow(boolean metaByRow) {
+        this.metaByRow = metaByRow;
+        return this;
+    }
 
-    public StoryControls useStoryMetaPrefix(String storyMetaPrefix){
+    public StoryControls useStoryMetaPrefix(String storyMetaPrefix) {
         this.storyMetaPrefix = storyMetaPrefix;
-        return this;        
+        return this;
     }
 
-    public StoryControls useScenarioMetaPrefix(String scenarioMetaPrefix){
+    public StoryControls useScenarioMetaPrefix(String scenarioMetaPrefix) {
         this.scenarioMetaPrefix = scenarioMetaPrefix;
-        return this;        
+        return this;
     }
-    
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

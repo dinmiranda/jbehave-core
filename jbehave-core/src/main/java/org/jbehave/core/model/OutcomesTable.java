@@ -1,9 +1,5 @@
 package org.jbehave.core.model;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hamcrest.Matcher;
@@ -11,30 +7,34 @@ import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.i18n.LocalizedKeywords;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 public class OutcomesTable {
 
     private static final String NEWLINE = "\n";
     private static final String HEADER_SEPARATOR = "|";
     private static final String VALUE_SEPARATOR = "|";
-	private static final String DEFAULT_DATE_FORMAT = "EEE MMM dd hh:mm:ss zzz yyyy";
+    private static final String DEFAULT_DATE_FORMAT = "EEE MMM dd hh:mm:ss zzz yyyy";
 
     private final Keywords keywords;
-	private final String dateFormat;
+    private final String dateFormat;
     private final List<Outcome<?>> outcomes = new ArrayList<Outcome<?>>();
     private final List<Outcome<?>> failedOutcomes = new ArrayList<Outcome<?>>();
     private UUIDExceptionWrapper failureCause;
-    
+
     public OutcomesTable() {
         this(new LocalizedKeywords());
     }
-    
+
     public OutcomesTable(Keywords keywords) {
         this(keywords, DEFAULT_DATE_FORMAT);
     }
 
     public OutcomesTable(Keywords keywords, String dateFormat) {
         this.keywords = keywords;
-		this.dateFormat = dateFormat;
+        this.dateFormat = dateFormat;
     }
 
     public <T> void addOutcome(String description, T value, Matcher<T> matcher) {
@@ -73,13 +73,13 @@ public class OutcomesTable {
         return keywords.outcomeFields();
     }
 
-    public String getDateFormat(){
-    	return dateFormat;
+    public String getDateFormat() {
+        return dateFormat;
     }
-    
+
     public String asString() {
         StringBuilder sb = new StringBuilder();
-        for (Iterator<String> iterator = getOutcomeFields().iterator(); iterator.hasNext();) {
+        for (Iterator<String> iterator = getOutcomeFields().iterator(); iterator.hasNext(); ) {
             sb.append(HEADER_SEPARATOR).append(iterator.next());
             if (!iterator.hasNext()) {
                 sb.append(HEADER_SEPARATOR).append(NEWLINE);

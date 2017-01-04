@@ -4,28 +4,28 @@ import org.jbehave.core.model.Story;
 
 public class TransformingStoryParser implements StoryParser {
 
-	private final StoryParser delegate;
-	private StoryTransformer[] transformers; 
+    private final StoryParser delegate;
+    private StoryTransformer[] transformers;
 
-	public TransformingStoryParser(StoryParser delegate, StoryTransformer... transformers) {
-		this.delegate = delegate;
-		this.transformers = transformers;
-	}
+    public TransformingStoryParser(StoryParser delegate, StoryTransformer... transformers) {
+        this.delegate = delegate;
+        this.transformers = transformers;
+    }
 
-	public Story parseStory(String storyAsText) {
-		return delegate.parseStory(transform(storyAsText));
-	}
+    public Story parseStory(String storyAsText) {
+        return this.delegate.parseStory(transform(storyAsText));
+    }
 
-	public Story parseStory(String storyAsText, String storyPath) {
-		return delegate.parseStory(transform(storyAsText), storyPath);
-	}
+    public Story parseStory(String storyAsText, String storyPath) {
+        return this.delegate.parseStory(transform(storyAsText), storyPath);
+    }
 
-	private String transform(String storyAsText) {
-		String transformed = storyAsText;
-		for ( StoryTransformer transformer : transformers ){
-			transformed = transformer.transform(transformed);
-		}
-		return transformed;
-	}
+    private String transform(String storyAsText) {
+        String transformed = storyAsText;
+        for (StoryTransformer transformer : this.transformers) {
+            transformed = transformer.transform(transformed);
+        }
+        return transformed;
+    }
 
 }

@@ -1,14 +1,14 @@
 package org.jbehave.core.configuration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.jbehave.core.steps.StepType;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 
@@ -20,8 +20,6 @@ import static java.util.Arrays.asList;
  */
 public class Keywords {
 
-    private static final String SYNONYM_SEPARATOR = "\\|";
-    
     public static final String META = "Meta";
     public static final String META_PROPERTY = "MetaProperty";
     public static final String NARRATIVE = "Narrative";
@@ -61,14 +59,12 @@ public class Keywords {
     public static final String META_FILTER = "MetaFilter";
     public static final String YES = "Yes";
     public static final String NO = "No";
-
     public static final List<String> KEYWORDS = asList(META, META_PROPERTY, NARRATIVE, IN_ORDER_TO, AS_A, I_WANT_TO, SO_THAT,
             SCENARIO, GIVEN_STORIES, LIFECYCLE, BEFORE, AFTER, EXAMPLES_TABLE, EXAMPLES_TABLE_ROW, EXAMPLES_TABLE_HEADER_SEPARATOR,
             EXAMPLES_TABLE_VALUE_SEPARATOR, EXAMPLES_TABLE_IGNORABLE_SEPARATOR, GIVEN, WHEN, THEN, AND, IGNORABLE,
             PENDING, NOT_PERFORMED, FAILED, DRY_RUN, STORY_CANCELLED, DURATION, OUTCOME, OUTCOME_ANY, OUTCOME_SUCCESS, OUTCOME_FAILURE,
             OUTCOME_DESCRIPTION, OUTCOME_VALUE, OUTCOME_MATCHER, OUTCOME_VERIFIED, META_FILTER, YES, NO);
-
-
+    private static final String SYNONYM_SEPARATOR = "\\|";
     private final String meta;
     private final String metaProperty;
     private final String narrative;
@@ -111,50 +107,6 @@ public class Keywords {
     private final Map<StepType, String> startingWordsByType = new HashMap<StepType, String>();
 
 
-    public static Map<String, String> defaultKeywords() {
-        Map<String, String> keywords = new HashMap<String, String>();
-        keywords.put(META, "Meta:");
-        keywords.put(META_PROPERTY, "@");
-        keywords.put(NARRATIVE, "Narrative:");
-        keywords.put(IN_ORDER_TO, "In order to");
-        keywords.put(AS_A, "As a");
-        keywords.put(I_WANT_TO, "I want to");
-        keywords.put(SO_THAT, "So that");
-        keywords.put(SCENARIO, "Scenario:");
-        keywords.put(GIVEN_STORIES, "GivenStories:");
-        keywords.put(LIFECYCLE, "Lifecycle:");
-        keywords.put(BEFORE, "Before:");
-        keywords.put(AFTER, "After:");
-        keywords.put(EXAMPLES_TABLE, "Examples:");
-        keywords.put(EXAMPLES_TABLE_ROW, "Example:");
-        keywords.put(EXAMPLES_TABLE_HEADER_SEPARATOR, "|");
-        keywords.put(EXAMPLES_TABLE_VALUE_SEPARATOR, "|");
-        keywords.put(EXAMPLES_TABLE_IGNORABLE_SEPARATOR, "|--");
-        keywords.put(GIVEN, "Given");
-        keywords.put(WHEN, "When");
-        keywords.put(THEN, "Then");
-        keywords.put(AND, "And");
-        keywords.put(IGNORABLE, "!--");
-        keywords.put(PENDING, "PENDING");
-        keywords.put(NOT_PERFORMED, "NOT PERFORMED");
-        keywords.put(FAILED, "FAILED");
-        keywords.put(DRY_RUN, "DRY RUN");
-        keywords.put(STORY_CANCELLED, "STORY CANCELLED");
-        keywords.put(DURATION, "DURATION");
-        keywords.put(OUTCOME, "Outcome:");
-        keywords.put(OUTCOME_ANY, "ANY");
-        keywords.put(OUTCOME_SUCCESS, "SUCCESS");
-        keywords.put(OUTCOME_FAILURE, "FAILURE");
-        keywords.put(OUTCOME_DESCRIPTION, "DESCRIPTION");
-        keywords.put(OUTCOME_MATCHER, "MATCHER");
-        keywords.put(OUTCOME_VALUE, "VALUE");
-        keywords.put(OUTCOME_VERIFIED, "VERIFIED");
-        keywords.put(META_FILTER, "MetaFilter:");
-        keywords.put(YES, "Yes");
-        keywords.put(NO, "No");
-        return keywords;
-    }
-
     /**
      * Creates Keywords with default values {@link #defaultKeywords()}
      */
@@ -164,7 +116,7 @@ public class Keywords {
 
     /**
      * Creates Keywords with provided keywords Map and Encoding
-     * 
+     *
      * @param keywords the Map of keywords indexed by their name
      */
     public Keywords(Map<String, String> keywords) {
@@ -214,6 +166,50 @@ public class Keywords {
         startingWordsByType.put(StepType.AND, and());
         startingWordsByType.put(StepType.IGNORABLE, ignorable());
 
+    }
+
+    public static Map<String, String> defaultKeywords() {
+        Map<String, String> keywords = new HashMap<String, String>();
+        keywords.put(META, "Meta:");
+        keywords.put(META_PROPERTY, "@");
+        keywords.put(NARRATIVE, "Narrative:");
+        keywords.put(IN_ORDER_TO, "In order to");
+        keywords.put(AS_A, "As a");
+        keywords.put(I_WANT_TO, "I want to");
+        keywords.put(SO_THAT, "So that");
+        keywords.put(SCENARIO, "Scenario:");
+        keywords.put(GIVEN_STORIES, "GivenStories:");
+        keywords.put(LIFECYCLE, "Lifecycle:");
+        keywords.put(BEFORE, "Before:");
+        keywords.put(AFTER, "After:");
+        keywords.put(EXAMPLES_TABLE, "Examples:");
+        keywords.put(EXAMPLES_TABLE_ROW, "Example:");
+        keywords.put(EXAMPLES_TABLE_HEADER_SEPARATOR, "|");
+        keywords.put(EXAMPLES_TABLE_VALUE_SEPARATOR, "|");
+        keywords.put(EXAMPLES_TABLE_IGNORABLE_SEPARATOR, "|--");
+        keywords.put(GIVEN, "Given");
+        keywords.put(WHEN, "When");
+        keywords.put(THEN, "Then");
+        keywords.put(AND, "And");
+        keywords.put(IGNORABLE, "!--");
+        keywords.put(PENDING, "PENDING");
+        keywords.put(NOT_PERFORMED, "NOT PERFORMED");
+        keywords.put(FAILED, "FAILED");
+        keywords.put(DRY_RUN, "DRY RUN");
+        keywords.put(STORY_CANCELLED, "STORY CANCELLED");
+        keywords.put(DURATION, "DURATION");
+        keywords.put(OUTCOME, "Outcome:");
+        keywords.put(OUTCOME_ANY, "ANY");
+        keywords.put(OUTCOME_SUCCESS, "SUCCESS");
+        keywords.put(OUTCOME_FAILURE, "FAILURE");
+        keywords.put(OUTCOME_DESCRIPTION, "DESCRIPTION");
+        keywords.put(OUTCOME_MATCHER, "MATCHER");
+        keywords.put(OUTCOME_VALUE, "VALUE");
+        keywords.put(OUTCOME_VERIFIED, "VERIFIED");
+        keywords.put(META_FILTER, "MetaFilter:");
+        keywords.put(YES, "Yes");
+        keywords.put(NO, "No");
+        return keywords;
     }
 
     private String keyword(String name, Map<String, String> keywords) {
@@ -340,15 +336,15 @@ public class Keywords {
         return outcome;
     }
 
-    public String outcomeAny(){
+    public String outcomeAny() {
         return outcomeAny;
     }
 
-    public String outcomeSuccess(){
+    public String outcomeSuccess() {
         return outcomeSuccess;
     }
 
-    public String outcomeFailure(){
+    public String outcomeFailure() {
         return outcomeFailure;
     }
 
@@ -405,7 +401,7 @@ public class Keywords {
     public String stepWithoutStartingWord(String stepAsString, StepType stepType) {
         String startingWord = startingWord(stepAsString, stepType);
         return stepAsString.substring(startingWord.length() + 1); // 1 for the
-                                                                  // space after
+        // space after
     }
 
     public String startingWord(String stepAsString, StepType stepType) throws StartingWordNotFound {

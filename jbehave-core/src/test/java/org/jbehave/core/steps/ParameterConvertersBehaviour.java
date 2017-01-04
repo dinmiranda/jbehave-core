@@ -1,5 +1,23 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.model.ExamplesTable;
+import org.jbehave.core.steps.ParameterConverters.BooleanConverter;
+import org.jbehave.core.steps.ParameterConverters.BooleanListConverter;
+import org.jbehave.core.steps.ParameterConverters.DateConverter;
+import org.jbehave.core.steps.ParameterConverters.EnumConverter;
+import org.jbehave.core.steps.ParameterConverters.EnumListConverter;
+import org.jbehave.core.steps.ParameterConverters.ExamplesTableConverter;
+import org.jbehave.core.steps.ParameterConverters.ExamplesTableParametersConverter;
+import org.jbehave.core.steps.ParameterConverters.FluentEnumConverter;
+import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
+import org.jbehave.core.steps.ParameterConverters.NumberConverter;
+import org.jbehave.core.steps.ParameterConverters.NumberListConverter;
+import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
+import org.jbehave.core.steps.ParameterConverters.ParameterConvertionFailed;
+import org.jbehave.core.steps.ParameterConverters.StringListConverter;
+import org.jbehave.core.steps.SomeSteps.MyParameters;
+import org.junit.Test;
+
 import java.beans.IntrospectionException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -20,24 +38,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.jbehave.core.model.ExamplesTable;
-import org.jbehave.core.steps.ParameterConverters.BooleanConverter;
-import org.jbehave.core.steps.ParameterConverters.BooleanListConverter;
-import org.jbehave.core.steps.ParameterConverters.DateConverter;
-import org.jbehave.core.steps.ParameterConverters.EnumConverter;
-import org.jbehave.core.steps.ParameterConverters.EnumListConverter;
-import org.jbehave.core.steps.ParameterConverters.ExamplesTableConverter;
-import org.jbehave.core.steps.ParameterConverters.ExamplesTableParametersConverter;
-import org.jbehave.core.steps.ParameterConverters.FluentEnumConverter;
-import org.jbehave.core.steps.ParameterConverters.MethodReturningConverter;
-import org.jbehave.core.steps.ParameterConverters.NumberConverter;
-import org.jbehave.core.steps.ParameterConverters.NumberListConverter;
-import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
-import org.jbehave.core.steps.ParameterConverters.ParameterConvertionFailed;
-import org.jbehave.core.steps.ParameterConverters.StringListConverter;
-import org.jbehave.core.steps.SomeSteps.MyParameters;
-import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -62,7 +62,7 @@ public class ParameterConvertersBehaviour {
     }
 
     private void assertThatDefaultConvertersInclude(ParameterConverter[] defaultConverters,
-            @SuppressWarnings("unchecked") Class<? extends ParameterConverter>... converterTypes) {
+                                                    @SuppressWarnings("unchecked") Class<? extends ParameterConverter>... converterTypes) {
         for (Class<? extends ParameterConverter> type : converterTypes) {
             boolean found = false;
             for (ParameterConverter converter : defaultConverters) {
@@ -96,34 +96,34 @@ public class ParameterConvertersBehaviour {
         assertThat((Integer) converter.convertValue("100,000", Integer.class), equalTo(100000));
         assertThat((Long) converter.convertValue("100,000", Long.class), equalTo(100000L));
         assertThat((Float) converter.convertValue("100,000.01", Float.class), equalTo(100000.01f));
-        assertThat((Double) converter.convertValue("100,000.01", Double.class), equalTo(100000.01d));        
+        assertThat((Double) converter.convertValue("100,000.01", Double.class), equalTo(100000.01d));
         assertThat((Double) converter.convertValue("1,00,000.01", Double.class), equalTo(100000.01d)); //Hindi style       
         assertThat((BigDecimal) converter.convertValue("1,000,000.01", BigDecimal.class), equalTo(new BigDecimal("1000000.01")));
     }
-    
+
     @Test
     public void shouldConvertValuesToNumbersWithEnglishNumberFormatInMultipleThreads() {
         final Locale locale = Locale.ENGLISH;
         final int threads = 3;
         final ParameterConverter converter = new NumberConverter(NumberFormat.getInstance(locale));
         final BlockingQueue<String> queue = new ArrayBlockingQueue<String>(threads);
-        Thread t1 = new Thread(){
+        Thread t1 = new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 assertConverterForLocale(converter, locale);
                 queue.add(Thread.currentThread().getName());
             }
         };
-        Thread t2 = new Thread(){
+        Thread t2 = new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 assertConverterForLocale(converter, locale);
                 queue.add(Thread.currentThread().getName());
             }
         };
-        Thread t3 = new Thread(){
+        Thread t3 = new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 assertConverterForLocale(converter, locale);
                 queue.add(Thread.currentThread().getName());
             }
@@ -132,8 +132,8 @@ public class ParameterConvertersBehaviour {
         t1.start();
         t2.start();
         t3.start();
-        
-        for (int i = 0;i < threads;i++){
+
+        for (int i = 0; i < threads; i++) {
             try {
                 System.out.println(queue.take() + " completed.");
             } catch (InterruptedException e) {
@@ -142,6 +142,7 @@ public class ParameterConvertersBehaviour {
         }
 
     }
+
     @Test
     public void shouldConvertValuesToNumbersWithFrenchNumberFormat() {
         Locale locale = Locale.FRENCH;
@@ -155,7 +156,7 @@ public class ParameterConvertersBehaviour {
     @Test
     public void shouldConvertValuesToNumbersWithGermanNumberFormat() {
         Locale locale = Locale.GERMAN;
-        ParameterConverter converter = new NumberConverter(NumberFormat.getInstance(locale));        
+        ParameterConverter converter = new NumberConverter(NumberFormat.getInstance(locale));
         assertThatAllNumberTypesAreAccepted(converter);
         assertThatAllNumbersAreConverted(converter, locale);
         assertThat((BigDecimal) converter.convertValue("1.000.000,01", BigDecimal.class), equalTo(new BigDecimal("1000000.01")));
@@ -179,20 +180,20 @@ public class ParameterConvertersBehaviour {
         assertThat(converter.accept(AtomicInteger.class), equalTo(true));
         assertThat(converter.accept(AtomicLong.class), equalTo(true));
         assertThat(converter.accept(Number.class), equalTo(true));
-        assertThat(converter.accept(WrongType.class), equalTo(false));        
+        assertThat(converter.accept(WrongType.class), equalTo(false));
     }
 
     private void assertThatAllNumbersAreConverted(ParameterConverter converter, Locale locale) {
-    	DecimalFormatSymbols format = new DecimalFormatSymbols(locale);
-    	char dot = format.getDecimalSeparator();
-    	char minus = format.getMinusSign();
+        DecimalFormatSymbols format = new DecimalFormatSymbols(locale);
+        char dot = format.getDecimalSeparator();
+        char minus = format.getMinusSign();
         assertThat((Byte) converter.convertValue("127", Byte.class), equalTo(Byte.MAX_VALUE));
-		assertThat((Byte) converter.convertValue(minus + "128", byte.class), equalTo(Byte.MIN_VALUE));
+        assertThat((Byte) converter.convertValue(minus + "128", byte.class), equalTo(Byte.MIN_VALUE));
         assertThat((Short) converter.convertValue("32767", Short.class), equalTo(Short.MAX_VALUE));
         assertThat((Short) converter.convertValue(minus + "32768", short.class), equalTo(Short.MIN_VALUE));
         assertThat((Integer) converter.convertValue("3", Integer.class), equalTo(3));
         assertThat((Integer) converter.convertValue("3", int.class), equalTo(3));
-		assertThat((Float) converter.convertValue("3" + dot + "0", Float.class), equalTo(3.0f));
+        assertThat((Float) converter.convertValue("3" + dot + "0", Float.class), equalTo(3.0f));
         assertThat((Float) converter.convertValue("3" + dot + "0", float.class), equalTo(3.0f));
         assertThat((Long) converter.convertValue("3", Long.class), equalTo(3L));
         assertThat((Long) converter.convertValue("3", long.class), equalTo(3L));
@@ -204,9 +205,9 @@ public class ParameterConvertersBehaviour {
         assertThat((BigDecimal) converter.convertValue("30000000", BigDecimal.class), equalTo(new BigDecimal(30000000))); // 7 or more digits
         assertThat((BigDecimal) converter.convertValue("3" + dot + "000", BigDecimal.class), equalTo(new BigDecimal("3.000"))); // something else!
         assertThat((BigDecimal) converter.convertValue("-3", BigDecimal.class), equalTo(new BigDecimal("-3"))); // negative
-        assertThat(((AtomicInteger)converter.convertValue("3", AtomicInteger.class)).get(), equalTo(3));
-        assertThat(((AtomicLong)converter.convertValue("3", AtomicLong.class)).get(), equalTo(3L));
-        assertThat((Number) converter.convertValue("3", Number.class), equalTo((Number)3L));
+        assertThat(((AtomicInteger) converter.convertValue("3", AtomicInteger.class)).get(), equalTo(3));
+        assertThat(((AtomicLong) converter.convertValue("3", AtomicLong.class)).get(), equalTo(3L));
+        assertThat((Number) converter.convertValue("3", Number.class), equalTo((Number) 3L));
     }
 
     @Test
@@ -221,7 +222,7 @@ public class ParameterConvertersBehaviour {
     }
 
     @Test
-    public void shouldFailToConvertInvalidNumbersWithNumberFormat2()  {
+    public void shouldFailToConvertInvalidNumbersWithNumberFormat2() {
         NumberConverter converter = new NumberConverter();
         try {
             converter.convertValue("12.34.56", BigDecimal.class);
@@ -236,10 +237,10 @@ public class ParameterConvertersBehaviour {
         ParameterConverter converter = new NumberConverter();
         assertThat((Float) converter.convertValue(NAN, Float.class), equalTo(Float.NaN));
         assertThat((Float) converter.convertValue(INFINITY, Float.class), equalTo(Float.POSITIVE_INFINITY));
-        assertThat((Float) converter.convertValue("-"+INFINITY, Float.class), equalTo(Float.NEGATIVE_INFINITY));
+        assertThat((Float) converter.convertValue("-" + INFINITY, Float.class), equalTo(Float.NEGATIVE_INFINITY));
         assertThat((Double) converter.convertValue(NAN, Double.class), equalTo(Double.NaN));
         assertThat((Double) converter.convertValue(INFINITY, Double.class), equalTo(Double.POSITIVE_INFINITY));
-        assertThat((Double) converter.convertValue("-"+INFINITY, Double.class), equalTo(Double.NEGATIVE_INFINITY));
+        assertThat((Double) converter.convertValue("-" + INFINITY, Double.class), equalTo(Double.NEGATIVE_INFINITY));
     }
 
     @SuppressWarnings("unchecked")
@@ -277,17 +278,17 @@ public class ParameterConvertersBehaviour {
     public void shouldConvertCommaSeparatedValuesOfSpecificNumberTypes() throws ParseException, IntrospectionException {
         ParameterConverter converter = new NumberListConverter(NumberFormat.getInstance(Locale.ENGLISH), ",");
         Type doublesType = SomeSteps.methodFor("aMethodWithListOfDoubles").getGenericParameterTypes()[0];
-        
-        List<Double> doubles = (List<Double>) converter.convertValue("3, 0.5, 0.0, 8.00, "+NAN+","+INFINITY, doublesType);
+
+        List<Double> doubles = (List<Double>) converter.convertValue("3, 0.5, 0.0, 8.00, " + NAN + "," + INFINITY, doublesType);
         assertThat(doubles.get(0), equalTo(3.0d));
         assertThat(doubles.get(1), equalTo(0.5d));
         assertThat(doubles.get(2), equalTo(0.0d));
         assertThat(doubles.get(3), equalTo(8.00d));
         assertThat(doubles.get(4), equalTo(Double.NaN));
         assertThat(doubles.get(5), equalTo(Double.POSITIVE_INFINITY));
-        
+
         Type floatsType = SomeSteps.methodFor("aMethodWithListOfFloats").getGenericParameterTypes()[0];
-        List<Float> floats = (List<Float>) converter.convertValue("3, 0.5, 0.0, 8.00, "+NAN+", -"+INFINITY, floatsType);
+        List<Float> floats = (List<Float>) converter.convertValue("3, 0.5, 0.0, 8.00, " + NAN + ", -" + INFINITY, floatsType);
         assertThat(floats.get(0), equalTo(3.0f));
         assertThat(floats.get(1), equalTo(0.5f));
         assertThat(floats.get(2), equalTo(0.0f));
@@ -325,12 +326,12 @@ public class ParameterConvertersBehaviour {
         assertThat(converter.accept(listOfNumbers), is(false));
         assertThat(converter.accept(setOfNumbers), is(false));
         ensureValueIsConvertedToList(converter, listOfStrings, "a, string ", Arrays.asList("a", "string"));
-        ensureValueIsConvertedToList(converter, listOfStrings, " ", Arrays.asList(new String[] {}));
+        ensureValueIsConvertedToList(converter, listOfStrings, " ", Arrays.asList(new String[]{}));
     }
 
     @SuppressWarnings("unchecked")
     private void ensureValueIsConvertedToList(ParameterConverter converter, Type type, String value,
-            List<String> expected) {
+                                              List<String> expected) {
         List<String> list = (List<String>) converter.convertValue(value, type);
         assertThat(list.size(), equalTo(expected.size()));
     }
@@ -448,10 +449,6 @@ public class ParameterConvertersBehaviour {
         new ParameterConverters().convert("abc", WrongType.class);
     }
 
-    static class WrongType {
-
-    }
-    
     @Test
     public void shouldConvertEnum() throws IntrospectionException {
         ParameterConverter converter = new EnumConverter();
@@ -468,8 +465,7 @@ public class ParameterConvertersBehaviour {
         assertThat(converter.accept(SomeEnum.class), equalTo(true));
         assertThat((SomeEnum) converter.convertValue("multiple words and 1 number", SomeEnum.class), equalTo(SomeEnum.MULTIPLE_WORDS_AND_1_NUMBER));
     }
-    
-    
+
     @Test(expected = ParameterConvertionFailed.class)
     public void shouldFailToConvertEnumForValueNotDefined() throws IntrospectionException {
         ParameterConverter converter = new EnumConverter();
@@ -483,7 +479,7 @@ public class ParameterConvertersBehaviour {
         ParameterConverter converter = new EnumListConverter();
         Type type = SomeSteps.methodFor("aMethodWithEnumList").getGenericParameterTypes()[0];
         assertThat(converter.accept(type), equalTo(true));
-        List<SomeEnum> list = (List<SomeEnum>)converter.convertValue("ONE,TWO,THREE", type);
+        List<SomeEnum> list = (List<SomeEnum>) converter.convertValue("ONE,TWO,THREE", type);
         assertThat(list.get(0), equalTo(SomeEnum.ONE));
         assertThat(list.get(1), equalTo(SomeEnum.TWO));
         assertThat(list.get(2), equalTo(SomeEnum.THREE));
@@ -537,6 +533,10 @@ public class ParameterConvertersBehaviour {
 
     private void ensureItStillDoesNotKnowHowToConvertFooToBar(ParameterConverters original) {
         original.convert("foo", Bar.class);
+    }
+
+    static class WrongType {
+
     }
 
     private class Bar {

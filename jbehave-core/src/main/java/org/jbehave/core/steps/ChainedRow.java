@@ -17,7 +17,7 @@ public class ChainedRow implements Row {
     /**
      * Returns values aggregated from all the delegates, without overriding
      * values that already exist.
-     * 
+     *
      * @return The Map of aggregated values
      */
     public Map<String, String> values() {

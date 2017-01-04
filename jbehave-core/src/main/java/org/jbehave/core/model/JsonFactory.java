@@ -1,9 +1,6 @@
 package org.jbehave.core.model;
 
-import java.lang.reflect.Type;
-
 import com.google.gson.Gson;
-
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.i18n.LocalizedKeywords;
@@ -11,13 +8,15 @@ import org.jbehave.core.io.LoadFromClasspath;
 import org.jbehave.core.io.ResourceLoader;
 import org.jbehave.core.steps.ParameterConverters;
 
+import java.lang.reflect.Type;
+
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class JsonFactory {
 
-    private Keywords keywords;
     private final ResourceLoader resourceLoader;
     private final ParameterConverters parameterConverters;
+    private Keywords keywords;
 
     public JsonFactory() {
         this(new LocalizedKeywords());
@@ -36,7 +35,7 @@ public class JsonFactory {
     }
 
     public JsonFactory(final Keywords keywords, final ResourceLoader resourceLoader,
-            final ParameterConverters parameterConverters) {
+                       final ParameterConverters parameterConverters) {
         this.keywords = keywords;
         this.resourceLoader = resourceLoader;
         this.parameterConverters = parameterConverters;

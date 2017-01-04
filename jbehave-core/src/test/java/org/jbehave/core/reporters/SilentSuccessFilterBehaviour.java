@@ -1,12 +1,12 @@
 package org.jbehave.core.reporters;
 
+import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.jbehave.core.model.ExamplesTable;
 import org.jbehave.core.model.GivenStories;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.OutcomesTable;
 import org.jbehave.core.model.Scenario;
 import org.jbehave.core.model.Story;
-import org.jbehave.core.failures.UUIDExceptionWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
@@ -20,7 +20,6 @@ import java.util.Map;
 
 import static java.util.Arrays.asList;
 import static org.mockito.Mockito.inOrder;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -40,7 +39,7 @@ public class SilentSuccessFilterBehaviour {
         UUIDExceptionWrapper anException = new UUIDExceptionWrapper(new IllegalArgumentException());
         Story story = new Story();
         GivenStories givenStories = new GivenStories("path/to/story1,path/to/story2");
-        List<String> givenStoryPaths = asList("path/to/story1","path/to/story2");
+        List<String> givenStoryPaths = asList("path/to/story1", "path/to/story2");
 
         // When
         filter.dryRun();
@@ -56,7 +55,7 @@ public class SilentSuccessFilterBehaviour {
 
         filter.beforeScenario("My scenario 2");
         filter.givenStories(givenStories);
-        filter.givenStories(givenStoryPaths);        
+        filter.givenStories(givenStoryPaths);
         filter.successful("Given step 2.1");
         filter.pending("When step 2.2");
         filter.notPerformed("Then step 2.3");

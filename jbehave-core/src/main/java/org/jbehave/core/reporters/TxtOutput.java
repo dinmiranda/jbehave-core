@@ -1,9 +1,10 @@
 package org.jbehave.core.reporters;
 
-import java.io.PrintStream;
-import java.util.Properties;
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.i18n.LocalizedKeywords;
+
+import java.io.PrintStream;
+import java.util.Properties;
 
 import static org.jbehave.core.reporters.PrintStreamOutput.Format.TXT;
 
@@ -14,7 +15,7 @@ import static org.jbehave.core.reporters.PrintStreamOutput.Format.TXT;
  * patterns, which can be overridden via the {@link
  * TxtOutput (PrintStream,Properties)} constructor.
  * </p>
- * 
+ *
  * @author Mauro Talevi
  */
 public class TxtOutput extends PrintStreamOutput {
@@ -27,21 +28,21 @@ public class TxtOutput extends PrintStreamOutput {
         this(output, outputPatterns, new LocalizedKeywords());
     }
 
-	public TxtOutput(PrintStream output, Keywords keywords) {
-		this(output, new Properties(), keywords);
-	}
+    public TxtOutput(PrintStream output, Keywords keywords) {
+        this(output, new Properties(), keywords);
+    }
 
-	public TxtOutput(PrintStream output, Properties outputPatterns, Keywords keywords) {
-		this(output, outputPatterns, keywords, false);
-	}
+    public TxtOutput(PrintStream output, Properties outputPatterns, Keywords keywords) {
+        this(output, outputPatterns, keywords, false);
+    }
 
     public TxtOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace) {
+                     Keywords keywords, boolean reportFailureTrace) {
         this(output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, false);
     }
 
     public TxtOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
+                     Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
         super(TXT, output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, compressFailureTrace);
     }
 
@@ -59,7 +60,7 @@ public class TxtOutput extends PrintStreamOutput {
         patterns.setProperty("beforeStory", "{0}\n({1})\n");
         patterns.setProperty("afterStory", "\n");
         patterns.setProperty("metaStart", "{0}\n");
-        patterns.setProperty("metaProperty", "{0}{1} {2}\n");    
+        patterns.setProperty("metaProperty", "{0}{1} {2}\n");
         patterns.setProperty("metaEnd", "\n");
         patterns.setProperty("filter", "{0}\n");
         patterns.setProperty("narrative", "{0}\n{1} {2}\n{3} {4}\n{5} {6}\n");
@@ -103,7 +104,7 @@ public class TxtOutput extends PrintStreamOutput {
         patterns.setProperty("example", "\n{0} {1}\n");
         patterns.setProperty("parameterValueStart", "");
         patterns.setProperty("parameterValueEnd", "");
-        patterns.setProperty("parameterValueNewline", "\n");     
+        patterns.setProperty("parameterValueNewline", "\n");
         return patterns;
     }
 

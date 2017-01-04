@@ -1,9 +1,9 @@
 package org.jbehave.core.reporters;
 
-import java.util.Properties;
-
 import org.jbehave.core.io.StoryNameResolver;
 import org.jbehave.core.io.UnderscoredToCapitalized;
+
+import java.util.Properties;
 
 /**
  * <p>
@@ -13,7 +13,7 @@ import org.jbehave.core.io.UnderscoredToCapitalized;
  * template under the appropriate key:
  * <p>
  * The view generator provides the following default properties:
- * 
+ * <p>
  * <pre>
  * &quot;views&quot;: &quot;ftl/jbehave-views.ftl&quot;
  * &quot;maps&quot;: &quot;ftl/jbehave-maps.ftl&quot;
@@ -25,7 +25,7 @@ import org.jbehave.core.io.UnderscoredToCapitalized;
  * &quot;defaultFormats&quot;: &quot;stats&quot;
  * &quot;viewDirectory&quot;: &quot;view&quot;
  * </pre>
- * 
+ * <p>
  * </p>
  * <p>
  * The view generator can also specify the {@link StoryNameResolver} (defaulting
@@ -33,7 +33,7 @@ import org.jbehave.core.io.UnderscoredToCapitalized;
  * Freemarker uses to load the templates from (defaulting to
  * {@link FreemarkerProcessor}).
  * </p>
- * 
+ *
  * @author Mauro Talevi
  */
 public class FreemarkerViewGenerator extends TemplateableViewGenerator {

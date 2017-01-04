@@ -53,7 +53,7 @@ import static java.util.Arrays.asList;
  * </td>
  * </tr>
  * </table>
- * 
+ * <p>
  * <p>
  * These directives can be used to conveniently create several variants of a
  * step pattern, without having to repeat it as a whole as one or more aliases.
@@ -65,34 +65,33 @@ import static java.util.Arrays.asList;
  * <li>
  * <p>
  * <code>
- * 
- * @Then("the result {must |has to |}be $x")<br> public void checkResult(int
- *            x)...<br></code>
- *            </p>
- *            <p>
- *            Would match any of these variants from a story file:
- *            <ul>
- *            <li>Then the result must be 42</li> <li>Then the result has to be
- *            42</li> <li>Then the result be 42</li>
- *            </ul>
- *            </p>
- *            </li> <li>
- *            <p>
- *            <code>
- * @When("$A {+|plus|is added to} $B")<br> public void add(int A, int B)...<br>
- *           </code>
- *           </p>
- *           <p>
- *           Would match any of these variants from a story file:
- *           <ul>
- *           <li>When 42 + 23</li> <li>When 42 plus 23</li> <li>When 42 is added
- *           to 23</li>
- *           </ul>
- *           </p>
- *           </li>
- *           </ul>
- * 
+ *
  * @author Daniel Schneller
+ * @Then("the result {must |has to |}be $x")<br> public void checkResult(int
+ * x)...<br></code>
+ * </p>
+ * <p>
+ * Would match any of these variants from a story file:
+ * <ul>
+ * <li>Then the result must be 42</li> <li>Then the result has to be
+ * 42</li> <li>Then the result be 42</li>
+ * </ul>
+ * </p>
+ * </li> <li>
+ * <p>
+ * <code>
+ * @When("$A {+|plus|is added to} $B")<br> public void add(int A, int B)...<br>
+ * </code>
+ * </p>
+ * <p>
+ * Would match any of these variants from a story file:
+ * <ul>
+ * <li>When 42 + 23</li> <li>When 42 plus 23</li> <li>When 42 is added
+ * to 23</li>
+ * </ul>
+ * </p>
+ * </li>
+ * </ul>
  */
 public class PatternVariantBuilder {
 
@@ -109,7 +108,7 @@ public class PatternVariantBuilder {
     /**
      * Creates a builder and calculates all variants for given input. When there
      * are no variants found in the input, it will itself be the only result.
-     * 
+     *
      * @param input to be evaluated
      */
     public PatternVariantBuilder(String input) {
@@ -192,7 +191,7 @@ public class PatternVariantBuilder {
 
     /**
      * Returns a new copy set of all variants with no whitespace compression.
-     * 
+     *
      * @return a {@link Set} of all variants without whitespace compression
      * @see #allVariants(boolean)
      */
@@ -209,7 +208,7 @@ public class PatternVariantBuilder {
      * <p>
      * Otherwise, any whitespace will be left as is.
      * </p>
-     * 
+     *
      * @param compressWhitespace whether or not to compress whitespace
      * @return a {@link Set} of all variants
      */

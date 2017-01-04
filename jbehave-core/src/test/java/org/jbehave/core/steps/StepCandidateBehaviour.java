@@ -1,32 +1,8 @@
 package org.jbehave.core.steps;
 
-import static java.util.Arrays.asList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.notNullValue;
-import static org.hamcrest.Matchers.nullValue;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
-import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
-import static org.jbehave.core.steps.StepType.GIVEN;
-import static org.jbehave.core.steps.StepType.IGNORABLE;
-import static org.jbehave.core.steps.StepType.THEN;
-import static org.jbehave.core.steps.StepType.WHEN;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.MethodDescriptor;
-import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
 import org.hamcrest.Matchers;
 import org.jbehave.core.annotations.Given;
 import org.jbehave.core.annotations.Pending;
@@ -46,15 +22,57 @@ import org.jbehave.core.steps.AbstractStepResult.NotPerformed;
 import org.jbehave.core.steps.context.StepsContext;
 import org.junit.Test;
 
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
+import java.beans.BeanInfo;
+import java.beans.IntrospectionException;
+import java.beans.Introspector;
+import java.beans.MethodDescriptor;
+import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static java.util.Arrays.asList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_END;
+import static org.jbehave.core.steps.StepCreator.PARAMETER_VALUE_START;
+import static org.jbehave.core.steps.StepType.GIVEN;
+import static org.jbehave.core.steps.StepType.IGNORABLE;
+import static org.jbehave.core.steps.StepType.THEN;
+import static org.jbehave.core.steps.StepType.WHEN;
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class StepCandidateBehaviour {
 
     private Map<String, String> namedParameters = new HashMap<String, String>();
     private Paranamer paranamer = new CachingParanamer(new BytecodeReadingParanamer());
     private Keywords keywords = new LocalizedKeywords();
+
+    static StepCandidate candidateMatchingStep(List<StepCandidate> candidates, String stepAsString) {
+        for (StepCandidate candidate : candidates) {
+            if (candidate.matches(stepAsString)) {
+                return candidate;
+            }
+        }
+        return null;
+    }
+
+    static Method stepMethodFor(String methodName, Class<? extends Steps> stepsClass) throws IntrospectionException {
+        BeanInfo beanInfo = Introspector.getBeanInfo(stepsClass);
+        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
+            if (md.getMethod().getName().equals(methodName)) {
+                return md.getMethod();
+            }
+        }
+        return null;
+    }
 
     private StepCandidate candidateWith(String patternAsString, StepType stepType, Method method, Object instance) {
         return candidateWith(patternAsString, stepType, method, instance, new ParameterControls());
@@ -66,7 +84,7 @@ public class StepCandidateBehaviour {
         return new StepCandidate(patternAsString, 0, stepType, method, stepsType, stepsFactory, new StepsContext(),
                 keywords, new RegexPrefixCapturingPatternParser(), new ParameterConverters(), parameterControls);
     }
-    
+
     @Test
     public void shouldMatchStepWithoutParameters() throws Exception {
         Method method = SomeSteps.class.getMethod("aMethod");
@@ -108,7 +126,7 @@ public class StepCandidateBehaviour {
         step.perform(null);
         Object args = someSteps.args;
         assertThat(args, instanceOf(String.class));
-        assertThat(((String)args), Matchers.equalTo(""));
+        assertThat(((String) args), Matchers.equalTo(""));
     }
 
     @Test
@@ -128,13 +146,13 @@ public class StepCandidateBehaviour {
     @Test
     public void shouldNotMatchOrIgnoreStepWhenStartingWordNotFound() throws Exception {
         Method method = SomeSteps.class.getMethod("aMethod");
-        Keywords keywords = new LocalizedKeywords(){            
-            
+        Keywords keywords = new LocalizedKeywords() {
+
             @Override
             public String startingWordFor(StepType stepType) {
                 throw new StartingWordNotFound(stepType, new HashMap<StepType, String>());
             }
-            
+
         };
         StepCandidate candidate = new StepCandidate("windows on the $nth floor", 0, WHEN, method, null, null, new StepsContext(),
                 keywords, new RegexPrefixCapturingPatternParser(), new ParameterConverters(), new ParameterControls());
@@ -169,7 +187,7 @@ public class StepCandidateBehaviour {
         verify(reporter).successful(
                 "Then I live on the " + PARAMETER_VALUE_START + "1st" + PARAMETER_VALUE_END + " floor");
     }
-    
+
     @Test
     public void shouldConvertStringParameterValueToUseSystemNewline() throws Exception {
         String windowsNewline = "\r\n";
@@ -217,7 +235,7 @@ public class StepCandidateBehaviour {
 
     @SuppressWarnings("unchecked")
     private <T> void assertThatListIsConverted(String patternAsString, String methodName, Class<T> type, String csv,
-            List<T> numbers) throws Exception {
+                                               List<T> numbers) throws Exception {
         SomeSteps someSteps = new SomeSteps();
         Method method = SomeSteps.methodFor(methodName);
         StepCandidate candidate = candidateWith(patternAsString, WHEN, method, someSteps);
@@ -258,13 +276,13 @@ public class StepCandidateBehaviour {
         String patternAsString = "I live on the ith floor but some call it the nth";
         Method method = stepMethodFor("methodWithNamedParametersInNaturalOrder", AnnotationNamedParameterSteps.class);
         StepCandidate candidate = candidateWith(patternAsString, WHEN, method, steps);
-        StepResult result =candidate.createMatchedStep("When I live on the <ith> floor but some call it the <nth>", namedParameters)
+        StepResult result = candidate.createMatchedStep("When I live on the <ith> floor but some call it the <nth>", namedParameters)
                 .perform(null);
         assertThat(steps.ith, equalTo("first"));
         assertThat(steps.nth, equalTo("ground"));
         result.describeTo(reporter);
         verify(reporter).successful(
-                "When I live on the " + PARAMETER_VALUE_START + "first" + PARAMETER_VALUE_END + " floor but some call it the " + PARAMETER_VALUE_START + "ground" + PARAMETER_VALUE_END );
+                "When I live on the " + PARAMETER_VALUE_START + "first" + PARAMETER_VALUE_END + " floor but some call it the " + PARAMETER_VALUE_START + "ground" + PARAMETER_VALUE_END);
     }
 
     @Test
@@ -282,9 +300,8 @@ public class StepCandidateBehaviour {
         assertThat(steps.nth, equalTo("ground"));
         result.describeTo(reporter);
         verify(reporter).successful(
-                "When I live on the " + PARAMETER_VALUE_START + "first" + PARAMETER_VALUE_END + " floor but some call it the " + PARAMETER_VALUE_START + "ground" + PARAMETER_VALUE_END );
+                "When I live on the " + PARAMETER_VALUE_START + "first" + PARAMETER_VALUE_END + " floor but some call it the " + PARAMETER_VALUE_START + "ground" + PARAMETER_VALUE_END);
     }
-
 
     @Test
     public void shouldMatchMethodParametersByAnnotatedNamesInNaturalOrderForJsr330Named() throws Exception {
@@ -363,7 +380,7 @@ public class StepCandidateBehaviour {
         assertThat(steps.ith, equalTo("first"));
         assertThat(steps.nth, equalTo("ground"));
     }
-    
+
     @Test
     public void shouldCreateStepFromTableValuesWhenHeadersDoNotMatchParameterNames() throws Exception {
         AnnotationNamedParameterSteps steps = new AnnotationNamedParameterSteps();
@@ -413,8 +430,8 @@ public class StepCandidateBehaviour {
         StepResult stepResult = candidates.get(0).createMatchedStep(stepAsString,
                 namedParameters).perform(null);
         UUIDExceptionWrapper failure = stepResult.getFailure();
-        assertThat(failure.getCause(), instanceOf(OutcomesFailed.class));        
-        assertThat(failure.getMessage(), equalTo(stepAsString));        
+        assertThat(failure.getCause(), instanceOf(OutcomesFailed.class));
+        assertThat(failure.getMessage(), equalTo(stepAsString));
     }
 
     @Test
@@ -448,7 +465,7 @@ public class StepCandidateBehaviour {
         assertThat(steps.whenName, nullValue());
         assertThat(steps.whenTimes, equalTo(0));
     }
-    
+
     @Test
     public void shouldMatchAndIdentifyPendingAnnotatedSteps() {
         PendingSteps steps = new PendingSteps();
@@ -462,7 +479,7 @@ public class StepCandidateBehaviour {
         assertThat(nonPending.isPending(), is(false));
     }
 
-	@Test(expected = StartingWordNotFound.class)
+    @Test(expected = StartingWordNotFound.class)
     public void shouldNotCreateStepOfWrongType() {
         NamedTypeSteps steps = new NamedTypeSteps();
         List<StepCandidate> candidates = steps.listCandidates();
@@ -533,26 +550,6 @@ public class StepCandidateBehaviour {
         public void aNonPendingStep() {
         }
 
-    }
-
-    static StepCandidate candidateMatchingStep(List<StepCandidate> candidates, String stepAsString) {
-        for (StepCandidate candidate : candidates) {
-            if (candidate.matches(stepAsString)){
-                return candidate ;
-            }
-        }
-        return null;
-    }    
-
-
-    static Method stepMethodFor(String methodName, Class<? extends Steps> stepsClass) throws IntrospectionException {
-        BeanInfo beanInfo = Introspector.getBeanInfo(stepsClass);
-        for (MethodDescriptor md : beanInfo.getMethodDescriptors()) {
-            if (md.getMethod().getName().equals(methodName)) {
-                return md.getMethod();
-            }
-        }
-        return null;
     }
 
 }

@@ -1,24 +1,23 @@
 package org.jbehave.core.embedder;
 
+import org.junit.Test;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.junit.Test;
-
 import static org.hamcrest.MatcherAssert.assertThat;
-
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 public class EmbedderControlsBehaviour {
-        
+
     @Test
     public void shouldAllowPropertyBasedControls() throws Throwable {
         EmbedderControls embedderControls = new PropertyBasedEmbedderControls();
 
         assertThat(embedderControls.toString(), containsString(PropertyBasedEmbedderControls.class.getSimpleName()));
-        
+
         EmbedderControls defaultControls = new EmbedderControls();
         assertThat(embedderControls.batch(), is(defaultControls.batch()));
         assertThat(embedderControls.generateViewAfterStories(), is(defaultControls.generateViewAfterStories()));
@@ -57,7 +56,7 @@ public class EmbedderControlsBehaviour {
         assertThat(embedderControls.failOnStoryTimeout(), is(true));
         assertThat(embedderControls.threads(), equalTo(5));
     }
-    
+
     @Test
     public void shouldNotAllowModificationOfUnmodifiableControls() throws Throwable {
         EmbedderControls delegate = new EmbedderControls();

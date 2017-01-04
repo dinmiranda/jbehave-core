@@ -1,12 +1,11 @@
 package org.jbehave.core.model;
 
-import java.util.List;
-
 import com.google.gson.Gson;
-
 import org.jbehave.core.annotations.AsJson;
 import org.jbehave.core.steps.ParameterConverters;
 import org.junit.Test;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -123,6 +122,13 @@ public class JsonBehaviour {
         private List<String> stringList;
         private List<Integer> integerList;
 
+        public MyJsonDto(String string, Integer integer, List<String> stringList, List<Integer> integerList) {
+            this.string = string;
+            this.integer = integer;
+            this.stringList = stringList;
+            this.integerList = integerList;
+        }
+
         public String getString() {
             return string;
         }
@@ -137,13 +143,6 @@ public class JsonBehaviour {
 
         public List<Integer> getIntegerList() {
             return integerList;
-        }
-
-        public MyJsonDto(String string, Integer integer, List<String> stringList, List<Integer> integerList) {
-            this.string = string;
-            this.integer = integer;
-            this.stringList = stringList;
-            this.integerList = integerList;
         }
     }
 

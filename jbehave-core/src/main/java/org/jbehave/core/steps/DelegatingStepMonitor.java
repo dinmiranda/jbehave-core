@@ -1,9 +1,9 @@
 package org.jbehave.core.steps;
 
+import org.jbehave.core.model.StepPattern;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-
-import org.jbehave.core.model.StepPattern;
 
 public class DelegatingStepMonitor implements StepMonitor {
 
@@ -14,19 +14,19 @@ public class DelegatingStepMonitor implements StepMonitor {
     }
 
     public void convertedValueOfType(String value, Type type, Object converted, Class<?> converterClass) {
-    	delegate.convertedValueOfType(value, type, converted, converterClass);
+        delegate.convertedValueOfType(value, type, converted, converterClass);
     }
 
     public void stepMatchesType(String stepAsString, String previousAsString, boolean matchesType, StepType stepType, Method method, Object stepsInstance) {
-    	delegate.stepMatchesType(stepAsString, previousAsString, matchesType, stepType, method, stepsInstance);
+        delegate.stepMatchesType(stepAsString, previousAsString, matchesType, stepType, method, stepsInstance);
     }
 
     public void stepMatchesPattern(String step, boolean matches, StepPattern stepPattern, Method method, Object stepsInstance) {
-    	delegate.stepMatchesPattern(step, matches, stepPattern, method, stepsInstance);
+        delegate.stepMatchesPattern(step, matches, stepPattern, method, stepsInstance);
     }
 
     public void foundParameter(String parameter, int position) {
-    	delegate.foundParameter(parameter, position);
+        delegate.foundParameter(parameter, position);
     }
 
     public void performing(String step, boolean dryRun) {
@@ -34,23 +34,23 @@ public class DelegatingStepMonitor implements StepMonitor {
     }
 
     public void usingAnnotatedNameForParameter(String name, int position) {
-    	delegate.usingAnnotatedNameForParameter(name, position);
+        delegate.usingAnnotatedNameForParameter(name, position);
     }
 
     public void usingNaturalOrderForParameter(int position) {
-    	delegate.usingNaturalOrderForParameter(position);
+        delegate.usingNaturalOrderForParameter(position);
     }
 
     public void usingParameterNameForParameter(String name, int position) {
-    	delegate.usingParameterNameForParameter(name, position);
+        delegate.usingParameterNameForParameter(name, position);
     }
 
     public void usingTableAnnotatedNameForParameter(String name, int position) {
-    	delegate.usingTableAnnotatedNameForParameter(name, position);
+        delegate.usingTableAnnotatedNameForParameter(name, position);
     }
 
     public void usingTableParameterNameForParameter(String name, int position) {
-    	delegate.usingTableParameterNameForParameter(name, position);
+        delegate.usingTableParameterNameForParameter(name, position);
     }
 
     public void usingStepsContextParameter(String parameter) {

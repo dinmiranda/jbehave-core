@@ -5,9 +5,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 public class StoryDuration {
 
-	private long startedAtMillis;
-    private long durationInMillis;
     private final long timeoutInSecs;
+    private long startedAtMillis;
+    private long durationInMillis;
 
     public StoryDuration(long timeoutInSecs) {
         this(System.currentTimeMillis(), timeoutInSecs);
@@ -22,30 +22,30 @@ public class StoryDuration {
         return durationInMillis / 1000;
     }
 
+    public StoryDuration setDurationInSecs(long durationInSecs) {
+        this.durationInMillis = durationInSecs * 1000;
+        return this;
+    }
+
     public long getTimeoutInSecs() {
         return timeoutInSecs;
     }
 
-    public StoryDuration setDurationInSecs(long durationInSecs) {
-		this.durationInMillis = durationInSecs * 1000;		
-		return this;
-	}
-
     public StoryDuration update() {
-		this.durationInMillis = elapsedTimeInMillis();		
-		return this;
-	}
+        this.durationInMillis = elapsedTimeInMillis();
+        return this;
+    }
 
     private long elapsedTimeInMillis() {
         return System.currentTimeMillis() - startedAtMillis;
-    }    
+    }
 
-	public boolean timedOut() {
-		return timeoutInSecs != 0 && getDurationInSecs() > timeoutInSecs;
-	}
+    public boolean timedOut() {
+        return timeoutInSecs != 0 && getDurationInSecs() > timeoutInSecs;
+    }
 
-	@Override
-	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
-	}
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SIMPLE_STYLE);
+    }
 }

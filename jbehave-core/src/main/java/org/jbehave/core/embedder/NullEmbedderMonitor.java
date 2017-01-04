@@ -1,10 +1,5 @@
 package org.jbehave.core.embedder;
 
-import java.io.File;
-import java.util.List;
-import java.util.Properties;
-import java.util.concurrent.ExecutorService;
-
 import org.jbehave.core.failures.BatchFailures;
 import org.jbehave.core.model.Meta;
 import org.jbehave.core.model.Scenario;
@@ -12,6 +7,11 @@ import org.jbehave.core.model.Story;
 import org.jbehave.core.model.StoryDuration;
 import org.jbehave.core.model.StoryMaps;
 import org.jbehave.core.reporters.ReportsCount;
+
+import java.io.File;
+import java.util.List;
+import java.util.Properties;
+import java.util.concurrent.ExecutorService;
 
 /**
  * <a href="http://en.wikipedia.org/wiki/Null_Object_pattern">Null Object
@@ -51,8 +51,8 @@ public class NullEmbedderMonitor implements EmbedderMonitor {
     public void storiesNotAllowed(List<Story> notAllowed, MetaFilter filter, boolean verbose) {
     }
 
-	public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
-	}
+    public void scenarioNotAllowed(Scenario scenario, MetaFilter filter) {
+    }
 
     public void batchFailed(BatchFailures failures) {
     }
@@ -64,7 +64,7 @@ public class NullEmbedderMonitor implements EmbedderMonitor {
     }
 
     public void reportsViewGenerationFailed(File outputDirectory, List<String> formats, Properties viewProperties,
-            Throwable cause) {
+                                            Throwable cause) {
     }
 
     public void reportsViewGenerated(ReportsCount count) {
@@ -89,7 +89,7 @@ public class NullEmbedderMonitor implements EmbedderMonitor {
     }
 
     public void mapsViewGenerationFailed(File outputDirectory, StoryMaps storyMaps, Properties viewProperties,
-            Throwable cause) {
+                                         Throwable cause) {
     }
 
     public void generatingNavigatorView(File outputDirectory, Properties viewResources) {
@@ -119,14 +119,14 @@ public class NullEmbedderMonitor implements EmbedderMonitor {
     public void usingControls(EmbedderControls embedderControls) {
     }
 
-	public String getSearchDirectory() {
-		return null;
-	}
+    public String getSearchDirectory() {
+        return null;
+    }
 
-	public void invalidTimeoutFormat(String path) {
-	}
+    public void invalidTimeoutFormat(String path) {
+    }
 
-	public void usingTimeout(String path, long timeout) {
-	}
+    public void usingTimeout(String path, long timeout) {
+    }
 
 }

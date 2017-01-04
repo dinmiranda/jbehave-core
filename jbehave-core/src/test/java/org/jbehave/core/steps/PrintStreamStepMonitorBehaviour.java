@@ -1,13 +1,13 @@
 package org.jbehave.core.steps;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 public class PrintStreamStepMonitorBehaviour {
 
@@ -28,5 +28,5 @@ public class PrintStreamStepMonitorBehaviour {
         assertThat(out.toString(), containsString("Found parameter 'fromContext' from Steps Context"));
     }
 
-  
+
 }

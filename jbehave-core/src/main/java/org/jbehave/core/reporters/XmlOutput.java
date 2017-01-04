@@ -1,10 +1,10 @@
 package org.jbehave.core.reporters;
 
-import java.io.PrintStream;
-import java.util.Properties;
-
 import org.jbehave.core.configuration.Keywords;
 import org.jbehave.core.i18n.LocalizedKeywords;
+
+import java.io.PrintStream;
+import java.util.Properties;
 
 import static org.jbehave.core.reporters.PrintStreamOutput.Format.XML;
 
@@ -15,7 +15,7 @@ import static org.jbehave.core.reporters.PrintStreamOutput.Format.XML;
  * patterns, which can be overridden via the {@link
  * XmlOutput (PrintStream,Properties)} constructor.
  * </p>
- * 
+ *
  * @author Mauro Talevi
  */
 public class XmlOutput extends PrintStreamOutput {
@@ -27,7 +27,7 @@ public class XmlOutput extends PrintStreamOutput {
     public XmlOutput(PrintStream output, Properties outputPatterns) {
         this(output, outputPatterns, new LocalizedKeywords());
     }
-    
+
     public XmlOutput(PrintStream output, Keywords keywords) {
         this(output, new Properties(), keywords);
     }
@@ -37,12 +37,12 @@ public class XmlOutput extends PrintStreamOutput {
     }
 
     public XmlOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace) {
+                     Keywords keywords, boolean reportFailureTrace) {
         this(output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, false);
     }
 
     public XmlOutput(PrintStream output, Properties outputPatterns,
-            Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
+                     Keywords keywords, boolean reportFailureTrace, boolean compressFailureTrace) {
         super(XML, output, mergeWithDefault(outputPatterns), keywords, reportFailureTrace, compressFailureTrace);
     }
 
@@ -55,27 +55,27 @@ public class XmlOutput extends PrintStreamOutput {
 
     private static Properties defaultHtmlPatterns() {
         Properties patterns = new Properties();
-        patterns.setProperty("dryRun", "<dryRun>{0}</dryRun>\n");        
+        patterns.setProperty("dryRun", "<dryRun>{0}</dryRun>\n");
         patterns.setProperty("beforeStory", "<story path=\"{1}\" title=\"{0}\">\n");
         patterns.setProperty("storyCancelled", "<cancelled keyword=\"{0}\" durationKeyword=\"{1}\" durationInSecs=\"{2}\"/>\n");
         patterns.setProperty("afterStory", "</story>\n");
-        patterns.setProperty("pendingMethod", "<pendingMethod>{0}</pendingMethod>\n");        
+        patterns.setProperty("pendingMethod", "<pendingMethod>{0}</pendingMethod>\n");
         patterns.setProperty("metaStart", "<meta>\n");
-        patterns.setProperty("metaProperty", "<property keyword=\"{0}\" name=\"{1}\" value=\"{2}\"/>\n");        
+        patterns.setProperty("metaProperty", "<property keyword=\"{0}\" name=\"{1}\" value=\"{2}\"/>\n");
         patterns.setProperty("metaEnd", "</meta>\n");
-        patterns.setProperty("filter", "<filter>{0}</filter>\n");        
+        patterns.setProperty("filter", "<filter>{0}</filter>\n");
         patterns.setProperty("narrative", "<narrative keyword=\"{0}\">\n  <inOrderTo keyword=\"{1}\">{2}</inOrderTo>\n  <asA keyword=\"{3}\">{4}</asA>\n  <iWantTo keyword=\"{5}\">{6}</iWantTo>\n</narrative>\n");
         patterns.setProperty("lifecycleStart", "<lifecycle keyword=\"{0}\">\n");
-        patterns.setProperty("lifecycleEnd", "</lifecycle>\n");        
+        patterns.setProperty("lifecycleEnd", "</lifecycle>\n");
         patterns.setProperty("lifecycleBeforeStart", "<before keyword=\"{0}\">\n");
-        patterns.setProperty("lifecycleBeforeEnd", "</before>\n");        
+        patterns.setProperty("lifecycleBeforeEnd", "</before>\n");
         patterns.setProperty("lifecycleAfterStart", "<after keyword=\"{0}\">\n");
-        patterns.setProperty("lifecycleAfterEnd", "</after>\n");  
+        patterns.setProperty("lifecycleAfterEnd", "</after>\n");
         patterns.setProperty("lifecycleOutcome", "<outcome>{0} {1}</outcome>\n");
         patterns.setProperty("lifecycleMetaFilter", "<metaFilter>{0} {1}</metaFilter>");
-        patterns.setProperty("lifecycleStep", "<step>{0}</step>\n");          
+        patterns.setProperty("lifecycleStep", "<step>{0}</step>\n");
         patterns.setProperty("beforeScenario", "<scenario keyword=\"{0}\" title=\"{1}\">\n");
-        patterns.setProperty("scenarioNotAllowed", "<notAllowed pattern=\"{0}\"/>\n");        
+        patterns.setProperty("scenarioNotAllowed", "<notAllowed pattern=\"{0}\"/>\n");
         patterns.setProperty("afterScenario", "</scenario>\n");
         patterns.setProperty("afterScenarioWithFailure", "<failure>{0}</failure>\n</scenario>\n");
         patterns.setProperty("givenStories", "<givenStories keyword=\"{0}\" paths=\"{1}\"/>\n");
@@ -116,7 +116,7 @@ public class XmlOutput extends PrintStreamOutput {
         patterns.setProperty("example", "\n<example keyword=\"{0}\">{1}</example>\n");
         patterns.setProperty("parameterValueStart", "<parameter>");
         patterns.setProperty("parameterValueEnd", "</parameter>");
-        patterns.setProperty("parameterValueNewline", "\n");        
+        patterns.setProperty("parameterValueNewline", "\n");
         return patterns;
     }
 }

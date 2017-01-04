@@ -2,7 +2,6 @@ package org.jbehave.core.reporters;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.jbehave.core.model.*;
 
 import java.util.Collection;
 import java.util.List;
@@ -13,7 +12,7 @@ import static java.util.Arrays.asList;
 /**
  * Reporter which collects other {@link StoryReporter}s and delegates all
  * invocations to the collected reporters.
- * 
+ *
  * @author Mirko FriedenHagen
  */
 public class DelegatingStoryReporter implements StoryReporter {
@@ -22,7 +21,7 @@ public class DelegatingStoryReporter implements StoryReporter {
 
     /**
      * Creates DelegatingStoryReporter with a given collections of delegates
-     * 
+     *
      * @param delegates the ScenarioReporters to delegate to
      */
     public DelegatingStoryReporter(Collection<StoryReporter> delegates) {
@@ -31,7 +30,7 @@ public class DelegatingStoryReporter implements StoryReporter {
 
     /**
      * Creates DelegatingStoryReporter with a given varargs of delegates
-     * 
+     *
      * @param delegates the StoryReporters to delegate to
      */
     public DelegatingStoryReporter(StoryReporter... delegates) {
@@ -198,7 +197,7 @@ public class DelegatingStoryReporter implements StoryReporter {
             reporter.dryRun();
         }
     }
-    
+
     @Override
     public void pendingMethods(List<String> methods) {
         for (StoryReporter reporter : delegates) {
@@ -212,7 +211,7 @@ public class DelegatingStoryReporter implements StoryReporter {
             reporter.restarted(step, cause);
         }
     }
-    
+
     @Override
     public void restartedStory(Story story, Throwable cause) {
         for (StoryReporter reporter : delegates) {

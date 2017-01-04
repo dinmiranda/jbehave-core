@@ -1,11 +1,11 @@
 package org.jbehave.core.io;
 
+import org.junit.Test;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-
-import org.junit.Test;
 
 public class StoryNameResolverBehaviour {
 
@@ -46,9 +46,9 @@ public class StoryNameResolverBehaviour {
     @Test
     public void shouldResolveAncestorWithCustomDelegate() {
         StoryNameResolver delegate = mock(StoryNameResolver.class);
-		when(delegate.resolveName("io")).thenReturn("IO");
-		when(delegate.resolveName("camel_case.story")).thenReturn("CC");
-		StoryNameResolver resolver = new AncestorDelegatingResolver(1, delegate);
+        when(delegate.resolveName("io")).thenReturn("IO");
+        when(delegate.resolveName("camel_case.story")).thenReturn("CC");
+        StoryNameResolver resolver = new AncestorDelegatingResolver(1, delegate);
         assertThat(resolver.resolveName("org/jbehave/core/io/camel_case.story"), equalTo("IO CC"));
     }
 

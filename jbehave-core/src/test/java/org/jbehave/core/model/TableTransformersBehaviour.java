@@ -1,12 +1,12 @@
 package org.jbehave.core.model;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
+import org.jbehave.core.model.TableTransformers.TableTransformer;
+import org.junit.Test;
 
 import java.util.Properties;
 
-import org.jbehave.core.model.TableTransformers.TableTransformer;
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 
 public class TableTransformersBehaviour {
 
@@ -38,7 +38,7 @@ public class TableTransformersBehaviour {
     @Test
     public void shouldTransformTableByFormatting() {
         TableTransformers tableTransformers = new TableTransformers();
-		String transformed = tableTransformers.transform(TableTransformers.FORMATTING, unformattedTableAsString, new Properties());
+        String transformed = tableTransformers.transform(TableTransformers.FORMATTING, unformattedTableAsString, new Properties());
         assertThat(transformed, equalTo(formattedTableAsString));
     }
 
@@ -48,7 +48,7 @@ public class TableTransformersBehaviour {
         Properties properties = new Properties();
         properties.setProperty("replacing", "|");
         properties.setProperty("replacement", "\t");
-		String transformed = tableTransformers.transform(TableTransformers.REPLACING, tableAsString, properties);
+        String transformed = tableTransformers.transform(TableTransformers.REPLACING, tableAsString, properties);
         assertThat(transformed, equalTo(tableAsString.replace("|", "\t")));
     }
 
@@ -62,16 +62,16 @@ public class TableTransformersBehaviour {
     @Test
     public void shouldTransformTableWithCustomTransformer() {
         TableTransformers tableTransformers = new TableTransformers();
-        tableTransformers.useTransformer("myTransformer", new TableTransformer(){
+        tableTransformers.useTransformer("myTransformer", new TableTransformer() {
 
             public String transform(String tableAsString, Properties properties) {
                 return myTransformedTableAsString;
             }
-            
+
         });
         String transformed = tableTransformers.transform("myTransformer", tableAsString, new Properties());
         assertThat(transformed, equalTo(myTransformedTableAsString));
     }
 
-  
+
 }

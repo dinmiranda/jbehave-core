@@ -17,54 +17,54 @@ public class EmbedderControls {
     private boolean verboseFiltering = false;
     private String storyTimeouts = "300";
     private int threads = 1;
-	private boolean failOnStoryTimeout = false;
+    private boolean failOnStoryTimeout = false;
 
     public EmbedderControls() {
     }
 
     public boolean batch() {
-        return batch;
+        return this.batch;
     }
 
     public boolean skip() {
-        return skip;
+        return this.skip;
     }
 
     public boolean generateViewAfterStories() {
-        return generateViewAfterStories;
+        return this.generateViewAfterStories;
     }
 
     public boolean ignoreFailureInStories() {
-        return ignoreFailureInStories;
+        return this.ignoreFailureInStories;
     }
 
     public boolean ignoreFailureInView() {
-        return ignoreFailureInView;
+        return this.ignoreFailureInView;
     }
 
-    public boolean verboseFailures(){
-        return verboseFailures;
+    public boolean verboseFailures() {
+        return this.verboseFailures;
     }
 
     public boolean verboseFiltering() {
-        return verboseFiltering;
+        return this.verboseFiltering;
     }
 
     public String storyTimeouts() {
-        return storyTimeouts;
+        return this.storyTimeouts;
     }
 
     /**
      * @deprecated use {@link #storyTimeouts()}
      */
     public long storyTimeoutInSecs() {
-    	try {
-    		return Long.parseLong(storyTimeouts);
-    	} catch (NumberFormatException e ){
+        try {
+            return Long.parseLong(this.storyTimeouts);
+        } catch (NumberFormatException e) {
             return 0;
-    	}
+        }
     }
-    
+
     /**
      * @deprecated use {@link #storyTimeouts()}
      */
@@ -72,12 +72,12 @@ public class EmbedderControls {
         return storyTimeouts();
     }
 
-	public boolean failOnStoryTimeout() {
-		return failOnStoryTimeout;
-	}
+    public boolean failOnStoryTimeout() {
+        return this.failOnStoryTimeout;
+    }
 
-	public int threads() {
-       return threads;
+    public int threads() {
+        return this.threads;
     }
 
     public EmbedderControls doBatch(boolean batch) {
@@ -105,14 +105,14 @@ public class EmbedderControls {
         return this;
     }
 
-    public EmbedderControls doVerboseFailures(boolean verboseFailures){
+    public EmbedderControls doVerboseFailures(boolean verboseFailures) {
         this.verboseFailures = verboseFailures;
-        return this;        
+        return this;
     }
 
-    public EmbedderControls doVerboseFiltering(boolean verboseFiltering){
+    public EmbedderControls doVerboseFiltering(boolean verboseFiltering) {
         this.verboseFiltering = verboseFiltering;
-        return this;        
+        return this;
     }
 
     public EmbedderControls useStoryTimeouts(String storyTimeouts) {
@@ -124,7 +124,7 @@ public class EmbedderControls {
      * @deprecated use {@link #useStoryTimeouts(String)}
      */
     public EmbedderControls useStoryTimeoutInSecs(long storyTimeoutInSecs) {
-    	useStoryTimeouts(Long.toString(storyTimeoutInSecs));
+        useStoryTimeouts(Long.toString(storyTimeoutInSecs));
         return this;
     }
 
@@ -132,7 +132,7 @@ public class EmbedderControls {
      * @deprecated use {@link #useStoryTimeouts(String)}
      */
     public EmbedderControls useStoryTimeoutInSecsByPath(String storyTimeoutInSecsByPath) {
-    	useStoryTimeouts(storyTimeoutInSecsByPath);
+        useStoryTimeouts(storyTimeoutInSecsByPath);
         return this;
     }
 
@@ -145,7 +145,7 @@ public class EmbedderControls {
         this.threads = threads;
         return this;
     }
-    
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);

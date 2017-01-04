@@ -8,7 +8,7 @@ import org.junit.runners.model.InitializationError;
 
 /**
  * AnnotatedPathRunner that uses {@link WeldAnnotationBuilder}.
- * 
+ *
  * @author Aaron Walker
  */
 public class WeldAnnotatedPathRunner extends AnnotatedPathRunner {

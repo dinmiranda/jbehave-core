@@ -14,7 +14,7 @@ import org.jbehave.core.steps.ParameterConverters;
 /**
  * Extends {@link AnnotationBuilder} to provide Weld-based dependency injection
  * if {@link UsingWeld} annotation is present.
- * 
+ *
  * @author Aaron Walker
  */
 public class WeldAnnotationBuilder extends AnnotationBuilder {
@@ -31,7 +31,7 @@ public class WeldAnnotationBuilder extends AnnotationBuilder {
     }
 
     public WeldAnnotationBuilder(Class<?> annotatedClass, Configuration configuration,
-            InjectableStepsFactory stepsFactory) {
+                                 InjectableStepsFactory stepsFactory) {
         this(annotatedClass);
         this.configuration = configuration;
         this.stepsFactory = stepsFactory;
@@ -59,7 +59,7 @@ public class WeldAnnotationBuilder extends AnnotationBuilder {
         }
         return factoryUsingSteps;
     }
-    
+
     @Override
     protected ParameterConverters parameterConverters(AnnotationFinder annotationFinder) {
         ParameterConverters converters = super.parameterConverters(annotationFinder);

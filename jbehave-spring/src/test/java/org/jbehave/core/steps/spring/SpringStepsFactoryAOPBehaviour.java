@@ -1,13 +1,5 @@
 package org.jbehave.core.steps.spring;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -26,118 +18,126 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+
 public class SpringStepsFactoryAOPBehaviour {
 
-	@Test
-	public void aopEnvelopedStepsCanBeCreated() {
-		// Given
-		ApplicationContext context = createApplicationContext(StepsWithAOPAnnotationConfiguration.class
-				.getName());
-		SpringStepsFactory factory = new SpringStepsFactory(
-				new MostUsefulConfiguration(), context);
-		// When
-		List<CandidateSteps> steps = factory.createCandidateSteps();
-		// Then
-		assertAOPFooStepsFound(steps);
-	}
+    public static CandidateStepsInstanceOfMatcher isCandidateStepInstanceOf(
+            Class<?> target) {
+        return new CandidateStepsInstanceOfMatcher(target);
+    }
 
-	private void assertAOPFooStepsFound(List<CandidateSteps> steps) {
-		// // Only one returned, the IFooSteps will not be detected
-		assertEquals(1, steps.size());
-		assertThat(steps, hasItem(isCandidateStepInstanceOf(FooSteps.class)));
-		// Make it explicit that the steps bean with the annotation in the
-		// interface is not provided
-		assertThat(steps,
-				not(hasItem(isCandidateStepInstanceOf(IFooSteps.class))));
-	}
+    @Test
+    public void aopEnvelopedStepsCanBeCreated() {
+        // Given
+        ApplicationContext context = createApplicationContext(StepsWithAOPAnnotationConfiguration.class
+                .getName());
+        SpringStepsFactory factory = new SpringStepsFactory(
+                new MostUsefulConfiguration(), context);
+        // When
+        List<CandidateSteps> steps = factory.createCandidateSteps();
+        // Then
+        assertAOPFooStepsFound(steps);
+    }
 
-	private ApplicationContext createApplicationContext(String... resources) {
-		return new SpringApplicationContextFactory(resources)
-				.createApplicationContext();
-	}
+    private void assertAOPFooStepsFound(List<CandidateSteps> steps) {
+        // // Only one returned, the IFooSteps will not be detected
+        assertEquals(1, steps.size());
+        assertThat(steps, hasItem(isCandidateStepInstanceOf(FooSteps.class)));
+        // Make it explicit that the steps bean with the annotation in the
+        // interface is not provided
+        assertThat(steps,
+                not(hasItem(isCandidateStepInstanceOf(IFooSteps.class))));
+    }
 
-	@Configuration
-	@EnableAspectJAutoProxy
-	public static class StepsWithAOPAnnotationConfiguration {
+    private ApplicationContext createApplicationContext(String... resources) {
+        return new SpringApplicationContextFactory(resources)
+                .createApplicationContext();
+    }
 
-		@Bean
-		public FooAspect fooAspect() {
-			return new FooAspect();
-		}
+    public static interface IFooSteps {
+        @Given("a step declared in an interface, with a $param")
+        void aStepWithAParam(String param);
+    }
 
-		// JDK Proxy
-		@Bean
-		@Scope(proxyMode = ScopedProxyMode.INTERFACES)
-		public SpringStepsFactoryAOPBehaviour.IFooSteps iFooSteps() {
-			return new SpringStepsFactoryAOPBehaviour.FooStepsImpl();
-		}
+    @Configuration
+    @EnableAspectJAutoProxy
+    public static class StepsWithAOPAnnotationConfiguration {
 
-		// CGLIB-based
-		@Bean
-		@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
-		public SpringStepsFactoryBehaviour.FooSteps fooSteps() {
-			return new SpringStepsFactoryBehaviour.FooSteps();
-		}
+        @Bean
+        public FooAspect fooAspect() {
+            return new FooAspect();
+        }
 
-	}
+        // JDK Proxy
+        @Bean
+        @Scope(proxyMode = ScopedProxyMode.INTERFACES)
+        public SpringStepsFactoryAOPBehaviour.IFooSteps iFooSteps() {
+            return new SpringStepsFactoryAOPBehaviour.FooStepsImpl();
+        }
 
-	@Aspect
-	public static class FooAspect {
-		public final AtomicInteger executions = new AtomicInteger(0);
+        // CGLIB-based
+        @Bean
+        @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+        public SpringStepsFactoryBehaviour.FooSteps fooSteps() {
+            return new SpringStepsFactoryBehaviour.FooSteps();
+        }
 
-		@Around(value = "bean(fooSteps) || bean(iFooSteps)")
-		public Object around(ProceedingJoinPoint pjp) throws Throwable {
-			try {
-				return pjp.proceed();
+    }
 
-			} finally {
-				System.err.println("Accounted for "
-						+ executions.incrementAndGet() + " executions");
-			}
-		}
-	}
+    @Aspect
+    public static class FooAspect {
+        public final AtomicInteger executions = new AtomicInteger(0);
 
-	public static interface IFooSteps {
-		@Given("a step declared in an interface, with a $param")
-		void aStepWithAParam(String param);
-	}
+        @Around(value = "bean(fooSteps) || bean(iFooSteps)")
+        public Object around(ProceedingJoinPoint pjp) throws Throwable {
+            try {
+                return pjp.proceed();
 
-	public static class FooStepsImpl implements IFooSteps {
+            } finally {
+                System.err.println("Accounted for "
+                        + executions.incrementAndGet() + " executions");
+            }
+        }
+    }
 
-		public void aStepWithAParam(String param) {
+    public static class FooStepsImpl implements IFooSteps {
 
-		}
+        public void aStepWithAParam(String param) {
 
-	}
+        }
 
-	public static CandidateStepsInstanceOfMatcher isCandidateStepInstanceOf(
-			Class<?> target) {
-		return new CandidateStepsInstanceOfMatcher(target);
-	}
+    }
 
-	private static class CandidateStepsInstanceOfMatcher extends
-			BaseMatcher<CandidateSteps> {
+    private static class CandidateStepsInstanceOfMatcher extends
+            BaseMatcher<CandidateSteps> {
 
-		private final Class<?> target;
+        private final Class<?> target;
 
-		public CandidateStepsInstanceOfMatcher(Class<?> target) {
-			this.target = target;
-		}
+        public CandidateStepsInstanceOfMatcher(Class<?> target) {
+            this.target = target;
+        }
 
-		public boolean matches(Object item) {
-			if (item instanceof CandidateSteps) {
-				Object instance = ((Steps) item).instance();
-				boolean result = target.isAssignableFrom(instance.getClass());
-				return result;
-			}
-			return false;
-		}
+        public boolean matches(Object item) {
+            if (item instanceof CandidateSteps) {
+                Object instance = ((Steps) item).instance();
+                boolean result = target.isAssignableFrom(instance.getClass());
+                return result;
+            }
+            return false;
+        }
 
-		public void describeTo(Description description) {
-			description
-					.appendText("Step class instantiated from this CandidateStep is of type "
-							+ target.getName());
-		}
+        public void describeTo(Description description) {
+            description
+                    .appendText("Step class instantiated from this CandidateStep is of type "
+                            + target.getName());
+        }
 
-	}
+    }
 }

@@ -1,9 +1,5 @@
 package org.jbehave.core.configuration.spring;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 import org.jbehave.core.annotations.spring.UsingSpring;
 import org.jbehave.core.configuration.AnnotationBuilder;
 import org.jbehave.core.configuration.AnnotationFinder;
@@ -18,10 +14,14 @@ import org.jbehave.core.steps.spring.SpringApplicationContextFactory;
 import org.jbehave.core.steps.spring.SpringStepsFactory;
 import org.springframework.context.ApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 /**
  * Extends {@link AnnotationBuilder} to provide Spring-based dependency
  * injection if {@link UsingSpring} annotation is present.
- * 
+ *
  * @author Cristiano Gavião
  * @author Mauro Talevi
  */
@@ -48,8 +48,8 @@ public class SpringAnnotationBuilder extends AnnotationBuilder {
                 } catch (Exception e) {
                     annotationMonitor().elementCreationFailed(ApplicationContext.class, e);
                     boolean ignoreContextFailure = annotationFinder().getAnnotatedValue(UsingSpring.class, boolean.class, "ignoreContextFailure");
-					if ( !ignoreContextFailure ){
-                    	throw new InstantiationFailed(annotatedClass(), e);
+                    if (!ignoreContextFailure) {
+                        throw new InstantiationFailed(annotatedClass(), e);
                     }
                 }
             }

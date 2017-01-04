@@ -1,18 +1,5 @@
 package org.jbehave.core.configuration.weld;
 
-import static org.jbehave.core.reporters.Format.CONSOLE;
-import static org.jbehave.core.reporters.Format.HTML;
-import static org.jbehave.core.reporters.Format.TXT;
-import static org.jbehave.core.reporters.Format.XML;
-
-import java.lang.reflect.Type;
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-import java.util.Properties;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-
 import org.jbehave.core.annotations.weld.WeldConfiguration;
 import org.jbehave.core.configuration.Configuration;
 import org.jbehave.core.configuration.MostUsefulConfiguration;
@@ -25,38 +12,51 @@ import org.jbehave.core.reporters.StoryReporterBuilder;
 import org.jbehave.core.steps.ParameterConverters;
 import org.jbehave.core.steps.ParameterConverters.ParameterConverter;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+import java.util.Properties;
+
+import static org.jbehave.core.reporters.Format.CONSOLE;
+import static org.jbehave.core.reporters.Format.HTML;
+import static org.jbehave.core.reporters.Format.TXT;
+import static org.jbehave.core.reporters.Format.XML;
+
 
 @ApplicationScoped
-public class ConfigurationProducer
-{
-    public ConfigurationProducer() {}
-    
-    @Produces @WeldConfiguration
+public class ConfigurationProducer {
+    public ConfigurationProducer() {
+    }
+
+    @Produces
+    @WeldConfiguration
     Configuration getConfiguration() {
-        
+
         Properties viewResources = new Properties();
         viewResources.setProperty("index", "my-reports-index.ftl");
         viewResources.setProperty("decorateNonHtml", "true");
 
-        
+
         return new MostUsefulConfiguration()
-                    .useStoryControls(new StoryControls()
-                            .doDryRun(true)
-                            .doSkipScenariosAfterFailure(true))
-                    .useFailureStrategy(new SilentlyAbsorbingFailure())
-                    .useStoryLoader(new LoadFromURL())
-                    .useStepPatternParser(new RegexPrefixCapturingPatternParser("MyPrefix"))
-                    .useStoryReporterBuilder(new StoryReporterBuilder()
-                            .withDefaultFormats()
-                            .withFormats(CONSOLE, HTML, TXT, XML)
-                            .withKeywords(new LocalizedKeywords(Locale.ITALIAN))
-                            .withRelativeDirectory("my-output-directory")
-                            .withViewResources(viewResources).withFailureTrace(true))
-                    .useParameterConverters(new ParameterConverters()
-                            .addConverters(new CustomConverter(),new MyDateConverter()));
-                    
+                .useStoryControls(new StoryControls()
+                        .doDryRun(true)
+                        .doSkipScenariosAfterFailure(true))
+                .useFailureStrategy(new SilentlyAbsorbingFailure())
+                .useStoryLoader(new LoadFromURL())
+                .useStepPatternParser(new RegexPrefixCapturingPatternParser("MyPrefix"))
+                .useStoryReporterBuilder(new StoryReporterBuilder()
+                        .withDefaultFormats()
+                        .withFormats(CONSOLE, HTML, TXT, XML)
+                        .withKeywords(new LocalizedKeywords(Locale.ITALIAN))
+                        .withRelativeDirectory("my-output-directory")
+                        .withViewResources(viewResources).withFailureTrace(true))
+                .useParameterConverters(new ParameterConverters()
+                        .addConverters(new CustomConverter(), new MyDateConverter()));
+
     }
-    
+
     public static class CustomConverter implements ParameterConverter {
 
         public boolean accept(Type type) {
@@ -67,14 +67,14 @@ public class ConfigurationProducer
             return new CustomObject(value);
         }
     }
-    
+
     public static class MyDateConverter extends ParameterConverters.DateConverter {
 
         public MyDateConverter() {
             super(new SimpleDateFormat("yyyy-MM-dd"));
         }
     }
-    
+
     public static class CustomObject {
 
         private final String value;

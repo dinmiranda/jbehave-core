@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.springframework.org/schema/beans
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
   <bean class="org.jbehave.core.failures.SilentlyAbsorbingFailure" />
@@ -44,13 +44,13 @@
     </property>
     <property name="relativeDirectory" value="my-output-directory" />
     <property name="keywords">
-       <bean class="org.jbehave.core.i18n.LocalizedKeywords">
+      <bean class="org.jbehave.core.i18n.LocalizedKeywords">
         <constructor-arg>
-           <bean class="java.util.Locale">
-                <constructor-arg value="IT"/>
-           </bean>
+          <bean class="java.util.Locale">
+            <constructor-arg value="IT" />
+          </bean>
         </constructor-arg>
-       </bean>
+      </bean>
     </property>
     <property name="reportFailureTrace" value="true" />
     <property name="viewResources">

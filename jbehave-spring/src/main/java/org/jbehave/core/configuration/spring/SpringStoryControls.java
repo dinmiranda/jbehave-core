@@ -8,14 +8,14 @@ import org.jbehave.core.embedder.StoryControls;
  */
 public class SpringStoryControls extends StoryControls {
 
-    public boolean getDryRun(){
+    public boolean getDryRun() {
         return dryRun();
     }
-    
-    public void setDryRun(boolean dryRun){
+
+    public void setDryRun(boolean dryRun) {
         doDryRun(dryRun);
     }
-    
+
     public boolean isSkipScenariosAfterFailure() {
         return skipScenariosAfterFailure();
     }
@@ -31,5 +31,5 @@ public class SpringStoryControls extends StoryControls {
     public void setSkipBeforeAndAfterScenarioStepsIfGivenStory(boolean skipBeforeAndAfterScenarioStepsIfGivenStory) {
         doSkipBeforeAndAfterScenarioStepsIfGivenStory(skipBeforeAndAfterScenarioStepsIfGivenStory);
     }
-    
+
 }

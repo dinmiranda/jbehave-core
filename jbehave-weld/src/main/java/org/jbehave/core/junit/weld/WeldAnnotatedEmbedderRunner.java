@@ -8,7 +8,7 @@ import org.junit.runners.model.InitializationError;
 
 /**
  * AnnotatedEmbedderRunner that uses {@link WeldAnnotationBuilder}.
- * 
+ *
  * @author Aaron Walker
  */
 public class WeldAnnotatedEmbedderRunner extends AnnotatedEmbedderRunner {

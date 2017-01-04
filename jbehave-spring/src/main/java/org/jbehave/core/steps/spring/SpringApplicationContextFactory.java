@@ -16,7 +16,7 @@ import org.springframework.core.io.ResourceLoader;
  * <li>Annotated class names</li>
  * <li>XML location paths</li>
  * </ol>
- * The context will be an instance of {@link AnnotationConfigApplicationContext}, 
+ * The context will be an instance of {@link AnnotationConfigApplicationContext},
  * if the resources are annotated class names, or
  * {@link GenericApplicationContext} otherwise.
  */
@@ -45,7 +45,7 @@ public class SpringApplicationContextFactory {
      * The context will be an instance of
      * {@link AnnotationConfigApplicationContext}, if the resources are
      * annotated class names, or {@link GenericApplicationContext} otherwise.
-     * 
+     *
      * @return A ConfigurableApplicationContext
      */
     public ConfigurableApplicationContext createApplicationContext() {

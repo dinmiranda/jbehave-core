@@ -1,13 +1,5 @@
 package org.jbehave.core.configuration.weld;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-
 import org.jbehave.core.annotations.weld.UsingWeld;
 import org.jbehave.core.annotations.weld.WeldConfiguration;
 import org.jbehave.core.configuration.Configuration;
@@ -17,6 +9,13 @@ import org.jboss.weld.bootstrap.spi.Deployment;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
 import org.jboss.weld.resources.spi.ResourceLoader;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Any;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+import java.util.HashMap;
+import java.util.Map;
 
 @ApplicationScoped
 public class WeldBootstrap extends Weld {

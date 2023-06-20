@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>19.0</version>
+      <version>32.0.0-android</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -88,7 +88,7 @@
     <dependency>
       <groupId>org.reflections</groupId>
       <artifactId>reflections</artifactId>
-      <version>0.9.10</version>
+      <version>0.9.12</version>
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -115,7 +115,7 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <zip destfile="${jbehave-core-resources.zip}" basedir="${basedir}/src/main/resources" />
+                <zip destfile="${jbehave-core-resources.zip}" basedir="${basedir}/src/main/resources"/>
               </tasks>
             </configuration>
             <goals>
